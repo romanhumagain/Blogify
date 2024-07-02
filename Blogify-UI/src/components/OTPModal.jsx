@@ -6,7 +6,7 @@ import createAxiosInstance from '../api/axiosInstance';
 import Loading from './Loading';
 import { MdOutlineError } from "react-icons/md";
 
-const OTPModal = ({ isOpen, onClose }) => {
+const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
   const [isModalOpen, setIsModalOpen] = useState(isOpen);
   const [emailSent, setEmailSent] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -59,12 +59,12 @@ const OTPModal = ({ isOpen, onClose }) => {
   const handleOTPSubmit = async (otpData) => {
     if (otpData.otp) {
       try {
-        console.log('try')
         setVerificationLoading(true);
         const response = await axiosInstance.put(`verify-otp/${otpData.otp}/`);
 
         if (response.status === 200) {
           setIsVerifiedSuccessfully(true);
+          fetchAuthenticatedUser()
           reset();
           setVerificationError(null)
         }
@@ -73,7 +73,7 @@ const OTPModal = ({ isOpen, onClose }) => {
           if (error.response.status === 404) {
             setVerificationError("Invalid OTP Code");
           } else if (error.response.status === 400) {
-        console.log('400')
+            console.log('400')
 
             setVerificationError("OTP has expired. Please resend token to verify!");
           }
@@ -86,7 +86,7 @@ const OTPModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleResendOTP = async() => {
+  const handleResendOTP = async () => {
     reset()
     setEmailSent(false)
     sendOTP()
@@ -163,36 +163,36 @@ const OTPModal = ({ isOpen, onClose }) => {
                 )}
                 {!isVerifiedSuccessfully && (
                   <form onSubmit={handleSubmit(handleOTPSubmit)} className={`${!emailSent && 'hidden'} transition-all duration-700`}>
-                  <div className="mb-4 px-20">
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:bg-gray-300 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-red-500 focus:ring-opacity-10" id="username" type="text" placeholder="OTP Code"
-                      {...register("otp", {
-                        required: {
-                          value: true,
-                          message: "Provide 6 digits OTP code !"
-                        },
-                        validate: {
-                          otpLength: (fieldValue) => {
-                            return (fieldValue.length === 6 || "OTP should be 6 digits number !");
+                    <div className="mb-4 px-20">
+                      <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:bg-gray-300 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-red-500 focus:ring-opacity-10" id="username" type="text" placeholder="OTP Code"
+                        {...register("otp", {
+                          required: {
+                            value: true,
+                            message: "Provide 6 digits OTP code !"
                           },
-                          validDigits: (fieldValue) => {
-                            return (/^\d+$/.test(fieldValue) || "OTP should contain only digits !");
+                          validate: {
+                            otpLength: (fieldValue) => {
+                              return (fieldValue.length === 6 || "OTP should be 6 digits number !");
+                            },
+                            validDigits: (fieldValue) => {
+                              return (/^\d+$/.test(fieldValue) || "OTP should contain only digits !");
+                            }
                           }
-                        }
-                      })} />
+                        })} />
 
-                    <p className='text-red-500 text-left text-[14px] px-1 font-medium'>{errors.otp?.message}</p>
-                  </div>
+                      <p className='text-red-500 text-left text-[14px] px-1 font-medium'>{errors.otp?.message}</p>
+                    </div>
 
-                  <button
-                    type="submit"
-                    className="text-white bg-sky-600 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:focus:ring-sky-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
-                  >
-                    Verify
-                  </button><br />
-                  <p className='text-center text-light text-sm mt-4 p-0 text-gray-600 dark:text-white cursor-pointer bg-red inline-block' onClick={handleResendOTP}>Resend OTP Code ?</p>
-                </form>
+                    <button
+                      type="submit"
+                      className="text-white bg-sky-600 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:focus:ring-sky-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
+                    >
+                      Verify
+                    </button><br />
+                    <p className='text-center text-light text-sm mt-4 p-0 text-gray-600 dark:text-white cursor-pointer bg-red inline-block' onClick={handleResendOTP}>Resend OTP Code ?</p>
+                  </form>
                 )}
-                
+
               </>
               )}
 
