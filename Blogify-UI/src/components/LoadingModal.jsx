@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 
-const LoadingModal = ({ isOpen, onClose }) => {
+const LoadingModal = ({ isOpen }) => {
   const [isModalOpen, setIsModalOpen] = useState(isOpen);
 
   useEffect(() => {
@@ -10,7 +10,6 @@ const LoadingModal = ({ isOpen, onClose }) => {
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
-    onClose();
   };
 
   return (

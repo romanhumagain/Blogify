@@ -4,8 +4,9 @@ import Loading from '../components/Loading'
 const About = () => {
   return (
     <>
-    <Loading/>
-    <p>About Page</p>
+    <div className='h-screen flex justify-center items-center'>
+    <p className='text-3xl text-gray-500'>About Page</p>
+    </div>
     </>
   )
 }

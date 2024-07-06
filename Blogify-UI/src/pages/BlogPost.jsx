@@ -3,7 +3,9 @@ import React from 'react'
 const BlogPost = () => {
   return (
     <>
-    <p>Blog Post</p>
+    <div className='h-screen flex justify-center items-center'>
+    <p className='text-3xl text-gray-500'>Post Blog</p>
+    </div>
     </>
   )
 }

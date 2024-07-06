@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Toastify from './Toastify';
 import { useAuth } from '../context/AuthContext';
-import createAxiosInstance from '../api/axiosInstance';
 import Loading from './Loading';
 import { MdOutlineError } from "react-icons/md";
 
@@ -10,7 +9,6 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
   const [isModalOpen, setIsModalOpen] = useState(isOpen);
   const [emailSent, setEmailSent] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [verificationLoading, setVerificationLoading] = useState(false)
   const [isVerifiedSuccessfully, setIsVerifiedSuccessfully] = useState(false)
   const [verificationError, setVerificationError] = useState(null)
 
@@ -59,7 +57,6 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
   const handleOTPSubmit = async (otpData) => {
     if (otpData.otp) {
       try {
-        setVerificationLoading(true);
         const response = await axiosInstance.put(`verify-otp/${otpData.otp}/`);
 
         if (response.status === 200) {
@@ -73,15 +70,11 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
           if (error.response.status === 404) {
             setVerificationError("Invalid OTP Code");
           } else if (error.response.status === 400) {
-            console.log('400')
-
             setVerificationError("OTP has expired. Please resend token to verify!");
           }
         } else {
           setVerificationError("Something unexpected happened. Please try again later.");
         }
-      } finally {
-        setVerificationLoading(false);
       }
     }
   };
@@ -125,7 +118,7 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
                 {!verificationError && (
                   <>
                     <svg className={`${emailSent && 'hidden'} mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
 
                     <svg className={`${!emailSent && 'hidden'} w-12 h-12`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
@@ -152,7 +145,7 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
 
                 <div className={`${emailSent && 'hidden'}`}>
                   <button
-                    className="text-white bg-sky-600 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:focus:ring-sky-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
+                    className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
                     onClick={sendOTP}
                   >
                     Send OTP
@@ -185,7 +178,7 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
 
                     <button
                       type="submit"
-                      className="text-white bg-sky-600 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 dark:focus:ring-sky-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
+                      className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-md inline items-center px-5 py-2.5 text-center"
                     >
                       Verify
                     </button><br />

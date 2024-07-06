@@ -1,4 +1,4 @@
-import React, {useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { GoFileSubmodule } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import RegisterOTPModal from '../components/RegisterOTPModal';
 import { useAuth } from '../context/AuthContext';
 import LoadingModal from '../components/LoadingModal';
+import BlogifyLogo from '../components/BlogifyLogo';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
 
-  const {axiosInstance} = useAuth()
+  const { axiosInstance } = useAuth()
 
   const show_toastify = (message, type) => {
     Toastify(message, type)
@@ -31,30 +32,30 @@ const Register = () => {
       email: "",
       password: ""
     },
-    mode:"onSubmit"
+    mode: "onSubmit"
 
   })
 
   const { register, handleSubmit, formState, getValues, reset } = form
-  const { errors, isSubmitting, isSubmitted, isSubmitSuccessful } = formState
+  const { errors } = formState
   const registered_email = useRef(null)
 
   const onSubmit = async (formData) => {
     try {
       setLoading(true);
       const response = await axiosInstance.post('register/', formData);
-      
+
       if (response.status === 201) {
-        registered_email.current = response.data.data.email
-        setLoading(false)
+        registered_email.current = response.data.data.email;
         show_toastify(`${response.data.message} \n You can login now.`, "success");
         reset();
-        setTimeout(()=>{
-          setIsOtpModalOpen(true)
-          // navigate('/')
-        },2000)
+        setTimeout(() => {
+          setIsOtpModalOpen(true);
+        }, 2000);
       }
     } catch (error) {
+      setLoading(false);
+      console.error(error);
       if (error.response) {
         if (error.response.status === 400) {
           show_toastify("Sorry, couldn't register your account. Please check your inputs.", "error");
@@ -69,15 +70,16 @@ const Register = () => {
     }
   };
 
+
   return (
     <>
-    {loading && (
+      {loading && (
         <LoadingModal isOpen={true} onClose={() => setIsOtpModalOpen(false)} />
       )}
       <div className=' h-auto w-full flex items-center justify-center dark:bg-neutral-300'>
-        <div className='bg-slate-100 p-10 m-4 mx-auto rounded-lg shadow-lg max-w-md w-full dark:bg-neutral-700 dark:text-gray-100 duration-300'>
-          <div className="text-center font-bold text-3xl text-black dark:text-gray-100 duration-150">
-            Blogify
+        <div className='bg-slate-100 p-8 m-4 mx-auto rounded-lg shadow-lg max-w-md w-full dark:bg-neutral-700 dark:text-gray-100 duration-300'>
+          <div className="text-center text-3xl">
+            <BlogifyLogo />
           </div>
           <div className="text-center font-semibold text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150  ">
             Sign Up To Blogify
@@ -144,10 +146,10 @@ const Register = () => {
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     message: "Invalid email format !"
                   },
-                  validate:{
-                    emailExists: async(fieldValue)=>{
+                  validate: {
+                    emailExists: async (fieldValue) => {
                       const response = await axiosInstance.get(`fetch-user/?email=${fieldValue}`)
-                      return( response.data?.length === 0 || "Email Already Exists")
+                      return (response.data?.length === 0 || "Email Already Exists")
                     }
                   }
                 })} />
@@ -178,7 +180,7 @@ const Register = () => {
             </div>
 
             <div className='className="mb-4 m-3'>
-              <button className="bg-slate-700 hover:bg-slate-800  text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 transition-colors duration-300">
+              <button className="bg-teal-500 hover:bg-teal-600  text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-300">
                 <GoFileSubmodule className="inline text-[26px] mx-1" /> Sign Up
               </button>
             </div>
@@ -203,7 +205,7 @@ const Register = () => {
       <ToastContainer />
 
       {isOtpModalOpen && (
-        <RegisterOTPModal isOpen={isOtpModalOpen} onClose={() => setIsOtpModalOpen(false)} email={registered_email.current&&registered_email.current} />
+        <RegisterOTPModal isOpen={isOtpModalOpen} onClose={() => setIsOtpModalOpen(false)} email={registered_email.current && registered_email.current} />
       )}
     </>
   )

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, OTP
+from .models import User, OTP, PasswordResetToken
 
 class UserRegisterSerializer(serializers.ModelSerializer):
   class Meta:
@@ -34,3 +34,16 @@ class OTPSerializer(serializers.ModelSerializer):
   class Meta:
     model = OTP
     fields =['otp']
+    
+class PasswordResetTokenSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = OTP
+    fields = ['token', 'token_expired']
+    
+    
+class PasswordResetSerializer(serializers.Serializer):
+  token = serializers.CharField(max_length = 100)
+  password = serializers.CharField(write_only = True)
+  
+class VerifyOTPSerializer(serializers.Serializer):
+  otp = serializers.CharField(max_length=6)

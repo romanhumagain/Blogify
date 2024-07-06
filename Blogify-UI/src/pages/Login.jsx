@@ -6,9 +6,12 @@ import { IoLogIn } from "react-icons/io5";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../context/AuthContext';
+import ForgotPassword from '../components/ForgotPassword';
+import BlogifyLogo from '../components/BlogifyLogo';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false)
 
   const { loginUser } = useAuth()
 
@@ -21,9 +24,9 @@ const Login = () => {
   return (
     <>
       <div className="h-auto flex items-center justify-center w-full duration-500 dark:bg-neutral-300">
-        <div className="bg-slate-100 p-10 m-4 mx-auto rounded-lg shadow-lg max-w-md w-full dark:bg-neutral-700 dark:text-gray-100 duration-300">
-          <div className="text-center font-bold text-3xl text-black dark:text-gray-100 duration-150">
-            Blogify
+        <div className="bg-slate-100 p-5 md:p-10 m-4 mx-auto rounded-lg shadow-lg max-w-md w-full dark:bg-neutral-700 dark:text-gray-100 duration-300">
+          <div className="text-center text-3xl">
+          <BlogifyLogo/>
           </div>
           <div className="text-center font-semibold text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150">
             Sign in to Blogify
@@ -36,7 +39,7 @@ const Login = () => {
               <FcGoogle className="inline text-[27px] mx-2" /> Sign In With Google
             </button>
             <button className="border-2 border-gray-400 bg-gray-100 hover:bg-gray-200 text-black font-semibold text-sm p-1 rounded-2xl w-full duration-300 dark:bg-gray-200 dark:hover:bg-gray-300">
-              <FaGithub className="inline text-[25px] mx-2"/> Sign In With GitHub
+              <FaGithub className="inline text-[25px] mx-2" /> Sign In With GitHub
             </button>
           </div>
           <div className="flex items-center my-4">
@@ -62,13 +65,15 @@ const Login = () => {
               </div>
 
               <div className="mb-4 m-3">
-                <button type='submit' className="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 transition-colors duration-300">
+                <button type='submit' className="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-500">
                   <IoLogIn className="inline text-[28px] mx-1" /> Sign In
                 </button>
               </div>
             </form>
             <div className="text-center">
-              <a href="#" className="mt-3 text-gray-500 text-sm dark:text-gray-300">Forgot Password?</a>
+              <p className="mt-3 text-gray-500 text-sm dark:text-gray-300 cursor-pointer" onClick={()=>{
+                setIsForgotPasswordModalOpen(true)
+              }}>Forgot Password?</p>
             </div>
             <div className="text-center mt-3 px-4">
               <div className="flex items-center my-2">
@@ -92,6 +97,10 @@ const Login = () => {
         </div>
       </div>
       <ToastContainer />
+
+      {isForgotPasswordModalOpen &&
+        <ForgotPassword isOpen={isForgotPasswordModalOpen} onClose={()=>setIsForgotPasswordModalOpen(false)} />
+      }
     </>
   );
 };

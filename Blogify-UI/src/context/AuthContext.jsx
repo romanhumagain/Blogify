@@ -2,13 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import createAxiosInstance from '../api/axiosInstance';
 import Toastify from '../components/Toastify';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 const AuthContextProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(() => {
@@ -32,23 +30,9 @@ const AuthContextProvider = ({ children }) => {
   });
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true)
-  const axiosInstance = createAxiosInstance(authToken)
-
-  useEffect(() => {
-    if (loading) {
-      updateToken()
-    }
-
-    let twenty_nine_minutes = 1000 * 60 * 29
-    let interval = setInterval(() => {
-      if (authToken) {
-        updateToken()
-      }
-    }, twenty_nine_minutes);
-
-    return () => clearInterval(interval)
-  }, [authToken, loading])
+  const axiosInstance = createAxiosInstance(authToken);
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const [isUpdated, setIsUpdated] = useState(false);
 
   const show_toastify = (message, type) => {
     Toastify(message, type);
@@ -70,7 +54,6 @@ const AuthContextProvider = ({ children }) => {
         localStorage.setItem('authTokens', JSON.stringify(response.data));
         show_toastify('Successfully Logged in.', 'success');
         setTimeout(() => {
-          fetchAuthenticatedUser()
           navigate('/');
         }, 2000);
       }
@@ -88,64 +71,80 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem("authTokens")
-    localStorage.removeItem("authenticated_user")
-    setUser(null)
-    setAuthToken(null)
-    navigate('/login')
-  }
+    localStorage.removeItem("authTokens");
+    localStorage.removeItem("authenticated_user");
+    setUser(null);
+    setAuthToken(null);
+    navigate('/login');
+  };
 
   const fetchAuthenticatedUser = async () => {
     if (user) {
       try {
-        const response = await axiosInstance.get('user')
+        const response = await axiosInstance.get('user');
         if (response.status === 200) {
-          localStorage.setItem("authenticated_user", JSON.stringify(response.data))
+          setAuthenticatedUser(response.data);
+          localStorage.setItem("authenticated_user", JSON.stringify(response.data));
         }
       } catch (error) {
         if (error.response.status === 401) {
-          logoutUser()
+          logoutUser();
         }
       }
+    } else {
+      console.log("Logged in user not found !");
     }
-    else {
-     console.log("Logged in user not found !")
-    }
-  }
+  };
 
   const updateToken = async () => {
     const refresh_token = authToken?.refresh;
     if (refresh_token) {
       try {
-        const response =await axiosInstance.post('token/refresh/', {
+        const response = await axiosInstance.post('token/refresh/', {
           refresh: authToken.refresh
         });
         if (response.status === 200) {
-          console.log(response.data)
           const authenticated_user = jwtDecode(response.data.access);
           setUser(authenticated_user);
           setAuthToken(response.data);
+          localStorage.setItem('authTokens', JSON.stringify(response.data));
         }
       } catch (error) {
-        if (error.response) {
-          if (error.response.status === 401) {
-            console.log("unauthorized")
-            logoutUser()
-          }
+        if (error.response && error.response.status === 401) {
+          logoutUser();
         }
+      } finally {
+        setIsUpdated(true);
       }
-      finally {
-        if (loading) {
-          console.log("loading was true before")
-          setLoading(false)
-        }
+    } else {
+      setIsUpdated(true);
+    }
+  };
+
+  useEffect(() => {
+    if (authToken && !isUpdated) {
+      updateToken();
+    }
+    else{
+      setIsUpdated(true)
+    }
+    
+    const interval_time = 1000 * 60 * 29; // setting the interval time to 29
+    const interval = setInterval(() => {
+      if (authToken) {
+        updateToken();
       }
+    }, interval_time);
+
+    return () => clearInterval(interval);
+  }, [authToken, isUpdated]);
+
+  useEffect(() => {
+    if (user) {
+      fetchAuthenticatedUser();
     }
-    else {
-      console.log("Auth token not available !")
-      setLoading(false)
-    }
-  }
+  }, [user]);
+
 
   const contextData = {
     user,
@@ -153,12 +152,13 @@ const AuthContextProvider = ({ children }) => {
     loginUser,
     logoutUser,
     fetchAuthenticatedUser,
+    authenticatedUser,
     axiosInstance
   };
 
   return (
     <AuthContext.Provider value={contextData}>
-      {loading ? null : children}
+      {isUpdated ? children : null}
     </AuthContext.Provider>
   );
 };

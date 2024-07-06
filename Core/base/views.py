@@ -1,17 +1,25 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from .serializers import UserRegisterSerializer, UserSerializer, OTPSerializer
+from .serializers import (UserRegisterSerializer, 
+                          UserSerializer, 
+                          OTPSerializer, 
+                          PasswordResetTokenSerializer,
+                          PasswordResetSerializer,
+                          VerifyOTPSerializer)
 from django.contrib.auth import get_user_model
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .utils import send_email, generate_otp, send_otp_email
-from .models import OTP
+from .utils import send_email, generate_otp, send_otp_token_email, generate_password_reset_token
+from .models import OTP, PasswordResetToken
+from django.utils import timezone
+from datetime import timedelta
+from django.db import transaction
 
 from rest_framework import viewsets
 
@@ -102,7 +110,7 @@ def send_email_for_otp(user):
         subject = "OTP Verification🔒"
         email = user.email
         
-        send_otp_email(subject=subject,message=message, to=email)
+        send_otp_token_email(subject=subject,message=message, to=email)
         return True
     
     return False
@@ -161,8 +169,7 @@ class VerifyOTP(RetrieveUpdateAPIView):
         otp_instance.user.is_verified = True
         otp_instance.user.save()
         
-        otp_instance.is_expired = True
-        otp_instance.save()
+        otp_instance.delete()
         
         return Response({"detail": "User verified successfully."}, status=status.HTTP_200_OK)
     
@@ -175,3 +182,125 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
     
+def send_password_reset_token_email(user):
+    token  = generate_password_reset_token(user)
+    reset_link = f"http://localhost:5173/password-reset/{token}"
+    expiration_time = timezone.now() + timedelta(minutes=5)
+    
+    if token is not None: 
+        subject = 'Password Reset Request'
+        message = (
+            f'<p>Hello {user.get_full_name},</p>'
+            '<p>You have requested a password reset. Please click on the link below to reset your password:</p>'
+            f'<p>{reset_link}</p>'
+            '<p>This link will expire in 5 minutes.</p>'
+            '<p>If you did not request this reset, please ignore this email.</p>'
+            '<p>Thank you!'
+        )
+        email = user.email
+        
+        send_otp_token_email(subject=subject,message=message, to=email)
+        return True
+    
+    return False
+
+class PasswordResetAPIView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        try:
+            data = request.data
+            
+            try:
+                user = User.objects.get(email = data['email'])
+            except User.DoesNotExist:
+                 return Response({'detail': 'Email not found ! Please use your registered email address.'}, status=status.HTTP_404_NOT_FOUND)
+                
+            email_sent = send_password_reset_token_email(user)
+            if email_sent:
+                return Response({'detail': 'Successfully sent email.'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'detail': 'Failed to send password reset email.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        except Exception as e:
+            print(f"Error in sending Password Reset Token: {str(e)}")
+            return Response({'detail': 'Internal server error.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class VerifyPasswordResetTokenAPIView(RetrieveAPIView):
+    serializer_class = PasswordResetTokenSerializer
+    permission_classes = [AllowAny]
+    lookup_field = 'token'
+    lookup_url_kwarg = 'token'
+
+    def get(self, request, *args, **kwargs):
+        token = self.kwargs.get(self.lookup_url_kwarg)
+        try:
+            token_instance = PasswordResetToken.objects.get(token=token)
+            if token_instance.is_expired:
+                return Response({'detail': 'Token Expired, Resend new token!'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'Token verified!'}, status=status.HTTP_200_OK)
+        except PasswordResetToken.DoesNotExist:
+            return Response({'detail': 'Invalid Token!'}, status=status.HTTP_400_BAD_REQUEST)
+           
+class ConfirmPasswordResetAPIView(UpdateAPIView):
+    serializer_class = PasswordResetSerializer
+    permission_classes = [AllowAny]
+    
+    def put(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            try:
+                print(data['token'])
+                token = PasswordResetToken.objects.get(token=data['token'])
+                if not token.is_expired:
+                    with transaction.atomic():
+                        user = token.user
+                        user.set_password(data['password'])
+                        user.save()
+                        token.delete()
+                        send_email("Password Reset Successfull ",
+                                   """
+                                   <p>Your password has been successfully changed !</p>
+                                   <p>If you did not initiate this request, please contact our support team immediately</p>
+                                   <p>Thank you for being a valued user.</p>
+                                   <p>Best regards,</p>
+                                   <p><strong>Blogify</strong></p>
+                                   """,
+                                   user.email)
+
+                        return Response({'detail': 'Successfully changed password!'}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'detail': 'Token already expired!'}, status=status.HTTP_400_BAD_REQUEST)
+            except PasswordResetToken.DoesNotExist:
+                return Response({'detail': "Token doesn't exist!"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            
+class VerifyRegisteredUserOTP(UpdateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = VerifyOTPSerializer
+    
+    def update(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.get_serializer(data=data)
+        
+        if serializer.is_valid():
+            data = serializer.validated_data
+            try:
+                otp = OTP.objects.get(otp=data['otp'])
+                
+                if not otp.has_expired:
+                    with transaction.atomic():
+                        user = otp.user
+                        user.is_verified = True
+                        user.save()
+                        otp.delete()
+
+                    return Response({'detail': 'Successfully verified your account!'}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'detail': 'OTP already expired!'}, status=status.HTTP_400_BAD_REQUEST)
+            except OTP.DoesNotExist:
+                return Response({'detail': "OTP doesn't exist!"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
