@@ -81,7 +81,7 @@ const Register = () => {
           <div className="text-center text-3xl">
             <BlogifyLogo />
           </div>
-          <div className="text-center font-semibold text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150  ">
+          <div className="text-center font-mono text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150  ">
             Sign Up To Blogify
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -90,7 +90,7 @@ const Register = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="fname" >
                 First Name
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="fname" name='first_name' type="text"
+              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="fname" name='first_name' type="text" placeholder='First Name'
                 {...register("first_name", {
                   required: {
                     value: true,
@@ -105,7 +105,7 @@ const Register = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="lname">
                 Last Name
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="lname" name='last_name' type="text"
+              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="lname" name='last_name' type="text"  placeholder='Last Name'
                 {...register("last_name", {
                   required: {
                     value: true,
@@ -121,7 +121,7 @@ const Register = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="username">
                 Username
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="username" name='username' type="text"
+              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="username" name='username' type="text"  placeholder='Username'
                 {...register("username", {
                   required: {
                     value: true,
@@ -136,7 +136,7 @@ const Register = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="email">
                 Email
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 " id="email" name='email' type="email"
+              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 " id="email" name='email' type="email"  placeholder='example@gmail.com'
                 {...register("email", {
                   required: {
                     value: true,
@@ -162,7 +162,7 @@ const Register = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="password">
                 Password
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="password" name='password' type="password"
+              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="password" name='password' type="password"  placeholder='Password'
                 {...register("password", {
                   required: {
                     value: true,
@@ -180,7 +180,7 @@ const Register = () => {
             </div>
 
             <div className='className="mb-4 m-3'>
-              <button className="bg-teal-500 hover:bg-teal-600  text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-300">
+              <button className="bg-teal-500 hover:bg-teal-600  text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-300">
                 <GoFileSubmodule className="inline text-[26px] mx-1" /> Sign Up
               </button>
             </div>

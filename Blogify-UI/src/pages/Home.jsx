@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import OTPModal from '../components/OTPModal';
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const { user, authenticatedUser, fetchAuthenticatedUser } = useAuth()
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
 
+  const navigate = useNavigate()
   useEffect(() => {
     if (user && authenticatedUser) {
       if (!authenticatedUser.is_verified) {
@@ -15,6 +18,24 @@ const Home = () => {
       }
     }
   }, [user, authenticatedUser])
+  
+useEffect(()=>{
+  {!user && 
+    Swal.fire({
+  title: "Please Sign in your blogify account",
+  showCancelButton: true,
+  confirmButtonText: "Sing in now",
+  confirmButtonColor:'teal',
+  cancelButtonText:"Sign in Later",
+  cancelButtonColor:'red'
+}).then((result) => {
+  if (result.isConfirmed) {
+    navigate('/login')
+  } 
+});
+  }
+
+},[user])
 
   return (
     <>

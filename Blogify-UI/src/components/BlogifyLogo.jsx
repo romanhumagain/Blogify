@@ -13,14 +13,14 @@ const BlogifyLogo = () => {
 
           .logo-container {
             font-weight: bold;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             transition: font-size 0.15s;
             letter-spacing: 0.1em;
             animation: zoomIn 0.5s ease-in-out; /* Reduced duration for faster animation */
           }
 
           .logo-highlight {
-            font-size: 2.7rem;
+            font-size: 2.5rem;
           }
 
           @keyframes zoomIn {

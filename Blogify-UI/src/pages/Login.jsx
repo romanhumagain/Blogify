@@ -28,7 +28,7 @@ const Login = () => {
           <div className="text-center text-3xl">
           <BlogifyLogo/>
           </div>
-          <div className="text-center font-semibold text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150">
+          <div className="text-center font-mono text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150">
             Sign in to Blogify
           </div>
           <div className="space-y-3">
@@ -65,7 +65,7 @@ const Login = () => {
               </div>
 
               <div className="mb-4 m-3">
-                <button type='submit' className="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-500">
+                <button type='submit' className="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-500">
                   <IoLogIn className="inline text-[28px] mx-1" /> Sign In
                 </button>
               </div>

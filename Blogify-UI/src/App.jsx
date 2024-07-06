@@ -10,6 +10,7 @@ import Contact from "./pages/Contact"
 import BlogPost from "./pages/BlogPost"
 import ResetPassword from "./components/ResetPassword"
 import Footer from "./components/Footer"
+import Notification from "./pages/Notification"
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/notification" element={<Notification />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog-post" element={<BlogPost />} />
               <Route path="/password-reset/:token" element={<ResetPassword />} />
