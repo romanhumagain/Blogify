@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_rest_passwordreset',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -149,7 +150,9 @@ REST_FRAMEWORK = {
     
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 SIMPLE_JWT = {
@@ -197,3 +200,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env('BLOGIFY_EMAIL_USERNAME')
 EMAIL_HOST_PASSWORD = env('BLOGIFY_EMAIL_PASSWORD')
 EMAIL_USE_TLS = True
+
+
+# ======== for handeling the image =========
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

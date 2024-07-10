@@ -103,7 +103,7 @@ const ResetPassword = () => {
         <LoadingModal isOpen={true} />
       )}
       <div className='h-auto flex justify-center item-center w-full transition-all duration-300  py-10 '>
-        <div className='h-auto p-5 bg-slate-100 max-w-md w-full  rounded-lg shadow-lg mx-auto dark:bg-neutral-700 '>
+        <div className='h-auto p-5 bg-slate-100 max-w-md w-full  rounded-lg shadow-lg mx-auto dark:bg-neutral-800 '>
           <div className="text-center">
             <BlogifyLogo />
           </div>

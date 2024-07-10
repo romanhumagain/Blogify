@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import createAxiosInstance from '../api/axiosInstance';
 import Toastify from '../components/Toastify';
 import {jwtDecode} from 'jwt-decode';
+import Swal from 'sweetalert2'
 
 const AuthContext = createContext();
 
@@ -52,10 +53,12 @@ const AuthContextProvider = ({ children }) => {
         setUser(authenticated_user);
         setAuthToken(response.data);
         localStorage.setItem('authTokens', JSON.stringify(response.data));
-        show_toastify('Successfully Logged in.', 'success');
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
+        navigate('/');
+        Swal.fire({
+          title: "Success",
+          text: "Successfully Logged in.",
+          icon: "success"
+        });
       }
     } catch (error) {
       if (error.response) {
@@ -158,7 +161,7 @@ const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={contextData}>
-      {isUpdated ? children : null}
+      {isUpdated  && children}
     </AuthContext.Provider>
   );
 };

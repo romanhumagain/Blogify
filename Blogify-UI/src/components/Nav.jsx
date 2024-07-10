@@ -18,6 +18,7 @@ const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mode, setMode] = useState(() => localStorage.getItem('mode') ? localStorage.getItem('mode') : "light")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [mode, setMode] = useState("light")
 
   const { user, logoutUser } = useAuth()
   const handleToggle = () => {
@@ -73,13 +74,13 @@ const Nav = () => {
 
 
   return (
-    <header className="bg-slate-200 shadow-lg dark:bg-neutral-700 dark:text-white duration-500">
+    <header className="bg-slate-100 shadow-md dark:bg-neutral-800 dark:text-white border-b-0 border-gray-400 border-opacity-50 duration-500">
       <nav className="flex items-center justify-between p-3 mx-auto w-[95%]">
         <div>
           <BlogifyLogo />
         </div>
 
-        <div className={`bg-slate-200 menu_lists absolute md:static md:min-h-fit min-h-[60vh] left-0 ${isMenuOpen ? 'top-[9%]' : 'top-[-100%]'} md:w-auto w-full flex items-center px-5 duration-500 dark:bg-neutral-700 dark:text-white`}>
+        <div className={`bg-slate-100 menu_lists absolute md:static md:min-h-fit min-h-[60vh] left-0 ${isMenuOpen ? 'top-[9%]' : 'top-[-100%]'} md:w-auto w-full flex items-center px-5 duration-500 dark:bg-neutral-800 dark:text-white`}>
           <ul className="flex md:flex-row flex-col md:items-center md:gap-[6vh] font-semibold text-lg text-gray-600 gap-10 mt-5 md:mt-0 dark:text-slate-100">
             <li><Link to="/" className={`text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500 ${isActive('') && 'text-teal-600 dark:text-teal-500'}`}>Home</Link></li>
             <li><Link to="/contact" className={`text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500 ${isActive('contact') && 'text-teal-600 dark:text-teal-500'}`}>Contact</Link></li>
@@ -99,8 +100,8 @@ const Nav = () => {
 
               <div
                 id="dropdownInformation"
-                className={`z-10 ${isDropdownOpen ? '' : 'hidden'} absolute right-2 top-16 bg-gray-100 divide-y divide-gray-200 rounded-lg shadow w-44 dark:bg-neutral-600 dark:divide-gray-500`}
-              >
+                className={`z-10 ${isDropdownOpen ? '' : 'hidden'} absolute right-2 top-16 bg-gray-100 divide-y divide-gray-200 rounded-lg shadow w-44 dark:bg-neutral-600 dark:divide-gray-500 transition-all duration-700`}
+                onMouseLeave={()=>setIsDropdownOpen(false)}>
                 <div className="px-4 py-3 text-sm font-bold text-gray-900 dark:text-white">
                   <div>{user.name}</div>
                   <div className="font-normal truncate text-gray-500 dark:text-gray-300">{user.email}</div>

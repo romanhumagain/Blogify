@@ -10,7 +10,7 @@ import { IoLogoYoutube } from "react-icons/io5";
 const Footer = () => {
   return (
     <>
-      <footer className='bg-slate-200 dark:bg-neutral-700'>
+      <footer className='bg-slate-100 dark:bg-neutral-800 border-t-2 border-gray-500 border-opacity-50'>
         <div className='p-10  grid md:grid-cols-6 lg:grid-cols-12 gap-5 '>
           <div className='md:col-span-3 p-3'>
             <BlogifyLogo />
@@ -56,16 +56,7 @@ const Footer = () => {
 
             </div>
 
-            <div className='mt-3 grid grid-cols-12 gap-4 ' >
-              <div className='col-span-3 overflow-hidden  '>
-                <img className=' object-cover' src='https://imgs.search.brave.com/bWb7wz1UXtGWG05l5_hu31z29wa0w4SGfECwEk1i5v0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/amF2YXRwb2ludC5j/b20vZGphbmdvL2lt/YWdlcy9kamFuZ28t/dHV0b3JpYWwucG5n' alt='img'></img>
-              </div>
-              <div className='col-span-9'>
-                <p className='text-gray-700 dark:text-gray-300 font-serif text-lg '>Django - A powerful backend framework</p>
-                <p className='text-gray-600 dark:text-gray-400 font-serif text-xs mt-1'>July 15, 2024</p>
-              </div>
-
-            </div>
+            
 
             <div className='mt-3 grid grid-cols-12 gap-4 ' >
               <div className='col-span-3 overflow-hidden '>
@@ -117,10 +108,8 @@ const Footer = () => {
           </p></div>
 
           <div className='md:flex gap-5 text-md space-x-3 lg:text-lg text-gray-700 dark:text-gray-300 flex-wrap'>
-            <Link to="/" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>Home</Link>
-            <Link to="/about" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>About</Link>
+            <Link to="/login" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>Home</Link>
             <Link to="/contact" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>Contact</Link>
-            <Link to="/blog-post" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>Post Blog</Link>
           </div>
 
         </div>

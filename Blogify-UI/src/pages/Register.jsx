@@ -76,8 +76,8 @@ const Register = () => {
       {loading && (
         <LoadingModal isOpen={true} onClose={() => setIsOtpModalOpen(false)} />
       )}
-      <div className=' h-auto w-full flex items-center justify-center dark:bg-neutral-300'>
-        <div className='bg-slate-100 p-8 m-4 mx-auto rounded-lg shadow-lg max-w-md w-full dark:bg-neutral-700 dark:text-gray-100 duration-300'>
+      <div className=' h-auto w-full flex items-center justify-center dark:bg-neutral-400'>
+        <div className='bg-slate-100 p-8 m-4 mx-auto rounded-lg shadow-2xl max-w-md w-full dark:bg-neutral-800 dark:text-gray-100 duration-300'>
           <div className="text-center text-3xl">
             <BlogifyLogo />
           </div>

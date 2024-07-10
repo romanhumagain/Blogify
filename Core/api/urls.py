@@ -12,10 +12,17 @@ from base.views import (UserRegisterAPIView,
                         VerifyRegisteredUserOTP
                         )
 
+from blog.views import (BlogPostViewSet,
+                        CategoryViewSet)
+
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'user', UserViewSet, basename='user')
+
+# endpoints for the blog app
+router.register('blog', BlogPostViewSet, basename='blog')
+router.register('blog-category', CategoryViewSet, basename='blog-category')
 
 urlpatterns = [
   path('register/', UserRegisterAPIView.as_view(), name='register'),
