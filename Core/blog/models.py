@@ -1,19 +1,19 @@
 from typing import Iterable
 from django.db import models
 from django.contrib.auth import get_user_model
-from .utils import genertate_slug
+from .utils import generate_slug
 
 User = get_user_model()
 
 def post_images_upload_to(instance, filename):
-  return f'blog_post/{instance.post.title}/{filename}'
+  return f'blog_post/{instance.post.category.category}/{filename}'
 
 class BlogCategory(models.Model):
-  category = models.CharField(max_length=200)
+  category = models.CharField(max_length=200, unique=True)
   slug = models.SlugField(unique=True)
   
   def save(self, *args, **kwargs):
-    self.slug = genertate_slug(BlogCategory, self.category)
+    self.slug = generate_slug(BlogCategory, self.category)
     return super(BlogCategory,self).save(*args, **kwargs)
   
   def __str__(self) -> str:
@@ -30,11 +30,15 @@ class BlogPost(models.Model):
   is_archived = models.BooleanField(default=False)
   
   def save(self, *args, **kwargs):
-    self.slug = genertate_slug(BlogPost, self.title)
-    return super(BlogPost, self).save(*args, **kwargs)
+        if self.title and not self.slug:
+            self.slug = generate_slug(BlogPost, self.title)
+        super(BlogPost, self).save(*args, **kwargs)
   
   def __str__(self) -> str:
     return f'{self.title} by {self.author}'
+  
+  class Meta:
+    ordering = ['-created_at']
   
 
 class Image(models.Model):
@@ -44,3 +48,21 @@ class Image(models.Model):
   
   def __str__(self) -> str:
     return f'{self.post.title} image'
+  
+class SavedPost(models.Model):
+  slug = models.SlugField(unique=True, blank=True)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved_posts')
+  post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='saved_by_user')
+  saved_at = models.DateTimeField(auto_now_add=True)
+  
+  def save(self, *args, **kwargs):
+    if not self.pk:
+      self.slug = generate_slug(SavedPost, self.post.title)
+      super(SavedPost, self).save(*args, **kwargs)
+  
+  def __str__(self) -> str:
+     return self.post.title
+   
+  class Meta:
+    unique_together = ('user', 'post')
+    ordering = ['-saved_at']

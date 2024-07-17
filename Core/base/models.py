@@ -5,14 +5,16 @@ from django.utils.translation import gettext_lazy as _
 from .manager import UserManager
 from django.utils import timezone
 from datetime import timedelta
+from blog.utils import generate_slug
 
 class User(AbstractBaseUser, PermissionsMixin):
+    slug = models.SlugField(unique=True)
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
-    username = models.CharField(max_length=100, verbose_name=_("Username"))
+    username = models.CharField(max_length=100, unique=True, verbose_name=_("Username"))
     first_name = models.CharField(max_length=100, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=100, verbose_name=_("Last Name"))
-    password = models.CharField(max_length=255, verbose_name=_("Password"))
-
+    password = models.CharField(max_length=100, verbose_name=_("Password"))
+    
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -25,6 +27,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     objects = UserManager()
+    
+    def save(self, *args, **kwargs):
+        self.slug = generate_slug(User, self.username)
+        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.email

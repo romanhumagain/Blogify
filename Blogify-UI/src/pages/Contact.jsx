@@ -57,7 +57,7 @@ const Contact = () => {
       <LoadingModal isOpen={true} />
     }
       <div className='h-auto flex justify-center items-center mt-5'>
-        <div className='bg-gray-100 max-w-xl w-full mt-8 mb-10 p-5 px-10 rounded-2xl shadow-2xl dark:bg-neutral-800 ' style={{fontFamily: "Nunito Sans"}}>
+        <div className='bg-gray-100 max-w-xl w-full mt-8 mb-10 p-5 px-5 rounded-2xl shadow-lg dark:bg-neutral-800 ' style={{fontFamily: "Nunito Sans"}}>
           <div className="text-start text-3xl px-12">
             <BlogifyLogo />
           </div>
@@ -121,7 +121,7 @@ const Contact = () => {
               </div>
 
               <div className="mb-4">
-                <button type='submit' className="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm p-2 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-500">
+                <button type='submit' className="w-full  hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-colors duration-500 px-3 py-[6px] flex items-center justify-center ">
                   <RiMailSendFill className="inline text-[28px] mx-1" /> Send Message
                 </button>
               </div>

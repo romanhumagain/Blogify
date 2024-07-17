@@ -14,14 +14,15 @@ import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { RiMailSendLine } from "react-icons/ri";
 import { FiSearch } from "react-icons/fi";
 import { IoLogOut } from "react-icons/io5";
+import { MdOutlineArchive } from "react-icons/md";
+
+
 import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2'
 import { useLocation } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import BlogifyLogo from './BlogifyLogo'
-
-
 
 const SideBar = () => {
 
@@ -36,7 +37,6 @@ const SideBar = () => {
   const menus = [
     { name: 'Dashboard', link: '/', icon: MdOutlineDashboard },
     { name: 'Search', link: '/search', icon: FiSearch },
-    // { name: 'Profile', link: '/profile', icon: CgProfile },
     { name: 'Message', link: '/message', icon: FaRegMessage },
     { name: 'Notification', link: '/notification', icon: IoNotificationsOutline },
     { name: 'Contact', link: '/contact', icon: RiMailSendLine },
@@ -106,7 +106,7 @@ const SideBar = () => {
 
   return (
     <>
-      <div className={`bg-slate-50 dark:bg-neutral-900 h-full ${isSideBarOpen ? 'w-52 md:w-72' : 'w-[80px]'} transition-width duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-gray-400`} style={{fontFamily: "Nunito Sans", fontWeight:'600'}}>
+      <div className={`bg-slate-50 dark:bg-neutral-900 h-full ${isSideBarOpen ? 'w-52 md:w-72' : 'w-[80px]'}  duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-gray-400`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
 
         <div className='text-gray-800 py-3 flex justify-between mx-6 items-center dark:text-gray-200'>
 
@@ -120,13 +120,13 @@ const SideBar = () => {
         </div>
 
         <Link to={'/profile'}>
-          <div className={`grid grid-cols-12 mx-5 gap-3 bg-gray-200 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} transition-none`}>
+          <div className={`grid grid-cols-12 mx-5 gap-3 bg-gray-200 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} transition-transform hover:scale-105 duration-700`}>
             <div className='col-span-3 overflow-hidden'>
               <img src='.\src\assets\pp.jpg' className='object-cover h-12 w-full rounded-full'></img>
             </div>
             <div className='col-span-9 p-1'>
-              <p className='text-sm font-semibold text-gray-800 dark:text-gray-300 '>Roman Humagain</p>
-              <p className='text-sm text-gray-600 dark:text-gray-400 truncate'>romanhumagain@gmail.com</p>
+              <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>Roman Humagain</p>
+              <p className='text-sm text-gray-500 dark:text-gray-400 truncate'>romanhumagain@gmail.com</p>
             </div>
           </div>
         </Link>
@@ -164,7 +164,18 @@ const SideBar = () => {
             id="dropdownInformation"
             className={`z-10 ${isDropdownOpen ? '' : 'hidden'} absolute left-2 bottom-40 overflow-hidden bg-gray-200  divide-gray-200 rounded-lg shadow w-44 dark:bg-neutral-800 dark:divide-gray-500 transition-all duration-700 py-5`}
             onMouseLeave={() => setIsDropdownOpen(false)}>
-            <Link to={"/"}>
+
+            <Link to={"/archive-post-details"}>
+              <div className={`flex gap-3 items-center mx-4 mb-3 hover:bg-gray-300 dark:hover:bg-neutral-700 hover:rounded-lg p-1`}>
+                <div>
+                  <MdOutlineArchive />
+                </div>
+                <p><div className={`whitespace-pre duration-300 `} >Archived</div></p>
+              </div>
+            </Link>
+
+
+            <Link to={"/saved-post-details"}>
               <div className={`flex gap-3 items-center mx-4 mb-3 hover:bg-gray-300 dark:hover:bg-neutral-700 hover:rounded-lg p-1`}>
                 <div>
                   <FaRegHeart />
@@ -194,11 +205,11 @@ const SideBar = () => {
             {isSideBarOpen ? (
               <label className="inline-flex items-center me-3 cursor-pointer">
                 <input type="checkbox" className="sr-only peer" onChange={handleMode} />
-                <div className="relative w-11 h-6 bg-gray-700 rounded-full peer dark:bg-gray-300 peer-focus:ring-2 peer-focus:ring-teal-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-300 dark:bg-gray"></div>
+                <div className="relative w-11 h-6 bg-neutral-700 rounded-full peer dark:bg-gray-300 peer-focus:ring-2 peer-focus:ring-teal-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-300 dark:bg-gray"></div>
                 <span className="ms-1 text-sm font-medium text-gray-800 dark:text-gray-200">{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className=' text-2xl' />}</span>
               </label>
             ) : (
-              <p className=" text-sm font-medium text-gray-800 dark:text-gray-200 cursor-pointer" onClick={toggleMode}>{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className=' text-2xl' />}</p>
+              <p className=" text-sm font-medium text-neutral-800 dark:text-gray-200 cursor-pointer" onClick={toggleMode}>{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className=' text-2xl' />}</p>
             )}
           </div>
 

@@ -6,14 +6,15 @@ import { IoCreateSharp } from "react-icons/io5";
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
 import LoadingModal from '../components/LoadingModal';
+import Swal from 'sweetalert2'
+import { useBlog } from '../context/BlogContext'
 
 const BlogPost = () => {
-  const [characterCount, setCharacterCount] = useState(0)
-  const [blogCategory, setBlogCategory] = useState(null)
   const [loading, setLoading] = useState(false)
   const [value, setValue] = useState('');
 
   const { axiosInstance, logoutUser } = useAuth()
+  const { blogCategory } = useBlog()
 
   const modules = {
     toolbar: [
@@ -38,22 +39,35 @@ const BlogPost = () => {
 
   const title = watch('title', '')
 
-  const handleTitle = (e) => {
-    setCharacterCount(e.target.value.length)
-  }
-
-  const onsubmit = (formData) => {
+  const onsubmit = async (formData) => {
     formData['content'] = value
-    console.log(formData)
-  }
 
-  const fetchCategory = async () => {
     try {
       setLoading(true)
-      const response = await axiosInstance.get('blog-category/')
-      if (response.status === 200) {
-        setBlogCategory(response.data)
+      const form = new FormData()
+      form.append('category_slug', formData.category_slug)
+      form.append('title', formData.title)
+      form.append('content', formData.content)
 
+
+      if (formData.uploaded_images) {
+        for (let i = 0; i < formData.uploaded_images.length; i++) {
+          form.append('uploaded_images', formData.uploaded_images[i]);
+        }
+      }
+      const response = await axiosInstance.post('blog/', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      if (response.status === 201) {
+        Swal.fire({
+          title: "Success",
+          text: "Your blog has been successfully posted.",
+          icon: "success"
+        });
+        reset()
+        setValue("")
       }
     } catch (error) {
       setLoading(false)
@@ -61,6 +75,16 @@ const BlogPost = () => {
         if (error.response.status === 401) {
           logoutUser()
         }
+        else {
+          Swal.fire({
+            title: "Error!",
+            text: "Sorry, your blog couldn't be posted!",
+            icon: "error"
+          });
+        }
+      }
+      else {
+        console.log("ERROR while posting blog", error)
       }
     }
     finally {
@@ -68,18 +92,13 @@ const BlogPost = () => {
     }
   }
 
-  useEffect(() => {
-    fetchCategory()
-  }, [])
-
-
   return (
-    <> 
-    {
-      loading && (
-        <LoadingModal />
-      )
-    }
+    <>
+      {
+        loading && (
+          <LoadingModal />
+        )
+      }
       <div className='h-auto flex py-6 mt-5 justify-center  '>
         <div className='text-3xl bg-gray-50 dark:bg-neutral-800 p-8 lg:px-14 max-w-2xl w-full shadow-xl h-auto rounded-2xl' style={{ fontFamily: "Nunito Sans" }}>
           <div>
@@ -132,12 +151,7 @@ const BlogPost = () => {
                   type="file"
                   id="formFileMultiple"
                   multiple
-                  {...register("uploaded_images", {
-                    required: {
-                      value: true,
-                      message: 'Please select some image related to post'
-                    }
-                  })}
+                  {...register("uploaded_images")}
                 />
                 <p className='text-red-500 text-left text-[15px] px-1 font-semibold'>{errors.uploaded_images?.message}</p>
 
@@ -156,7 +170,7 @@ const BlogPost = () => {
                 </div>
               </div>
               <div className="mb-4 mt-5 flex justify-center ">
-                <button type='submit' className="w-40 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm  rounded-2xl dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-500 px-3 py-[8px] flex items-center justify-center">
+                <button type='submit' className="w-40  hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-colors duration-700 px-3 py-[5px] flex items-center justify-center">
                   <IoCreateSharp className="inline text-[25px] mx-1" /> Post Blog
                 </button>
               </div>
