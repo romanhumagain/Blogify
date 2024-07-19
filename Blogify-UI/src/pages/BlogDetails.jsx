@@ -33,7 +33,7 @@ const BlogDetails = () => {
 
 
   const { user, axiosInstance, logoutUser } = useAuth()
-  const {archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived } = useBlog()
+  const {archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived, setProgress } = useBlog()
   
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -41,10 +41,13 @@ const BlogDetails = () => {
 
   const fetchBlogDetails = async () => {
     try {
+      setProgress(40)
       setLoading(true)
       const response = await axiosInstance.get(`blog/${slug}`)
       if (response.status === 200) {
+        setProgress(90)
         setBlogDetails(response.data)
+        setProgress(100)
         console.log(response.data)
       }
 

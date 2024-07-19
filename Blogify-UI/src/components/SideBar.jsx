@@ -92,8 +92,8 @@ const SideBar = () => {
       text: "You will be redirect to the login page !",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#14B8A6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#808080",
       confirmButtonText: "Yes, Sign Out"
     }).then((result) => {
       if (result.isConfirmed) {

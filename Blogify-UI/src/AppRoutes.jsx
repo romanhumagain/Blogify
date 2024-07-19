@@ -1,3 +1,4 @@
+// import { useState } from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Nav from "./components/Nav";
@@ -18,12 +19,23 @@ import BlogDetails from "./pages/BlogDetails";
 import UpdatePost from "./pages/UpdatePost";
 import ArchivePost from "./pages/ArchivePost";
 import SavedPost from "./pages/SavedPost";
+import LoadingBar from 'react-top-loading-bar'
+import { useBlog } from "./context/BlogContext";
 
 function AppRoutes() {
   const { user } = useAuth();
+  const {progress,setProgress} = useBlog();
 
   return (
     <div className="bg-slate-50 dark:bg-neutral-900 min-h-screen">
+    <LoadingBar
+        color='#f23426'
+        progress={progress}
+        shadow={true}
+       height={3}
+        onLoaderFinished={() => setProgress(0)}
+      />
+
       {user ? (
         <div className="grid grid-cols-12 gap-5">
           <div className="col-span-2">
@@ -32,7 +44,7 @@ function AppRoutes() {
           <div className="col-span-7 dark:bg-neutral-900 ml-5">
             <main>
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home setProgress = {setProgress}/>} />
                 <Route path="/notification" element={<Notification />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/blog-post" element={<BlogPost />} />

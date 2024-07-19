@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import toast from 'react-hot-toast';
 
+
 const BlogContext = createContext();
 
 export const useBlog = () => useContext(BlogContext);
@@ -24,6 +25,9 @@ const BlogContextProvider = ({ children }) => {
   const [isSaved, setIsSaved] = useState(false)
   const [isArchived, setIsArchived] = useState(false)
 
+  const [progress, setProgress] = useState(0)
+
+
   const { axiosInstance, logoutUser } = useAuth();
 
   // Fetch blog categories
@@ -44,10 +48,14 @@ const BlogContextProvider = ({ children }) => {
   // Fetch blog posts based on filters
   const fetchBlogPost = async () => {
     try {
+      setProgress(40)
       setLoading(true);
       const response = await axiosInstance.get(`blog/?category=${filterByCategory}&search=${searchedData}`);
       if (response.status === 200) {
+        setProgress(90)
         setBlogData(response.data);
+        setProgress(100)
+
       }
     } catch (error) {
       handleApiError(error);
@@ -59,11 +67,15 @@ const BlogContextProvider = ({ children }) => {
   // Fetch saved posts based on filters
   const fetchSavedPost = async () => {
     try {
+      setProgress(40)
       setLoading(true);
       const response = await axiosInstance.get(`saved-post/?category=${savedPostCategory}&search=${savedSearchedData}`);
       if (response.status === 200) {
+        setProgress(90)
         setSavedBlogData(response.data);
+        setProgress(100)
         fetchSavedPostCount()
+        
       }
     } catch (error) {
       handleApiError(error);
@@ -87,11 +99,15 @@ const BlogContextProvider = ({ children }) => {
 
   const fetchArchivedPost = async () => {
     try {
+      setProgress(40)
       setLoading(true);
       const response = await axiosInstance.get(`user-blog/?is_archived=true&category=${archivePostCategory}&search=${archivedSearchedData}`);
       if (response.status === 200) {
+        setProgress(90)
         setArchiveBlogData(response.data);
+        setProgress(100)
         fetchArchivedPostCount()
+        
       }
     } catch (error) {
       handleApiError(error);
@@ -296,7 +312,11 @@ const BlogContextProvider = ({ children }) => {
 
     isSaved,
     isArchived,
-    fetchSavedPostCount
+    fetchSavedPostCount,
+
+    // for the top loading bar
+    progress,
+    setProgress
   };
 
   return (

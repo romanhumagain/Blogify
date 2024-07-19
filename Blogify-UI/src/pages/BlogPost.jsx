@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import LoadingModal from '../components/LoadingModal';
 import Swal from 'sweetalert2'
 import { useBlog } from '../context/BlogContext'
+import { useNavigate } from 'react-router-dom';
 
 const BlogPost = () => {
   const [loading, setLoading] = useState(false)
@@ -15,6 +16,8 @@ const BlogPost = () => {
 
   const { axiosInstance, logoutUser } = useAuth()
   const { blogCategory } = useBlog()
+
+  const navigate = useNavigate()
 
   const modules = {
     toolbar: [
@@ -68,6 +71,7 @@ const BlogPost = () => {
         });
         reset()
         setValue("")
+        navigate('/')
       }
     } catch (error) {
       setLoading(false)
