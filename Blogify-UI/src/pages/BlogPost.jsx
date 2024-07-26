@@ -174,7 +174,7 @@ const BlogPost = () => {
                 </div>
               </div>
               <div className="mb-4 mt-5 flex justify-center ">
-                <button type='submit' className="w-40  hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-colors duration-700 px-3 py-[5px] flex items-center justify-center">
+                <button type='submit' className="w-40  hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-all duration-300 px-3 py-[5px] flex items-center justify-center">
                   <IoCreateSharp className="inline text-[25px] mx-1" /> Post Blog
                 </button>
               </div>

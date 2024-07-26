@@ -9,6 +9,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from .filters import BlogPostFilter, SavedPostFilter
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.pagination import LimitOffsetPagination
+from .pagination import BlogPostPagination
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -26,10 +29,14 @@ class BlogPostViewSet(viewsets.ModelViewSet):
   lookup_field = 'slug'
   lookup_url_kwarg = 'slug'
   
+  pagination_class = LimitOffsetPagination
+  
   filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
   filterset_class = BlogPostFilter
   search_fields  = ['title', 'content']
   ordering_fields = ['created_at']
+  
+  
   
   def get_queryset(self):
     queryset = self.queryset.filter(is_archived = False)

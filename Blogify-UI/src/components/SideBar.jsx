@@ -120,9 +120,9 @@ const SideBar = () => {
         </div>
 
         <Link to={'/profile'}>
-          <div className={`grid grid-cols-12 mx-5 gap-3 bg-gray-200 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} transition-transform hover:scale-105 duration-700`}>
-            <div className='col-span-3 overflow-hidden'>
-              <img src='.\src\assets\pp.jpg' className='object-cover h-12 w-full rounded-full'></img>
+          <div className={`grid grid-cols-12 mx-5 bg-gray-200 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} transition-transform hover:scale-105 duration-700`}>
+            <div className='col-span-3 overflow-hidden p-1'>
+              <img src='.\src\assets\pp.jpg' className='object-cover h-11 w-11 rounded-full'></img>
             </div>
             <div className='col-span-9 p-1'>
               <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>Roman Humagain</p>
@@ -135,7 +135,7 @@ const SideBar = () => {
           {menus.map((menu, i) => (
             <div key={menu.name}>
               <Link to={menu.link}>
-                <div key={menu.name} className={`${menu?.margin && 'mt-3'} flex gap-3  items-center mx-6 mb-[1px] hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-lg p-[6px] px-2 ${isActive(menu.link) && 'bg-gray-200 dark:bg-neutral-800'}`}>
+                <div key={menu.name} className={`${menu?.margin && 'mt-3'} flex gap-3  items-center mx-6  hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-lg p-[6px] px-2 ${isActive(menu.link) && 'bg-gray-200 dark:bg-neutral-800'}`}>
                   <div>
                     {React.createElement(menu.icon)}
                   </div>

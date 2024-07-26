@@ -120,8 +120,8 @@ const Contact = () => {
 
               </div>
 
-              <div className="mb-4">
-                <button type='submit' className="w-full  hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-colors duration-500 px-3 py-[6px] flex items-center justify-center ">
+              <div className="mb-4 flex justify-center">
+                <button type='submit' className="hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-colors duration-300 px-5 py-[4px] flex items-center justify-center ">
                   <RiMailSendFill className="inline text-[28px] mx-1" /> Send Message
                 </button>
               </div>

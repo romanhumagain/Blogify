@@ -24,44 +24,47 @@ import { useBlog } from "./context/BlogContext";
 
 function AppRoutes() {
   const { user } = useAuth();
-  const {progress,setProgress} = useBlog();
+  const { progress, setProgress } = useBlog();
 
   return (
     <div className="bg-slate-50 dark:bg-neutral-900 min-h-screen">
-    <LoadingBar
-        color='#f23426'
-        progress={progress}
-        shadow={true}
-       height={3}
-        onLoaderFinished={() => setProgress(0)}
-      />
 
       {user ? (
-        <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-2">
-            <SideBar />
+        <>
+          <LoadingBar
+            color='#f23426'
+            progress={progress}
+            shadow={true}
+            height={3}
+            onLoaderFinished={() => setProgress(0)}
+          />
+
+          <div className="grid grid-cols-12 gap-5">
+            <div className="col-span-2">
+              <SideBar />
+            </div>
+            <div className="col-span-7 dark:bg-neutral-900 ml-5">
+              <main>
+                <Routes>
+                  <Route path="/" element={<Home setProgress={setProgress} />} />
+                  <Route path="/notification" element={<Notification />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/blog-post" element={<BlogPost />} />
+                  <Route path="/message" element={<Message />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/blog-details/:slug" element={<BlogDetails />} />
+                  <Route path="/update-post/:slug" element={<UpdatePost />} />
+                  <Route path="/archive-post-details" element={<ArchivePost />} />
+                  <Route path="/saved-post-details" element={<SavedPost />} />
+                </Routes>
+              </main>
+            </div>
+            <div className="hidden md:block col-span-3 dark:bg-neutral-900">
+              <PopularSection />
+            </div>
           </div>
-          <div className="col-span-7 dark:bg-neutral-900 ml-5">
-            <main>
-              <Routes>
-                <Route path="/" element={<Home setProgress = {setProgress}/>} />
-                <Route path="/notification" element={<Notification />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/blog-post" element={<BlogPost />} />
-                <Route path="/message" element={<Message />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/blog-details/:slug" element={<BlogDetails />} />
-                <Route path="/update-post/:slug" element={<UpdatePost />} />
-                <Route path="/archive-post-details" element={<ArchivePost />} />
-                <Route path="/saved-post-details" element={<SavedPost />} />
-              </Routes>
-            </main>
-          </div>
-          <div className="hidden md:block col-span-3 dark:bg-neutral-900">
-            <PopularSection />
-          </div>
-        </div>
+        </>
       ) : (
         <div className="flex flex-col min-h-screen dark:bg-neutral-800">
           <Nav />

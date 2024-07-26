@@ -16,6 +16,8 @@ const TopSearchBar = () => {
     setSearchedData(e.target.value)
 
   }
+
+  console.log(blogCategory)
   return (
     <>
       <div className='w-full flex flex-col justify-center items-center shadow-inner  dark:shadow-lg bg-gray-0  dark:bg-neutral-900 rounded-2xl ml-10 mt-2 mb-1'>
@@ -44,7 +46,7 @@ const TopSearchBar = () => {
               >
                 <option value="" selected>All</option>
 
-                {blogCategory && blogCategory.map((category) => (
+                {blogCategory && blogCategory?.map((category) => (
                   <option key={category.slug} className=' font-medium p-5' id={category.slug} value={category.category.toLowerCase()}>{category.category}</option>
                 ))}
               </select>

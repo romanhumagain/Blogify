@@ -36,7 +36,7 @@ const BlogifyLogo = () => {
         `}
       </style>
       <h1 className="logo-container font-pacifico text-gray-800 dark:text-gray-200">
-        <span className="logo-highlight text-teal-500 dark:text-teal-500 ">B</span>logify
+        <span className="logo-highlight text-teal-600 dark:teal-rose-600 ">B</span>logify
       </h1>
     </>
   );
