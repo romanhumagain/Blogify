@@ -22,7 +22,7 @@ const Home = () => {
   }, [user, authenticatedUser]);
 
   useEffect(() => {
-    fetchBlogPost;
+    fetchBlogPost()
   }, []);
 
   return (
