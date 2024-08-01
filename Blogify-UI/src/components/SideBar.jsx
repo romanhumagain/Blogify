@@ -88,7 +88,7 @@ const SideBar = () => {
   }
   const handleLogout = () => {
     Swal.fire({
-      title: "Are you sure you want to sign out?",
+      title: "Are you sure ?",
       text: "You will be redirect to the login page !",
       icon: "warning",
       showCancelButton: true,
@@ -106,7 +106,7 @@ const SideBar = () => {
 
   return (
     <>
-      <div className={`bg-slate-50 dark:bg-neutral-900 h-full ${isSideBarOpen ? 'w-52 md:w-72' : 'w-[80px]'}  duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-gray-400`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
+      <div className={`bg-slate-50 dark:bg-neutral-900 h-full ${isSideBarOpen ? 'w-52 md:w-72' : 'w-[80px]'}  duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-neutral-600`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
 
         <div className='text-gray-800 py-3 flex justify-between mx-6 items-center dark:text-gray-200'>
 
@@ -120,7 +120,7 @@ const SideBar = () => {
         </div>
 
         <Link to={'/profile'}>
-          <div className={`grid grid-cols-12 mx-5 bg-gray-200 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} transition-transform hover:scale-105 duration-700`}>
+          <div className={`grid grid-cols-12 mx-5 bg-gray-200/80 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} `}>
             <div className='col-span-3 overflow-hidden p-1'>
               <img src='.\src\assets\pp.jpg' className='object-cover h-11 w-11 rounded-full'></img>
             </div>
@@ -135,7 +135,7 @@ const SideBar = () => {
           {menus.map((menu, i) => (
             <div key={menu.name}>
               <Link to={menu.link}>
-                <div key={menu.name} className={`${menu?.margin && 'mt-3'} flex gap-3  items-center mx-6  hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-lg p-[6px] px-2 ${isActive(menu.link) && 'bg-gray-200 dark:bg-neutral-800'}`}>
+                <div key={menu.name} className={`${menu?.margin && 'mt-3'} flex gap-3  items-center mx-6  hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-lg p-[4px] px-2 ${isActive(menu.link) && 'bg-gray-200 dark:bg-neutral-800'} duration-300`}>
                   <div>
                     {React.createElement(menu.icon)}
                   </div>

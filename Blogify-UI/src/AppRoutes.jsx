@@ -73,11 +73,11 @@ function AppRoutes() {
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/contact" element={<Contact />} />
+              {/* <Route path="/contact" element={<Contact />} /> */}
               <Route path="/password-reset/:token" element={<ResetPassword />} />
             </Routes>
           </main>
-          {/* <Footer /> */}
+          <Footer />
         </div>
       )}
     </div>

@@ -74,8 +74,7 @@ const BlogContextProvider = ({ children }) => {
         setProgress(90)
         setSavedBlogData(response.data);
         setProgress(100)
-        fetchSavedPostCount()
-        
+        fetchSavedPostCount()  
       }
     } catch (error) {
       handleApiError(error);
@@ -138,6 +137,7 @@ const BlogContextProvider = ({ children }) => {
       if (response.status === 201) {
         toast.success("Successfully saved post.");
         refetchData(); 
+        setIsSaved(true)
       } else {
         toast.error("Sorry, this post couldn't be saved!");
       }
@@ -155,6 +155,7 @@ const BlogContextProvider = ({ children }) => {
       if (response.status === 204) {
         toast.success("Successfully unsaved post.");
         refetchData(); 
+        setIsSaved(false)
       } else {
         toast.error("Sorry, this post couldn't be unsaved!");
       }
@@ -176,6 +177,7 @@ const BlogContextProvider = ({ children }) => {
       if (response.status === 200) {
         toast.success('Successfully Archived Your Post!');
         refetchData(); 
+        setIsArchived(true)
       } else {
         toast.error('Sorry, your post couldn\'t be archived');
       }
@@ -206,6 +208,7 @@ const BlogContextProvider = ({ children }) => {
       if (response.status === 200) {
         toast.success(`Successfully Unarchived Your Post !`)
         refetchData(); 
+        setIsArchived(false)
       } else {
         toast.error(`Sorry, Your post couldn't be Unarchived`)
       }

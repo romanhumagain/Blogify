@@ -10,24 +10,24 @@ import { IoLogoYoutube } from "react-icons/io5";
 const Footer = () => {
   return (
     <>
-      <footer className='bg-slate-100 dark:bg-neutral-800 border-t-2 border-gray-500 border-opacity-50'>
+      <footer className='bg-slate-100 dark:bg-neutral-800 border-t-2 border-gray-500 border-opacity-50' style={{ fontFamily: "Nunito Sans", fontWeight: '300' }}>
         <div className='p-10  grid md:grid-cols-6 lg:grid-cols-12 gap-5 '>
           <div className='md:col-span-3 p-3'>
             <BlogifyLogo />
 
             <div className='flex gap-4 text-gray-800 mt-10 text-xl md:text-2xl dark:text-gray-100'>
-            <FaFacebook className='hover:text-teal-500 transition-colors duration-500 cursor-pointer' />
-            <FaInstagram className='hover:text-teal-500 transition-colors duration-500 cursor-pointer' />
-            <FaXTwitter className='hover:text-teal-500 transition-colors duration-500 cursor-pointer' />
-            <FaLinkedin className='hover:text-teal-500 transition-colors duration-500 cursor-pointer' />
-            <IoLogoYoutube className='hover:text-teal-500 transition-colors duration-500 cursor-pointer' />
+            <FaFacebook className='hover:text-rose-500 transition-colors duration-500 cursor-pointer' />
+            <FaInstagram className='hover:text-rose-500 transition-colors duration-500 cursor-pointer' />
+            <FaXTwitter className='hover:text-rose-500 transition-colors duration-500 cursor-pointer' />
+            <FaLinkedin className='hover:text-rose-500 transition-colors duration-500 cursor-pointer' />
+            <IoLogoYoutube className='hover:text-rose-500 transition-colors duration-500 cursor-pointer' />
             </div>
           </div>
 
           <div className='md:col-span-3  p-3'>
             <p className='text-gray-700 dark:text-gray-300 mb-2 font-mono text-xl lg:text-2xl font-bold'>Subscription</p>
             <input type='email' className='rounded-md text-md outline-none h-8 p-4 w-40 md:w-60' placeholder='Your email address'></input>
-            <button type='submit' className='block bg-teal-500 mt-3 p-1 rounded-md px-5 hover:bg-teal-600 dark:text-white dark:bg-teal-600 dark:hover:bg-teal-700 transition-colors duration-500 text-gray-100 font-semibold'>Subscribe</button>
+            <button type='submit' className='block bg-rose-500 mt-3 p-1 rounded-md px-5 hover:bg-rose-600 dark:text-white dark:bg-rose-600 dark:hover:bg-rose-700 transition-colors duration-500 text-gray-100 font-semibold'>Subscribe</button>
           </div>
 
           <div className='md:col-span-3 p-3'>
@@ -108,8 +108,8 @@ const Footer = () => {
           </p></div>
 
           <div className='md:flex gap-5 text-md space-x-3 lg:text-lg text-gray-700 dark:text-gray-300 flex-wrap'>
-            <Link to="/login" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>Home</Link>
-            <Link to="/contact" className='text-lg font-mono hover:text-teal-600 dark:hover:text-teal-500 transition-colors duration-500'>Contact</Link>
+            <Link to="/login" className='text-lg font-mono hover:text-rose-600 dark:hover:text-rose-500 transition-colors duration-500'>Home</Link>
+            <Link to="/login" className='text-lg font-mono hover:text-rose-600 dark:hover:text-rose-500 transition-colors duration-500'>Contact</Link>
           </div>
 
         </div>

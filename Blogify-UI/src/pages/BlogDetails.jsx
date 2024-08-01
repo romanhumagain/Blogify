@@ -48,7 +48,6 @@ const BlogDetails = () => {
         setProgress(90)
         setBlogDetails(response.data)
         setProgress(100)
-        console.log(response.data)
       }
 
     } catch (error) {

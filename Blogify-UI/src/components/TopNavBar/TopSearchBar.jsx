@@ -20,7 +20,7 @@ const TopSearchBar = () => {
   console.log(blogCategory)
   return (
     <>
-      <div className='w-full flex flex-col justify-center items-center shadow-inner  dark:shadow-lg bg-gray-0  dark:bg-neutral-900 rounded-2xl ml-10 mt-2 mb-1'>
+      <div className='w-full flex flex-col justify-center items-center  bg-gray-0  dark:bg-neutral-900 rounded-2xl ml-10 mt-2 mb-1'>
         <div className=' grid grid-cols-12 w-3/4 px-10 mt-5 gap-4 '>
           <div className='col-span-8'>
             <p className=' font-semibold text-md text-neutral-900/90 dark:text-gray-200 mb-1 px-1'>Search for posts</p>

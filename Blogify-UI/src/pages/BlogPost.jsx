@@ -9,6 +9,7 @@ import LoadingModal from '../components/LoadingModal';
 import Swal from 'sweetalert2'
 import { useBlog } from '../context/BlogContext'
 import { useNavigate } from 'react-router-dom';
+import { IoCreate } from "react-icons/io5";
 
 const BlogPost = () => {
   const [loading, setLoading] = useState(false)
@@ -104,14 +105,14 @@ const BlogPost = () => {
         )
       }
       <div className='h-auto flex py-6 mt-5 justify-center  '>
-        <div className='text-3xl bg-gray-50 dark:bg-neutral-800 p-8 lg:px-14 max-w-2xl w-full shadow-xl h-auto rounded-2xl' style={{ fontFamily: "Nunito Sans" }}>
+        <div className='text-3xl bg-gray-50 dark:bg-neutral-900/95 p-8 lg:px-14 max-w-2xl w-full shadow-xl h-auto rounded-2xl' style={{ fontFamily: "Nunito Sans" }}>
           <div>
-            <h1 className='  text-[24px] font-semibold text-gray-700 dark:text-gray-300 px-2'>Create Post</h1>
+            <h1 className='  text-[25px] font-semibold text-gray-900 dark:text-gray-300 px-2 flex items-center gap-2 mb-4'><IoCreate className='text-4xl mb-1'/> Create Post</h1>
           </div>
           <div className=''>
             <form onSubmit={handleSubmit(onsubmit)}>
               <div className='mt-3'>
-                <select className='p-2 px-4 rounded-xl text-[16px] font-semibold shadow bg-gray-100 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 focus:outline-none focus:shadow-outline focus:outline-gray-300 dark:focus:outline-neutral-700 '
+                <select className='p-2 px-4 rounded-xl text-[16px] font-semibold shadow-md bg-gray-100 dark:bg-neutral-800/90 text-gray-700 dark:text-gray-300 focus:outline-none border border-gray-200 dark:border-neutral-700'
                   {...register("category_slug", {
                     required: {
                       value: true,
@@ -130,7 +131,7 @@ const BlogPost = () => {
                 <label className="block text-gray-700 text-sm font-semibold mb-2 dark:text-gray-100 duration-150" htmlFor="title" >
                   Title
                 </label>
-                <input className="text-[16px] shadow appearance-none border rounded-xl w-full py-3 px-3 leading-tight focus:outline-none focus:shadow-outline focus:ring-0 focus:ring-gray-300 dark:focus:ring-neutral-700 bg-gray-100 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 placeholder:text-gray-400 placeholder:text-[16px]" id="title" type="text" name='title' placeholder="Blog Post Title"
+                <input className="text-[16px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 leading-tight focus:outline-none dark:border-neutral-700  bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-gray-400 placeholder:text-[16px]" id="title" type="text" name='title' placeholder="Blog Post Title"
                   {...register("title", {
                     required: {
                       value: true,
@@ -151,7 +152,7 @@ const BlogPost = () => {
                   className="mb-2 inline-block text-gray-700 text-sm font-semibold  dark:text-gray-300"
                 >Blog Image</label>
                 <input
-                  className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded-2xl border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-xs md:text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:bg-neutral-700 dark:text-gray-300  file:dark:text-white"
+                  className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded-2xl border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-xs md:text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-gray-300  file:dark:text-white shadow-md"
                   type="file"
                   id="formFileMultiple"
                   multiple
@@ -174,7 +175,7 @@ const BlogPost = () => {
                 </div>
               </div>
               <div className="mb-4 mt-5 flex justify-center ">
-                <button type='submit' className="w-40  hover:bg-neutral-900 hover:text-gray-300 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-all duration-300 px-3 py-[5px] flex items-center justify-center">
+                <button type='submit' className="w-40  hover:bg-neutral-800 hover:text-gray-100 text-gray-900 border-2 border-gray-600 dark:border-gray-300 font-semibold text-sm  rounded-2xl  dark:text-gray-300 dark:hover:bg-gray-300 hover:dark:text-gray-900 transition-all duration-300 px-3 py-[5px] flex items-center justify-center">
                   <IoCreateSharp className="inline text-[25px] mx-1" /> Post Blog
                 </button>
               </div>

@@ -23,7 +23,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="h-auto flex items-center justify-center w-full  dark:bg-neutral-400">
+      <div className="h-auto flex items-center justify-center w-full  dark:bg-neutral-100">
         <div className="bg-slate-100 p-5 md:p-10 m-4 mx-auto rounded-lg shadow-2xl max-w-md w-full dark:bg-neutral-800 dark:text-gray-100 duration-300">
           <div className="text-center text-3xl">
           <BlogifyLogo/>
@@ -65,7 +65,7 @@ const Login = () => {
               </div>
 
               <div className="mb-4 m-3">
-                <button type='submit' className="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-500">
+                <button type='submit' className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-rose-600 dark:text-white dark:hover:bg-rose-700 transition-colors duration-500">
                   <IoLogIn className="inline text-[28px] mx-1" /> Sign In
                 </button>
               </div>

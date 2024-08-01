@@ -76,7 +76,7 @@ const Register = () => {
       {loading && (
         <LoadingModal isOpen={true} onClose={() => setIsOtpModalOpen(false)} />
       )}
-      <div className=' h-auto w-full flex items-center justify-center dark:bg-neutral-400'>
+      <div className=' h-auto w-full flex items-center justify-center dark:bg-neutral-100'>
         <div className='bg-slate-100 p-8 m-4 mx-auto rounded-lg shadow-2xl max-w-md w-full dark:bg-neutral-800 dark:text-gray-100 duration-300'>
           <div className="text-center text-3xl">
             <BlogifyLogo />
@@ -180,7 +180,7 @@ const Register = () => {
             </div>
 
             <div className='className="mb-4 m-3'>
-              <button className="bg-teal-500 hover:bg-teal-600  text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700 transition-colors duration-300">
+              <button className="bg-rose-500 hover:bg-rose-600  text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-rose-600 dark:text-white dark:hover:bg-rose-700 transition-colors duration-300">
                 <GoFileSubmodule className="inline text-[26px] mx-1" /> Sign Up
               </button>
             </div>

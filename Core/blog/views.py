@@ -34,9 +34,9 @@ class BlogPostViewSet(viewsets.ModelViewSet):
   filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
   filterset_class = BlogPostFilter
   search_fields  = ['title', 'content']
-  ordering_fields = ['created_at']
+  ordering_fields = ['-created_at']
   
-  
+
   
   def get_queryset(self):
     queryset = self.queryset.filter(is_archived = False)
