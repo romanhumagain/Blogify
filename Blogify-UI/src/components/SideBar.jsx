@@ -1,52 +1,81 @@
 import React, { useState, useEffect } from 'react'
 import { HiMenuAlt3 } from "react-icons/hi";
-import { MdOutlineDashboard } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import { FaRegMessage } from "react-icons/fa6";
-import { IoNotificationsOutline } from "react-icons/io5";
-import { PiNotePencilDuotone } from "react-icons/pi";
 import { FaRegHeart } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
-import { IoMdLogOut } from "react-icons/io";
 import { MdSunny } from "react-icons/md";
 import { MdDarkMode } from "react-icons/md";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { RiMailSendLine } from "react-icons/ri";
-import { FiSearch } from "react-icons/fi";
 import { IoLogOut } from "react-icons/io5";
 import { MdOutlineArchive } from "react-icons/md";
-
-
 import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2'
-import { useLocation } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import BlogifyLogo from './BlogifyLogo'
+import SearchModal from '../modal/SearchModal';
+import NotificationModal from '../modal/NotificationModal';
+
+import {
+  RiHomeFill, RiHomeLine,
+  RiSearchFill, RiSearchLine,
+  RiMessage3Fill, RiMessage3Line,
+  RiNotification3Fill, RiNotification3Line,
+  RiContactsFill, RiContactsLine,
+  RiArticleFill, RiArticleLine
+} from 'react-icons/ri';
 
 const SideBar = () => {
+  const [mode, setMode] = useState(() => localStorage.getItem('mode') ? localStorage.getItem('mode') : "light")
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+  const [isNotificationModal, setIsNotificationModal] = useState(false)
+  const { logoutUser } = useAuth()
 
   const location = useLocation()
   const pathname = location.pathname
+  const navigate = useNavigate()
 
-  const isActive = (path) => {
-    return pathname?.split('/').pop() === path.split('/').pop()
+  const navigatePage = (link) => {
+    closeModal()
+    navigate(link)
+
+  };
+
+  const navigateModal = (modal) => {
+    setIsModalOpen(true)
+    if (modal === "/search") {
+      setIsSearchModalOpen(true)
+      setIsNotificationModal(false)
+    }
+    else if (modal === "/notification") {
+      setIsNotificationModal(true)
+      setIsSearchModalOpen(false)
+
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    if (isSearchModalOpen) {
+      setIsSearchModalOpen(false)
+    }
+    if (isNotificationModal) {
+      setIsNotificationModal(false)
+    }
   }
 
 
   const menus = [
-    { name: 'Dashboard', link: '/', icon: MdOutlineDashboard },
-    { name: 'Search', link: '/search', icon: FiSearch },
-    { name: 'Message', link: '/message', icon: FaRegMessage },
-    { name: 'Notification', link: '/notification', icon: IoNotificationsOutline },
-    { name: 'Contact', link: '/contact', icon: RiMailSendLine },
-    { name: 'Post Blog', link: '/blog-post', icon: PiNotePencilDuotone, margin: false },
+    { name: 'Home', link: '/', navFunc: navigatePage, activeIcon: RiHomeFill, inactiveIcon: RiHomeLine },
+    { name: 'Search', link: '/search', navFunc: navigateModal, activeIcon: RiSearchFill, inactiveIcon: RiSearchLine },
+    { name: 'Message', link: '/message', navFunc: navigatePage, activeIcon: RiMessage3Fill, inactiveIcon: RiMessage3Line },
+    { name: 'Notification', link: '/notification', navFunc: navigateModal, activeIcon: RiNotification3Fill, inactiveIcon: RiNotification3Line },
+    { name: 'Contact', link: '/contact', navFunc: navigatePage, activeIcon: RiContactsFill, inactiveIcon: RiContactsLine },
+    { name: 'Post Blog', link: '/blog-post', navFunc: navigatePage, activeIcon: RiArticleFill, inactiveIcon: RiArticleLine },
   ];
-  const [mode, setMode] = useState(() => localStorage.getItem('mode') ? localStorage.getItem('mode') : "light")
-  const [isSideBarOpen, setIsSideBarOpen] = useState(true)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const { logoutUser } = useAuth()
 
   const element = document.documentElement
   useEffect(() => {
@@ -103,61 +132,80 @@ const SideBar = () => {
     setIsDropdownOpen(false)
   }
 
-
   return (
     <>
-      <div className={`bg-slate-50 dark:bg-neutral-900 h-full ${isSideBarOpen ? 'w-52 md:w-72' : 'w-[80px]'}  duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-neutral-600`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
+      <div className={`bg-slate-50 dark:bg-neutral-950 h-full ${isModalOpen ? 'w-[85px]' : (isSideBarOpen ? 'w-52 md:w-60 ' : 'w-[85px]')} duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-neutral-600`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
 
         <div className='text-gray-800 py-3 flex justify-between mx-6 items-center dark:text-gray-200'>
 
-          <div className={`${!isSideBarOpen && 'hidden opacity-0 translate-x-28 overflow-hidden '}`}>
+          <div className={`${isModalOpen ? 'hidden opacity-0 translate-x-28 overflow-hidden':(!isSideBarOpen && 'hidden opacity-0 translate-x-28 overflow-hidden')}  ${!isSideBarOpen && ' '}`}>
             <BlogifyLogo />
           </div>
 
-
-
-          <HiMenuAlt3 className={`text-3xl cursor-pointer ${!isSideBarOpen && 'rotate-180'}`} onClick={() => setIsSideBarOpen(!isSideBarOpen)} />
+          <HiMenuAlt3
+            className={`text-3xl cursor-pointer ${!isSideBarOpen && 'rotate-180'} ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}
+            aria-disabled={isModalOpen}
+            onClick={() => {
+              if (!isModalOpen) {
+                setIsSideBarOpen(!isSideBarOpen);
+              }
+            }}
+          />
         </div>
 
         <Link to={'/profile'}>
-          <div className={`grid grid-cols-12 mx-5 bg-gray-200/80 rounded-lg dark:bg-neutral-800 p-1 mt-3 ${!isSideBarOpen && ' hidden '} `}>
-            <div className='col-span-3 overflow-hidden p-1'>
-              <img src='.\src\assets\pp.jpg' className='object-cover h-11 w-11 rounded-full'></img>
-            </div>
-            <div className='col-span-9 p-1'>
-              <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>Roman Humagain</p>
-              <p className='text-sm text-gray-500 dark:text-gray-400 truncate'>romanhumagain@gmail.com</p>
-            </div>
+          <div className={`grid grid-cols-12 bg-gray-200/80 rounded-lg dark:bg-neutral-800 mt-3 ${isSideBarOpen ? 'p-1 mx-3' : 'mx-4 py-1'} `}>
+            {!isModalOpen && isSideBarOpen ? (
+              <>
+                <div className='col-span-3 overflow-hidden p-1'>
+                  <img src='.\src\assets\pp.jpg' className='object-cover h-11 w-11 rounded-full'></img>
+                </div>
+                <div className='col-span-9 p-1'>
+                  <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>Roman Humagain</p>
+                  <p className='text-sm text-gray-500 dark:text-gray-400 truncate'>romanhumagain@gmail.com</p>
+                </div>
+              </>
+            ) : (
+              <div className='col-span-12 mx-auto'>
+                <img src='.\src\assets\pp.jpg' className='object-cover h-8 w-8 rounded-full'></img>
+              </div>
+            )}
+
+
           </div>
         </Link>
 
         <div className='text-gray-900  mt-8 flex flex-col gap-3 md:gap-4 lg:gap-5  dark:text-gray-200 text-[14px] md:text-[16px] lg:text-[18px] '>
-          {menus.map((menu, i) => (
-            <div key={menu.name}>
-              <Link to={menu.link}>
-                <div key={menu.name} className={`${menu?.margin && 'mt-3'} flex gap-3  items-center mx-6  hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-lg p-[4px] px-2 ${isActive(menu.link) && 'bg-gray-200 dark:bg-neutral-800'} duration-300`}>
-                  <div>
-                    {React.createElement(menu.icon)}
+          {menus.map((menu, i) => {
+            const isActive = pathname === menu.link;
+            const IconComponent = isActive ? menu.activeIcon : menu.inactiveIcon;
+            return (
+              <div key={menu.name} >
+                <div key={menu.name} className={`${menu?.margin && 'mt-3'} flex gap-3  items-center mx-6  hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-lg p-[5px] px-2 duration-300 cursor-pointer`} onClick={() => menu.navFunc(menu.link)}>
+                  <div className='text-2xl'>
+                    {React.createElement(IconComponent)}
                   </div>
-                  <div className={`whitespace-pre duration-300 ${!isSideBarOpen && (
+                  <div className={`whitespace-pre duration-300
+                   ${isModalOpen ? 'opacity-0 translate-x-28 overflow-hidden ' : (!isSideBarOpen && (
 
                     'opacity-0 translate-x-28 overflow-hidden '
-                  )}`}  >{menu.name}</div>
+                  ))}`}  >{menu.name}</div>
                 </div>
-              </Link>
-            </div>
-          ))}
+              </div>
+            )
+
+          })}
 
 
-          <div className={`flex gap-3 items-center mx-6 mb-[1px] hover:bg-gray-200 dark:hover:bg-neutral-800 hover:rounded-lg p-1 cursor-pointer`}
+          <div className={`flex gap-3 items-center mx-8 mb-[1px] hover:bg-gray-200 dark:hover:bg-neutral-800 hover:rounded-lg p-1 cursor-pointer`}
             onClick={toggleDropdown}>
             <div>
               <HiOutlineMenuAlt2 />
             </div>
-            <p><div className={`whitespace-pre duration-300 ${!isSideBarOpen && (
+            <p><div className={`whitespace-pre duration-300 ${isModalOpen ? 'opacity-0 translate-x-28 overflow-hidden ' : (!isSideBarOpen && (
 
-              'opacity-0 translate-x-28 overflow-hidden '
-            )}`} >More</div></p>
+                    'opacity-0 translate-x-28 overflow-hidden '
+                  ))}`} >More</div></p>
           </div>
 
           <div
@@ -201,8 +249,8 @@ const SideBar = () => {
             </div>
           </div>
 
-          <div className='mx-6 p-1 mt-3 overflow-hidden '>
-            {isSideBarOpen ? (
+          <div className='mx-7 p-1 mt-3 overflow-hidden '>
+            {!isModalOpen && isSideBarOpen ? (
               <label className="inline-flex items-center me-3 cursor-pointer">
                 <input type="checkbox" className="sr-only peer" onChange={handleMode} />
                 <div className="relative w-11 h-6 bg-neutral-700 rounded-full peer dark:bg-gray-300 peer-focus:ring-2 peer-focus:ring-teal-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-300 dark:bg-gray"></div>
@@ -215,6 +263,14 @@ const SideBar = () => {
 
         </div>
       </div>
+
+      {isSearchModalOpen &&
+        <SearchModal isOpen={isSearchModalOpen} />
+      }
+
+      {isNotificationModal &&
+        <NotificationModal isOpen={isNotificationModal} />
+      }
     </>
   );
 };

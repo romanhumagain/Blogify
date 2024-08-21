@@ -15,7 +15,7 @@ const SavedPost = () => {
 
   if (!hasSavedPosts) {
     return (
-      <div className='h-screen w-full dark:bg-neutral-900 flex flex-col justify-center items-center'>
+      <div className='h-screen w-full dark:bg-neutral-950 flex flex-col justify-center items-center'>
         <div className=' mb-32 text-center'>
           <p className="text-4xl font-semibold mb-5 text-neutral-800/90 dark:text-gray-300">No saved posts found</p>
           <p className="text-gray-500 dark:text-gray-400 mb-4">You haven’t saved any posts yet. Start exploring and save your favorite posts here.</p>

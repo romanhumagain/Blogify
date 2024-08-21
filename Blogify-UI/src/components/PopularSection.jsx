@@ -10,7 +10,7 @@ const PopularSection = () => {
 
   return (
     <>
-      <div className='h-screen bg-slate-50 dark:bg-neutral-900 rounded-sm' style={{ fontFamily: "Nunito Sans" }}>
+      <div className='h-screen bg-slate-50 dark:bg-neutral-950 rounded-sm' style={{ fontFamily: "Nunito Sans" }}>
 
         <div className='flex flex-col gap-1 p-3 mb-3'>
           <div>

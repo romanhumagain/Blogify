@@ -19,7 +19,7 @@ const Blog = ({ blog }) => {
 
   return (
     <>
-      <div className='bg-gray-100 dark:bg-neutral-800 max-w-2xl w-full ml-5 shadow-lg rounded-xl p-5'>
+      <div className='bg-gray-100 dark:bg-neutral-900 max-w-xl w-full ml-5 shadow-lg rounded-xl p-5'>
         <div className='flex justify-between items-center p-3 px-3'>
           <div className='flex items-center gap-2'>
             <img src='.\src\assets\pp.jpg' className='rounded-full h-7 w-7 hover:scale-110 transition-all duration-500 cursor-pointer' alt={`${blog.author.full_name}'s profile`} />

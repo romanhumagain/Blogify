@@ -29,7 +29,7 @@ const Home = () => {
     <>
       <div className='h-auto flex flex-col justify-center items-center' style={{ fontFamily: "Nunito Sans" }}>
         <TopSearchBar />
-        <div className='flex flex-col justify-center gap-12 max-w-2xl w-full bg-gray-50 text-gray-800 dark:bg-neutral-900 dark:text-gray-200 rounded-lg px-10 py-5'>
+        <div className='flex flex-col justify-center gap-12 max-w-2xl w-full bg-gray-50 text-gray-800 dark:bg-neutral-950 dark:text-gray-200 rounded-lg px-10 py-5'>
           {blogData?.length <= 0 && (
             <div className='mt-10 text-center'>
               <p className="text-4xl font-semibold mb-5 text-neutral-700/85 dark:text-gray-400">No blog posts found</p>

@@ -8,12 +8,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../context/AuthContext';
 import ForgotPassword from '../components/ForgotPassword';
 import BlogifyLogo from '../components/BlogifyLogo';
+import { IoIosEye } from "react-icons/io";
+import { IoIosEyeOff } from "react-icons/io";
 
 const Login = () => {
   const navigate = useNavigate();
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const { loginUser } = useAuth()
+
+  const tooglePassword = () => {
+    setShowPassword(!showPassword)
+  }
 
   const reachGoogle = () => {
     const clientId = "900505002972-tnkukg4725eup6jhu16p60hdm5is4jip.apps.googleusercontent.com";
@@ -26,7 +33,7 @@ const Login = () => {
       <div className="h-auto flex items-center justify-center w-full  dark:bg-neutral-100">
         <div className="bg-slate-100 p-5 md:p-10 m-4 mx-auto rounded-lg shadow-2xl max-w-md w-full dark:bg-neutral-800 dark:text-gray-100 duration-300">
           <div className="text-center text-3xl">
-          <BlogifyLogo/>
+            <BlogifyLogo />
           </div>
           <div className="text-center font-mono text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150">
             Sign in to Blogify
@@ -57,11 +64,21 @@ const Login = () => {
                 <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="email" type="email" name='email' placeholder="example@gmail.com" required />
               </div>
 
-              <div className="mb-4 m-3">
+              <div className="mb-4 m-3 ">
                 <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="password">
                   Password
                 </label>
-                <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 dark:focus:ring-gray-500" id="password" type="password" name='password' placeholder="Password" required />
+                <div className='relative'>
+                  <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 pr-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 dark:focus:ring-gray-500" id="password" type={showPassword ? 'text' : 'password'} name='password' placeholder="Password" required />
+                  <div className='absolute  right-2 top-1/2 -translate-y-1/2 text-xl ' onClick={tooglePassword}>
+                    {showPassword ? (
+                      <IoIosEyeOff />
+                    ) : (
+                      <IoIosEye />
+                    )}
+                  </div>
+                </div>
+
               </div>
 
               <div className="mb-4 m-3">
@@ -71,7 +88,7 @@ const Login = () => {
               </div>
             </form>
             <div className="text-center">
-              <p className="mt-3 text-gray-500 text-sm dark:text-gray-300 cursor-pointer" onClick={()=>{
+              <p className="mt-3 text-gray-500 text-sm dark:text-gray-300 cursor-pointer" onClick={() => {
                 setIsForgotPasswordModalOpen(true)
               }}>Forgot Password?</p>
             </div>
@@ -99,7 +116,7 @@ const Login = () => {
       <ToastContainer />
 
       {isForgotPasswordModalOpen &&
-        <ForgotPassword isOpen={isForgotPasswordModalOpen} onClose={()=>setIsForgotPasswordModalOpen(false)} />
+        <ForgotPassword isOpen={isForgotPasswordModalOpen} onClose={() => setIsForgotPasswordModalOpen(false)} />
       }
     </>
   );
