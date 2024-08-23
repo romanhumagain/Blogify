@@ -15,11 +15,11 @@ const SavedPost = () => {
 
   if (!hasSavedPosts) {
     return (
-      <div className='h-screen w-full dark:bg-neutral-950 flex flex-col justify-center items-center'>
-        <div className=' mb-32 text-center'>
-          <p className="text-4xl font-semibold mb-5 text-neutral-800/90 dark:text-gray-300">No saved posts found</p>
-          <p className="text-gray-500 dark:text-gray-400 mb-4">You haven’t saved any posts yet. Start exploring and save your favorite posts here.</p>
-          <button className="bg-neutral-800/95 dark:bg-gray-300/100 dark:text-gray-900 text-white px-4 py-2 rounded-lg opacity-100 hover:opacity-85 dark:opacity-100 dark:hover:opacity-85 transition-opacity duration-300"
+      <div className='flex flex-col items-center justify-center w-full h-screen dark:bg-neutral-950'>
+        <div className='mb-32 text-center '>
+          <p className="mb-5 text-4xl font-semibold text-neutral-800/90 dark:text-gray-300">No saved posts found</p>
+          <p className="mb-4 text-gray-500 dark:text-gray-400">You haven’t saved any posts yet. Start exploring and save your favorite posts here.</p>
+          <button className="px-4 py-2 text-white transition-opacity duration-300 rounded-lg opacity-100 bg-neutral-800/95 dark:bg-gray-300/100 dark:text-gray-900 hover:opacity-85 dark:opacity-100 dark:hover:opacity-85"
             onClick={() => { navigate('/') }}>
             Explore Posts
           </button>
@@ -30,19 +30,19 @@ const SavedPost = () => {
 
   return (
     <>
-      <div className='h-auto flex flex-col justify-center items-center' style={{ fontFamily: "Nunito Sans" }}>
-        <div className='mt-5 mb-4 flex items-center gap-5'>
-          <p className='font-bold text-3xl text-neutral-800/95 dark:text-neutral-200 '> Saved Posts</p>
+      <div className='flex flex-col items-center justify-center h-auto' style={{ fontFamily: "Nunito Sans" }}>
+        <div className='flex items-center gap-5 mt-5 mb-4'>
+          <p className='text-3xl font-bold text-neutral-800/95 dark:text-neutral-200 '> Saved Posts</p>
 
-          <p className="font-bold text-xl text-gray-800 bg-gray-300/80 dark:bg-neutral-700/95 dark:text-gray-200 rounded-full w-8 h-8 flex items-center justify-center">
+          <p className="flex items-center justify-center w-8 h-8 text-xl font-bold text-gray-800 rounded-full bg-gray-300/80 dark:bg-neutral-700/95 dark:text-gray-200">
             <span className="text-center">{savedBlogData?.length}</span>
           </p>
         </div>
         <SavedTopSearch />
         {savedBlogData?.length === 0 ? (
-          <p className="text-3xl font-semibold mt-10 text-neutral-700/80 dark:text-neutral-400">No such saved posts found !</p>
+          <p className="mt-10 text-3xl font-semibold text-neutral-700/80 dark:text-neutral-400">No such saved posts found !</p>
         ) : (
-          <div className='flex flex-col justify-center gap-12 max-w-2xl w-full bg-gray-50 text-gray-800 dark:bg-neutral-900 dark:text-gray-200 rounded-lg px-10 py-5 mr-10 '>
+          <div className='flex flex-col justify-center w-full max-w-2xl gap-12 px-10 py-5 mr-10 text-gray-800 rounded-lg bg-gray-50 dark:bg-neutral-900 dark:text-gray-200 '>
             {savedBlogData && savedBlogData.map((blog) => (
               <div key={blog.id}>
                 <Blog blog={blog.blog_post} />

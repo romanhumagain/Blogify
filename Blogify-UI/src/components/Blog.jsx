@@ -1,4 +1,4 @@
-import React, { memo} from 'react'
+import React, { memo } from 'react'
 import { IoArrowForward } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
 import { FcLike } from "react-icons/fc";
@@ -19,57 +19,62 @@ const Blog = ({ blog }) => {
 
   return (
     <>
-      <div className='bg-gray-100 dark:bg-neutral-900 max-w-xl w-full ml-5 shadow-lg rounded-xl p-5'>
-        <div className='flex justify-between items-center p-3 px-3'>
+      <div className='w-full max-w-xl p-5 ml-5 bg-gray-100 shadow-lg dark:bg-neutral-900 rounded-xl'>
+        <div className='flex items-center justify-between p-3 px-3'>
           <div className='flex items-center gap-2'>
-            <img src='.\src\assets\pp.jpg' className='rounded-full h-7 w-7 hover:scale-110 transition-all duration-500 cursor-pointer' alt={`${blog.author.full_name}'s profile`} />
-            <p className='text-gray-700 dark:text-gray-300 font-semibold text-md cursor-pointer'>{blog.author.full_name}</p>
+            <img src='.\src\assets\pp.jpg' className='transition-all duration-500 rounded-full cursor-pointer h-9 w-9 hover:scale-110' alt={`${blog.author.full_name}'s profile`} />
+            <div>
+              <p className='font-semibold text-gray-700 cursor-pointer dark:text-gray-300 text-md'>{blog.author.full_name}</p>
+              <div className=''>
+                <p className='text-xs text-gray-600 dark:text-neutral-500 text-start'>
+                  {new Date(blog.created_at).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                  })}
+                </p>
+              </div>
+            </div>
+
           </div>
-          <div>
-            <p className='text-gray-600 dark:text-gray-400 text-sm'>
-              {new Date(blog.created_at).toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true,
-              })}
-            </p>
+          <div className=''>
+            <button type='button' className={`text-xs border-2 border-gray-400 dark:text-gray-200  px-3 py-[3px] rounded-full font-semibold`}>{blog?.category.category}</button>
           </div>
+
         </div>
 
         {blog.images.length > 0 && (
-          <div className='overflow-hidden h-72 rounded-lg mx-3'>
+          <div className='mx-3 overflow-hidden rounded-lg h-72'>
             <ImageCarousel images={blog.images} />
           </div>
         )}
 
         <div className='m-4 mt-7'>
           <Link to={`/blog-details/${blog.slug}`}>
-            <p className='text-[24px] text-gray-800 dark:text-gray-200 font-bold my-2 cursor-pointer transition-opacity hover:opacity-80 duration-300'>
+            <p className='text-[24px] text-gray-800 dark:text-gray-200 font-bold my-2 cursor-pointer transition-opacity hover:opacity-80 duration-300 text-start'>
               {blog.title}
             </p>
           </Link>
           <div>
-            <p className='text-md text-gray-600 dark:text-gray-300 text-justify'
+            <p className='text-justify text-gray-600 text-md dark:text-gray-300'
               dangerouslySetInnerHTML={{ __html: truncateContent(blog.content.replace(/<[^>]*>?/gm, ''), 500) }}
             />
           </div>
 
-          <div className='grid grid-cols-12 mt-5'>
+          <div className='grid grid-cols-12 mt-5 text-gray-800 dark:text-gray-300'>
             <div className='col-span-6 font-bold text-[15px]'>
               {blog.is_saved ? (
                 <p className='flex items-center gap-1'>
-                  <span className='text-xl cursor-pointer hover:scale-110 transition-transform duration-500'>
+                  <span className='text-xl transition-transform duration-500 cursor-pointer hover:scale-110'>
                     <FaBookmark onClick={() => unsavePost(blog?.saved_post_slug)} />
                   </span>
                   Saved
                 </p>
               ) : (
-                <p className='flex items-center gap-1'>
-                  <span className='text-2xl cursor-pointer hover:scale-110 transition-transform duration-500'>
+                <p className='flex items-center gap-1 font-semibold'>
+                  <span className='text-2xl transition-transform duration-500 cursor-pointer hover:scale-110'>
                     <CiBookmark onClick={() => savePost(blog?.slug)} />
                   </span>
                   Save for later
@@ -77,19 +82,19 @@ const Blog = ({ blog }) => {
               )}
 
             </div>
-            <div className='col-span-6 font-semibold flex justify-end'>
+            <div className='flex justify-end col-span-6 font-semibold'>
               <Link to={`/blog-details/${blog.slug}`}>
-                <p className='font-bold flex items-center gap-1 text-md cursor-pointer hover:scale-105 transition-transform duration-500'>
+                <p className='flex items-center gap-1 transition-transform duration-500 cursor-pointer text-md hover:scale-105'>
                   Read More<IoArrowForward />
                 </p>
               </Link>
             </div>
           </div>
         </div>
-        <div className='flex gap-8 justify-center items-center text-2xl mt-4'>
-          <FcLike className='cursor-pointer hover:scale-125 transition-transform duration-500' />
-          <FaRegComment className='cursor-pointer hover:scale-125 transition-transform duration-500' />
-          <TbLocationShare className='cursor-pointer hover:scale-125 transition-transform duration-500' />
+        <div className='flex items-center justify-center gap-8 mt-4 text-2xl text-gray-700 dark:text-gray-400'>
+          <FcLike className='transition-transform duration-500 cursor-pointer hover:scale-125' />
+          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-125' />
+          <TbLocationShare className='transition-transform duration-500 cursor-pointer hover:scale-125' />
         </div>
       </div>
       <Toaster />

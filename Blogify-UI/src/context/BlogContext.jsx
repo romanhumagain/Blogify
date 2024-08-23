@@ -24,10 +24,8 @@ const BlogContextProvider = ({ children }) => {
   const [hasSavedPosts, setHasSavedPosts] = useState(false);
   const [isSaved, setIsSaved] = useState(false)
   const [isArchived, setIsArchived] = useState(false)
-
+  const [profileBlogPosts, setProfileBlogPosts] = useState(null)
   const [progress, setProgress] = useState(0)
-
-
   const { axiosInstance, logoutUser } = useAuth();
 
   // Fetch blog categories
@@ -74,7 +72,7 @@ const BlogContextProvider = ({ children }) => {
         setProgress(90)
         setSavedBlogData(response.data);
         setProgress(100)
-        fetchSavedPostCount()  
+        fetchSavedPostCount()
       }
     } catch (error) {
       handleApiError(error);
@@ -106,7 +104,7 @@ const BlogContextProvider = ({ children }) => {
         setArchiveBlogData(response.data);
         setProgress(100)
         fetchArchivedPostCount()
-        
+
       }
     } catch (error) {
       handleApiError(error);
@@ -136,7 +134,7 @@ const BlogContextProvider = ({ children }) => {
       const response = await axiosInstance.post('saved-post/', body);
       if (response.status === 201) {
         toast.success("Successfully saved post.");
-        refetchData(); 
+        refetchData();
         setIsSaved(true)
       } else {
         toast.error("Sorry, this post couldn't be saved!");
@@ -154,7 +152,7 @@ const BlogContextProvider = ({ children }) => {
       const response = await axiosInstance.delete(`saved-post/${saved_post_slug}/`);
       if (response.status === 204) {
         toast.success("Successfully unsaved post.");
-        refetchData(); 
+        refetchData();
         setIsSaved(false)
       } else {
         toast.error("Sorry, this post couldn't be unsaved!");
@@ -176,7 +174,7 @@ const BlogContextProvider = ({ children }) => {
 
       if (response.status === 200) {
         toast.success('Successfully Archived Your Post!');
-        refetchData(); 
+        refetchData();
         setIsArchived(true)
       } else {
         toast.error('Sorry, your post couldn\'t be archived');
@@ -207,7 +205,7 @@ const BlogContextProvider = ({ children }) => {
 
       if (response.status === 200) {
         toast.success(`Successfully Unarchived Your Post !`)
-        refetchData(); 
+        refetchData();
         setIsArchived(false)
       } else {
         toast.error(`Sorry, Your post couldn't be Unarchived`)
@@ -229,6 +227,22 @@ const BlogContextProvider = ({ children }) => {
     }
   }
 
+
+  // ======== FOR PROFILE ========
+
+  // to fetch the blog post for user profile
+  const fetchProfileBlogPosts = async () => {
+    try {
+      const response = await axiosInstance.get(`user-blog/?is_archived=false`);
+      if (response.status === 200) {
+        setProgress(90)
+        setProfileBlogPosts(response.data);
+        setProgress(100)
+      }
+    } catch (error) {
+    }
+  };
+
   // Handle API errors
   const handleApiError = (error, message = "An error occurred") => {
     setLoading(false);
@@ -246,6 +260,7 @@ const BlogContextProvider = ({ children }) => {
     fetchBlogPost();
     fetchSavedPost();
     fetchArchivedPost();
+    fetchProfileBlogPosts();
   };
 
   // Fetch data when the component mounts
@@ -266,7 +281,10 @@ const BlogContextProvider = ({ children }) => {
     fetchArchivedPost();
   }, [archivePostCategory]);
 
-  
+  useEffect(() => {
+    fetchProfileBlogPosts()
+  }, [])
+
   // Debounce search input to optimize API calls
   const debounceFetch = (fetchFunction, delay = 800) => {
     const timeout = setTimeout(() => {
@@ -317,7 +335,14 @@ const BlogContextProvider = ({ children }) => {
 
     // for the top loading bar
     progress,
-    setProgress
+    setProgress,
+
+    // for profile
+    fetchProfileBlogPosts,
+    profileBlogPosts,
+    fetchSavedPost,
+    fetchArchivedPost
+    
   };
 
   return (

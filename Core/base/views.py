@@ -19,7 +19,6 @@ from .serializers import (
     VerifyOTPSerializer,
 )
 from django.contrib.auth import get_user_model
-
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .utils import (
@@ -225,6 +224,7 @@ class UserViewSet(viewsets.ViewSet):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    
 
 
 def send_password_reset_token_email(user):

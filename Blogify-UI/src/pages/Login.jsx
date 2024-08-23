@@ -70,7 +70,7 @@ const Login = () => {
                 </label>
                 <div className='relative'>
                   <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 pr-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 dark:focus:ring-gray-500" id="password" type={showPassword ? 'text' : 'password'} name='password' placeholder="Password" required />
-                  <div className='absolute  right-2 top-1/2 -translate-y-1/2 text-xl ' onClick={tooglePassword}>
+                  <div className='absolute  right-2 top-1/2 -translate-y-1/2 text-xl text-gray-800 ' onClick={tooglePassword}>
                     {showPassword ? (
                       <IoIosEyeOff />
                     ) : (

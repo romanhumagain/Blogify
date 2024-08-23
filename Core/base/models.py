@@ -7,6 +7,10 @@ from django.utils import timezone
 from datetime import timedelta
 from blog.utils import generate_slug
 
+# function to handle the image upload
+def profile_pic_upload_to(instance, filename):
+    return f'profile/{instance.username}/{filename}'
+
 class User(AbstractBaseUser, PermissionsMixin):
     slug = models.SlugField(unique=True)
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
@@ -14,6 +18,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100, verbose_name=_("First Name"))
     last_name = models.CharField(max_length=100, verbose_name=_("Last Name"))
     password = models.CharField(max_length=100, verbose_name=_("Password"))
+    
+    profile_pic = models.ImageField(upload_to=profile_pic_upload_to, default='profile/default_profile_pic.jpg')
+    bio = models.TextField(null=True)
     
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -39,7 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
     
-    
+ 
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='otp')
     otp = models.CharField(max_length=6, unique=True)

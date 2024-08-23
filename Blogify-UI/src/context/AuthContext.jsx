@@ -132,7 +132,7 @@ const AuthContextProvider = ({ children }) => {
       setIsUpdated(true)
     }
     
-    const interval_time = 1000 * 60 * 29; // setting the interval time to 29
+    const interval_time = 1000 * 60 * 29; 
     const interval = setInterval(() => {
       if (authToken) {
         updateToken();

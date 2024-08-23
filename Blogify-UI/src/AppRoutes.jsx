@@ -27,7 +27,7 @@ function AppRoutes() {
   const { progress, setProgress } = useBlog();
 
   return (
-    <div className="bg-slate-50 dark:bg-neutral-950 min-h-screen">
+    <div className="bg-slate-50 dark:bg-neutral-950 ">
 
       {user ? (
         <>
@@ -43,7 +43,7 @@ function AppRoutes() {
             <div className="col-span-2">
               <SideBar />
             </div>
-            <div className="col-span-7 dark:bg-neutral-950 ml-5">
+            <div className="col-span-7 ml-5 dark:bg-neutral-950">
               <main>
                 <Routes>
                   <Route path="/" element={<Home setProgress={setProgress} />} />
@@ -60,7 +60,7 @@ function AppRoutes() {
                 </Routes>
               </main>
             </div>
-            <div className="hidden md:block col-span-3 dark:bg-neutral-950">
+            <div className="hidden col-span-3 md:block dark:bg-neutral-950">
               <PopularSection />
             </div>
           </div>

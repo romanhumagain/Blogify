@@ -23,6 +23,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 
 # Application definition
 
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'base',
     'social',
     'blog',
+    'user_profile',
     
     # Third-party apps
     'rest_framework',
@@ -92,17 +96,18 @@ WSGI_APPLICATION = 'Core.wsgi.application'
 # }
 
 # for MySql integration
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blogify',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
+
 
 
 # Password validation

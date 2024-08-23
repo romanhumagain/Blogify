@@ -98,7 +98,7 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
             }`}
         >
 
-          <div className="relative bg-white rounded-lg shadow dark:bg-neutral-800">
+          <div className="relative bg-white rounded-lg shadow dark:bg-neutral-900">
             <button
               type="button"
               className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -110,7 +110,7 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
               <span className="sr-only">Close modal</span>
             </button>
 
-            <div className="p-4 md:p-5 text-center">
+            <div className="p-4 text-center md:p-5">
               <div className="flex justify-center">
                 {verificationError && (
                   <MdOutlineError className='text-4xl text-red-500 text-cente' />
@@ -132,9 +132,9 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
 
               </div>
               {isVerifiedSuccessfully ? (
-                <h3 className="mb-5 text-gray-600 dark:text-gray-100 text-md mt-4 font-medium">Your <span className='font-bold'>Blogify</span> account has been successfully verified. You can now log in and start exploring our community.</h3>
+                <h3 className="mt-4 mb-5 font-medium text-gray-600 dark:text-gray-100 text-md">Your <span className='font-bold'>Blogify</span> account has been successfully verified. You can now log in and start exploring our community.</h3>
               ) : (
-                <h3 className="mb-5 font-normal text-gray-500 dark:text-gray-300 text-md mt-3">An OTP {emailSent ? "has been" : "will be"} sent to your registered email address for account verification.</h3>
+                <h3 className="mt-3 mb-5 font-normal text-gray-500 dark:text-gray-300 text-md">An OTP {emailSent ? "has been" : "will be"} sent to your registered email address for account verification.</h3>
               )}
 
               {loading ? (
@@ -145,19 +145,19 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
 
                 <div className={`${emailSent && 'hidden'}`}>
                   <button
-                    className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
+                    className="text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-sm inline items-center px-5 py-2.5 text-center"
                     onClick={sendOTP}
                   >
                     Send OTP
                   </button>
                 </div>
                 {verificationError && (
-                  <p className='text-md text-red-500 text-center mb-3 font-bold'>{verificationError} !</p>
+                  <p className='mb-3 font-bold text-center text-red-500 text-md'>{verificationError} !</p>
                 )}
                 {!isVerifiedSuccessfully && (
                   <form onSubmit={handleSubmit(handleOTPSubmit)} className={`${!emailSent && 'hidden'} transition-all duration-700`}>
-                    <div className="mb-4 px-20">
-                      <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:bg-gray-300 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-red-500 focus:ring-opacity-10" id="username" type="text" placeholder="OTP Code"
+                    <div className="px-20 mb-4">
+                      <input className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none dark:bg-gray-300 focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-red-500 focus:ring-opacity-10" id="username" type="text" placeholder="OTP Code"
                         {...register("otp", {
                           required: {
                             value: true,
@@ -178,11 +178,11 @@ const OTPModal = ({ isOpen, onClose, fetchAuthenticatedUser }) => {
 
                     <button
                       type="submit"
-                      className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-md inline items-center px-5 py-2.5 text-center"
+                      className="text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md inline items-center px-5 py-2.5 text-center"
                     >
                       Verify
                     </button><br />
-                    <p className='text-center text-light text-sm mt-4 p-0 text-gray-600 dark:text-white cursor-pointer bg-red inline-block' onClick={handleResendOTP}>Resend OTP Code ?</p>
+                    <p className='inline-block p-0 mt-4 text-sm text-center text-gray-600 cursor-pointer text-light dark:text-white bg-red' onClick={handleResendOTP}>Resend OTP Code ?</p>
                   </form>
                 )}
 

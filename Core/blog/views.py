@@ -22,27 +22,23 @@ class CategoryViewSet(viewsets.ModelViewSet):
   lookup_url_kwarg='slug'
   
 
+# ==== to get the blog post list of all user ====
 class BlogPostViewSet(viewsets.ModelViewSet):
   queryset = BlogPost.objects.all()
   serializer_class = BlogPostSerializer
   permission_classes = [IsAuthenticated]
   lookup_field = 'slug'
   lookup_url_kwarg = 'slug'
-  
   pagination_class = LimitOffsetPagination
-  
   filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
   filterset_class = BlogPostFilter
   search_fields  = ['title', 'content']
   ordering_fields = ['-created_at']
   
-
-  
   def get_queryset(self):
     queryset = self.queryset.filter(is_archived = False)
     return queryset
   
-
   def get_object(self, *args, **kwargs):
       slug = self.kwargs.get('slug')
       return get_object_or_404(BlogPost, slug=slug)
@@ -51,6 +47,7 @@ class BlogPostViewSet(viewsets.ModelViewSet):
      return {'request':self.request}
 
     
+# ==== to get the authenticated user post list of a certain user
 class UserBlogPostViewSet(viewsets.ModelViewSet):
   serializer_class = BlogPostSerializer
   permission_classes = [IsAuthenticated]
@@ -72,6 +69,7 @@ class UserBlogPostViewSet(viewsets.ModelViewSet):
      return {'request':self.request}
   
   
+# ==== to get the saved post list ====
 class SavedPostViewSet(viewsets.ModelViewSet):
     serializer_class = SavedBlogPostSerializer
     permission_classes = [IsAuthenticated]
@@ -86,7 +84,8 @@ class SavedPostViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         user = self.request.user
-        return SavedPost.objects.filter(user=user)
+        savedPost = SavedPost.objects.filter(user=user)
+        return savedPost
     
     def create(self, request, *args, **kwargs):
         user = self.request.user

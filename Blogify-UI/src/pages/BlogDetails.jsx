@@ -33,8 +33,8 @@ const BlogDetails = () => {
 
 
   const { user, axiosInstance, logoutUser } = useAuth()
-  const {archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived, setProgress } = useBlog()
-  
+  const { archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived, setProgress } = useBlog()
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   }
@@ -172,7 +172,7 @@ const BlogDetails = () => {
   return (
     <>
       <div className='h-auto p-10 ' style={{ fontFamily: "Nunito Sans" }}>
-        <div className='relative max-w-2xl w-full bg-gray-50 dark:bg-neutral-900 rounded-lg shadow-lg p-10 mx-auto '>
+        <div className='relative w-full max-w-2xl p-10 mx-auto rounded-lg shadow-lg bg-gray-50 dark:bg-neutral-900 '>
           <div>
             {/* fot title */}
             <div className='flex justify-between gap-1'>
@@ -182,7 +182,7 @@ const BlogDetails = () => {
               <p className='mt-2'>
                 <button type='button' className={`text-sm border-2 border-gray-400 dark:text-gray-200  px-3 py-[4px] rounded-full font-semibold`}>{blogDetails?.category.category}</button>
               </p>
-              <p className='mt-2 text-3xl dark:text-gray-100 cursor-pointer'>
+              <p className='mt-2 text-3xl cursor-pointer dark:text-gray-100'>
                 <IoMdMore onClick={toggleDropdown} />
               </p>
 
@@ -190,77 +190,77 @@ const BlogDetails = () => {
                 id="dropdownInformation"
                 className={`z-10 ${isDropdownOpen ? '' : 'hidden'} absolute right-7  top-[100px] overflow-hidden bg-gray-200  divide-gray-200 rounded-lg shadow w-18 dark:bg-neutral-800 transition-all duration-700 py-3 h-auto flex flex-col justify-center items-center`}
                 onMouseLeave={() => setIsDropdownOpen(false)}>
-              
-                  <>
-                    <div className={`flex gap-3 items-center mx-4 mb-3  p-1`}>
-                      {blogDetails?.is_saved ? (
-                        <p className='flex items-center gap-1' title='Saved'>
-                          <span className='text-md cursor-pointer hover:scale-110 transition-transform duration-500 dark:text-gray-200 '><FaBookmark
-                            onClick={() => unsavePost(blogDetails?.saved_post_slug)}
-                          />
-                          </span>
-                        </p>
-                      ) : (
-                        <p className='flex items-center gap-1' title='Save'>
-                          <span className='text-md cursor-pointer hover:scale-110 transition-transform duration-500 dark:text-gray-200 '><FaRegBookmark
-                            onClick={()=>savePost(blogDetails?.slug)}
-                          />
-                          </span>
-                        </p>
-                      )}
-                    </div>
 
-                    {user?.slug === blogDetails?.author?.slug && (
-                      <>
-                        <div className="flex gap-3 items-center mx-4 mb-3 p-1">
-                          <p className="flex items-center gap-1" title='Update'>
-                            <span className="text-md cursor-pointer hover:scale-110 transition-transform duration-500 dark:text-gray-200">
-                              <Link to={`/update-post/${blogDetails?.slug}`}>
-                                <FaRegEdit />
-                              </Link>
-                            </span>
-                          </p>
-                        </div>
-
-                        <div className="flex gap-3 items-center mx-4 mb-3 p-1">
-                          {blogDetails?.is_archived ? (
-                            <p className="flex items-center gap-1" title='Unarchive'>
-                              <span className="text-xl cursor-pointer hover:scale-110 transition-transform duration-500 dark:text-gray-200">
-                                <RiInboxUnarchiveFill onClick={handleUnarchive} />
-                              </span>
-                            </p>
-                          ) : (
-                            <p className="flex items-center gap-1" title='Archive'>
-                              <span className="text-xl cursor-pointer hover:scale-110 transition-transform duration-500 dark:text-gray-200">
-                                <MdOutlineArchive onClick={handleArchive} />
-                              </span>
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="flex gap-3 items-center mx-4 mb-3 p-1">
-                          <p className="flex items-center gap-1" title='Delete'>
-                            <span className="text-2xl cursor-pointer hover:scale-110 transition-transform duration-500 dark:text-gray-200">
-                              <MdDeleteOutline onClick={handleDelete} />
-                            </span>
-                          </p>
-                        </div>
-                      </>
+                <>
+                  <div className={`flex gap-3 items-center mx-4 mb-3  p-1`}>
+                    {blogDetails?.is_saved ? (
+                      <p className='flex items-center gap-1' title='Saved'>
+                        <span className='transition-transform duration-500 cursor-pointer text-md hover:scale-110 dark:text-gray-200 '><FaBookmark
+                          onClick={() => unsavePost(blogDetails?.saved_post_slug)}
+                        />
+                        </span>
+                      </p>
+                    ) : (
+                      <p className='flex items-center gap-1' title='Save'>
+                        <span className='transition-transform duration-500 cursor-pointer text-md hover:scale-110 dark:text-gray-200 '><FaRegBookmark
+                          onClick={() => savePost(blogDetails?.slug)}
+                        />
+                        </span>
+                      </p>
                     )}
-                  </>
-               
+                  </div>
+
+                  {user?.slug === blogDetails?.author?.slug && (
+                    <>
+                      <div className="flex items-center gap-3 p-1 mx-4 mb-3">
+                        <p className="flex items-center gap-1" title='Update'>
+                          <span className="transition-transform duration-500 cursor-pointer text-md hover:scale-110 dark:text-gray-200">
+                            <Link to={`/update-post/${blogDetails?.slug}`}>
+                              <FaRegEdit />
+                            </Link>
+                          </span>
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-1 mx-4 mb-3">
+                        {blogDetails?.is_archived ? (
+                          <p className="flex items-center gap-1" title='Unarchive'>
+                            <span className="text-xl transition-transform duration-500 cursor-pointer hover:scale-110 dark:text-gray-200">
+                              <RiInboxUnarchiveFill onClick={handleUnarchive} />
+                            </span>
+                          </p>
+                        ) : (
+                          <p className="flex items-center gap-1" title='Archive'>
+                            <span className="text-xl transition-transform duration-500 cursor-pointer hover:scale-110 dark:text-gray-200">
+                              <MdOutlineArchive onClick={handleArchive} />
+                            </span>
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-3 p-1 mx-4 mb-3">
+                        <p className="flex items-center gap-1" title='Delete'>
+                          <span className="text-2xl transition-transform duration-500 cursor-pointer hover:scale-110 dark:text-gray-200">
+                            <MdDeleteOutline onClick={handleDelete} />
+                          </span>
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </>
+
               </div>
             </div>
             {/* for author */}
             <div className='grid grid-cols-12 max-w-[350px] w-full mt-5 items-center'>
-              <div className=' col-span-2 '>
-                <img className='object-cover h-12 w-12 rounded-full transition-transform hover:scale-110 cursor-pointer duration-700' src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9' ></img>
+              <div className='col-span-2 '>
+                <img className='object-cover w-12 h-12 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110' src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9' ></img>
               </div>
               <div className='col-span-6'>
-                <p className='font-semibold text-gray-700 dark:text-gray-300 text-md cursor-pointer'>
+                <p className='font-semibold text-gray-700 cursor-pointer dark:text-gray-300 text-md'>
                   {blogDetails?.author.full_name}
                 </p>
-                <p className='text-gray-600 dark:text-gray-400 text-xs font-semibold'>
+                <p className='text-xs font-semibold text-gray-600 dark:text-gray-400'>
                   {
                     new Date(blogDetails?.created_at).toLocaleString('en-US', {
                       year: 'numeric',
@@ -269,7 +269,7 @@ const BlogDetails = () => {
                     })
                   }
                 </p>
-                <p className='text-gray-500 dark:text-gray-500 text-xs'>
+                <p className='text-xs text-gray-500 dark:text-gray-500'>
                   Last updated: {
                     new Date(blogDetails?.updated_at).toLocaleString('en-US', {
                       year: 'numeric',
@@ -279,7 +279,7 @@ const BlogDetails = () => {
                   }
                 </p>
               </div>
-              <div className='col-span-3 flex items-center'>
+              <div className='flex items-center col-span-3'>
                 <button className={`bg-neutral-900/90 dark:bg-gray-200/95 text-gray-100 text-sm border-2 border-gray-400 dark:text-neutral-900  px-2 py-[4px] rounded-full font-semibold transition-transform hover:scale-105 duration-700 hover:bg-neutral-900/85 dark:hover:bg-gray-200/90 `}>Following</button>
               </div>
             </div>
@@ -288,38 +288,38 @@ const BlogDetails = () => {
             {/* for images */}
             <div className='mt-10'>
               {blogDetails?.images.length > 0 && (
-                <div className='overflow-hidden h-72 rounded-lg '>
+                <div className='overflow-hidden rounded-lg h-72 '>
                   <ImageCarousel images={blogDetails.images} />
                 </div>
               )}
             </div>
 
             {/* for blog content */}
-            <div className='mt-10 text-neutral-900/90 dark:text-gray-200 text-justify'>
+            <div className='mt-10 text-justify text-neutral-900/90 dark:text-gray-200'>
               <p dangerouslySetInnerHTML={{ __html: blogDetails?.content }} />
             </div>
             <hr className='mt-10 border-gray-400/80' />
 
-            <div className='mt-8 grid grid-cols-12 items-center'>
-              <div className='flex items-center gap-5 col-span-6'>
+            <div className='grid items-center grid-cols-12 mt-8'>
+              <div className='flex items-center col-span-6 gap-5'>
                 <div>
-                  <p className='font-bold text-gray-700 dark:text-gray-200 text-lg '>Share:</p>
+                  <p className='text-lg font-bold text-gray-700 dark:text-gray-200 '>Share:</p>
                 </div>
 
-                <div className='flex justify-center gap-4 text-neutral-900 text-xl dark:text-gray-100'>
-                  <FaFacebook className='text-4xl hover:scale-110 transition-transform duration-500 cursor-pointer bg-gray-300 dark:bg-neutral-700 p-2 rounded-full' />
-                  <FaInstagram className='text-4xl hover:scale-110 transition-transform duration-500 cursor-pointer bg-gray-300 dark:bg-neutral-700 p-2 rounded-full' />
-                  <FaXTwitter className='text-4xl hover:scale-110 transition-transform duration-500 cursor-pointer bg-gray-300 dark:bg-neutral-700 p-2 rounded-full' />
-                  <FaLinkedin className='text-4xl hover:scale-110 transition-transform duration-500 cursor-pointer bg-gray-300 dark:bg-neutral-700 p-2 rounded-full' />
+                <div className='flex justify-center gap-4 text-xl text-neutral-900 dark:text-gray-100'>
+                  <FaFacebook className='p-2 text-4xl transition-transform duration-500 bg-gray-300 rounded-full cursor-pointer hover:scale-110 dark:bg-neutral-700' />
+                  <FaInstagram className='p-2 text-4xl transition-transform duration-500 bg-gray-300 rounded-full cursor-pointer hover:scale-110 dark:bg-neutral-700' />
+                  <FaXTwitter className='p-2 text-4xl transition-transform duration-500 bg-gray-300 rounded-full cursor-pointer hover:scale-110 dark:bg-neutral-700' />
+                  <FaLinkedin className='p-2 text-4xl transition-transform duration-500 bg-gray-300 rounded-full cursor-pointer hover:scale-110 dark:bg-neutral-700' />
                 </div>
               </div>
 
               <div className="relative w-full col-span-6">
                 <div className={`absolute inset-y-0 end-2 flex items-center ps-3.5 `}>
-                  <FaCopy className='text-neutral-800 dark:text-gray-200 text-xl  hover:scale-105 cursor-pointer'
+                  <FaCopy className='text-xl cursor-pointer text-neutral-800 dark:text-gray-200 hover:scale-105'
                     onClick={handleCopyClick} />
                 </div>
-                <input value={window.location.href} type="text" id="input-group-1" className="bg-gray-50 border border-gray-400 focus:outline-none text-gray-900 text-sm rounded-2xl px-2 pr-8  block w-full ps-2 p-2 dark:bg-neutral-800/90 dark:border-neutral-600 dark:placeholder-neutral-500 dark:text-white  placeholder:font-semibold" placeholder="URL"
+                <input value={window.location.href} type="text" id="input-group-1" className="block w-full p-2 px-2 pr-8 text-sm text-gray-900 border border-gray-400 bg-gray-50 focus:outline-none rounded-2xl ps-2 dark:bg-neutral-800/90 dark:border-neutral-600 dark:placeholder-neutral-500 dark:text-white placeholder:font-semibold" placeholder="URL"
                 />
               </div>
 
