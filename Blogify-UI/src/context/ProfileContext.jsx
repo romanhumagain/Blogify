@@ -5,15 +5,10 @@ const ProfileContext = createContext();
 export const useProfile = () => useContext(ProfileContext);
 
 const ProfileContextProvider = ({ children }) => {
-    const { axiosInstance, logoutUser, authenticatedUser } = useAuth();
-    const [blogPosts, setBlogPosts] = useState(null)
-    const [savedPosts, setSavedPosts] = useState(null)
-    const [archivedPosts, setArchivedPosts] = useState(null)
+    const { axiosInstance, logoutUser } = useAuth();
+    const [authenticatedUserDetails, setAuthenticatedUserDetails] = useState(null)
+    const [userSlug, setUserSlug] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [progress, setProgress] = useState(0)
-
-
-    // common APIs error handling 
 
     const handleApiError = (error, message = "An error occurred") => {
         setLoading(false);
@@ -27,75 +22,31 @@ const ProfileContextProvider = ({ children }) => {
         }
     };
 
-    const fetchBlogPosts = async () => {
+
+    const fetchProfileDetails = async (slug) => {
         try {
-            const response = await axiosInstance.get('user-blog');
+            const response = await axiosInstance.get(`user-details/${slug}`)
             if (response.status === 200) {
-                setProgress(90)
-                setBlogPosts(response.data);
-                setProgress(100)
+                setAuthenticatedUserDetails(response.data);
             }
         } catch (error) {
+            handleApiError(error)
         }
-    };
-
-    const fetchSavedPost = async () => {
-        try {
-            setProgress(40)
-            setLoading(true);
-            const response = await axiosInstance.get(`saved-post/`);
-            if (response.status === 200) {
-                setProgress(90)
-                console.log("saved post at profileContext", response.data)
-                setSavedPosts(response.data);
-
-                setProgress(100)
-            }
-        } catch (error) {
-            handleApiError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchArchivedPost = async () => {
-        try {
-            setProgress(40)
-            setLoading(true);
-            const response = await axiosInstance.get(`user-blog/?is_archived=true`);
-            if (response.status === 200) {
-                setProgress(90)
-                setArchivedPosts(response.data);
-                setProgress(100)
-
-            }
-        } catch (error) {
-            handleApiError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-
-            fetchBlogPosts(),
-            fetchSavedPost(),
-            fetchArchivedPost()
-    }, [])
-
-    const context = {
-        blogPosts,
-        savedPosts,
-        archivedPosts,
-
-        fetchBlogPosts,
-        fetchSavedPost,
-        fetchArchivedPost,
-
-        loading
     }
 
+    useEffect(() => {
+        if (userSlug) {
+            fetchProfileDetails(userSlug)
+        }
+    }, [userSlug])
 
+
+    const context = {
+        setUserSlug, 
+        fetchProfileDetails,
+        authenticatedUserDetails,
+        loading
+    }
 
     return (
         <ProfileContext.Provider value={context}>

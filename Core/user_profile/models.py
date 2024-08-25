@@ -6,14 +6,11 @@ class ProfileLinks(models.Model):
         ('website', 'Website'),
         ('github', 'Github'),
         ('linkedin', 'LinkedIn'),
-        ('x', 'X'),
-        ('instagram', 'Instagram'),
-        ('facebook', 'Facebook')
     ]
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='links')
-    category = models.CharField(max_length=100, choices=CategoryChoices)
-    link = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='links', null=True)
+    category = models.CharField(max_length=100, choices=CategoryChoices, null=True)
+    link = models.CharField(max_length=255, null=True)
     added_on = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:

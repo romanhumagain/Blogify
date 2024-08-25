@@ -33,7 +33,21 @@ class UserSerializer(serializers.ModelSerializer):
                         'password': {'write_only': True}, 
                         'slug' : {'read_only':True}
                         }
-
+        
+class UserDetailsSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(source='get_full_name', read_only=True)
+    class Meta:
+        model = User
+        fields = ['slug','first_name', 'last_name', 'username', 'email', 'password', 'bio', 'is_verified','full_name', 'profile_pic']
+        extra_kwargs = {
+                        'password': {'write_only': True}, 
+                        'slug' : {'read_only':True}
+        }
+    
+    # def update(self, instance, validated_data):
+    #   print("validated data are like ....")
+    #   return super().update(instance, validated_data)
+        
 class OTPSerializer(serializers.ModelSerializer):
   class Meta:
     model = OTP

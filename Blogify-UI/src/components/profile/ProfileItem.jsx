@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import pp_img from '../../assets/pp.jpg'
 import { IoMdSettings } from "react-icons/io";
 import { IoDocumentText, IoDocumentTextOutline, IoArchive, IoArchiveOutline, IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
@@ -6,10 +6,15 @@ import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
 import { BsLink45Deg } from "react-icons/bs";
 import { FaXTwitter } from "react-icons/fa6";
 import { useBlog } from '../../context/BlogContext';
+import EditProfileModal from './EditProfileModal';
 
-const ProfileItem = ({user}) => {
+const ProfileItem = ({ user }) => {
     const { profileBlogPosts } = useBlog();
+    const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false)
 
+    const handleCloseModal = () => {
+        setIsEditProfileModalOpen(false)
+    }
     return (
         <>
             <div className='mt-5 '>
@@ -32,8 +37,8 @@ const ProfileItem = ({user}) => {
                             <div className='flex gap-5'>
                                 <p className='text-xl text-gray-900 dark:text-neutral-200'>{user?.username}</p>
                                 <div className='flex items-center gap-3'>
-                                    <button className='p-1 px-2 bg-gray-300 border border-gray-400 rounded-xl text-black/95 dark:bg-neutral-800 dark:text-white/95 dark:border-neutral-700'>Edit Profile</button>
-                                    <IoMdSettings className='text-2xl text-neutral-800 dark:text-gray-200' />
+                                    <button className='p-1 px-2 bg-gray-300 border border-gray-400 rounded-xl text-black/95 dark:bg-neutral-800 dark:text-white/95 dark:border-neutral-700' onClick={() => setIsEditProfileModalOpen(!isEditProfileModalOpen)}>Edit Profile</button>
+                                    <IoMdSettings className='text-2xl text-neutral-800 dark:text-gray-200'  />
                                 </div>
                             </div>
                             <div className='w-full mb-3 '>
@@ -94,6 +99,10 @@ const ProfileItem = ({user}) => {
                     </a>
                 </div>
             </div>
+
+            {isEditProfileModalOpen &&
+                <EditProfileModal isOpen={isEditProfileModalOpen} onClose = {handleCloseModal} user={user} />
+            }
         </>
     )
 }

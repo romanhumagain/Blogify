@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import (
     UserRegisterSerializer,
     UserSerializer,
+    UserDetailsSerializer,
     OTPSerializer,
     PasswordResetTokenSerializer,
     PasswordResetSerializer,
@@ -31,6 +32,7 @@ from .models import OTP, PasswordResetToken
 from django.utils import timezone
 from datetime import timedelta
 from django.db import transaction
+from user_profile.models import ProfileLinks
 
 from rest_framework import viewsets
 
@@ -84,6 +86,10 @@ class UserRegisterAPIView(APIView):
         try:
             if serializer.is_valid():
                 user = serializer.save()
+            
+                profileLinks = ProfileLinks.objects.create(user=user)
+                profileLinks.save()
+                
                 send_email_afer_registration(user.get_full_name, user.email)
                 return Response(
                     {
@@ -219,14 +225,21 @@ class VerifyOTP(RetrieveUpdateAPIView):
 
 class UserViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
-
+    
     def list(self, request):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
     
-
-
+class UserDetailsViewSets(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    permission_classes=[IsAuthenticated]
+    serializer_class =UserDetailsSerializer
+    lookup_field = 'slug'
+    lookup_url_kwarg='slug'
+    
+    
+    
 def send_password_reset_token_email(user):
     token = generate_password_reset_token(user)
     reset_link = f"http://localhost:5173/password-reset/{token}"

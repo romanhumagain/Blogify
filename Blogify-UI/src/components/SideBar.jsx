@@ -32,7 +32,7 @@ const SideBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
   const [isNotificationModal, setIsNotificationModal] = useState(false)
-  const { logoutUser } = useAuth()
+  const { logoutUser, authenticatedUser } = useAuth()
 
   const location = useLocation()
   const pathname = location.pathname
@@ -41,7 +41,6 @@ const SideBar = () => {
   const navigatePage = (link) => {
     closeModal()
     navigate(link)
-
   };
 
   const navigateModal = (modal) => {
@@ -66,7 +65,6 @@ const SideBar = () => {
       setIsNotificationModal(false)
     }
   }
-
 
   const menus = [
     { name: 'Home', link: '/', navFunc: navigatePage, activeIcon: RiHomeFill, inactiveIcon: RiHomeLine },
@@ -94,6 +92,7 @@ const SideBar = () => {
         break;
     }
   }, [mode])
+  
   const handleMode = (e) => {
     if (mode === "light") {
       setMode("dark")
@@ -136,7 +135,7 @@ const SideBar = () => {
     <>
       <div className={`bg-slate-50 dark:bg-neutral-950 h-full ${isModalOpen ? 'w-[85px]' : (isSideBarOpen ? 'w-52 md:w-60 ' : 'w-[85px]')} duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-neutral-600`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
 
-        <div className='text-gray-800 py-3 flex justify-between mx-6 items-center dark:text-gray-200'>
+        <div className='flex items-center justify-between py-3 mx-6 text-gray-800 dark:text-gray-200'>
 
           <div className={`${isModalOpen ? 'hidden opacity-0 translate-x-28 overflow-hidden':(!isSideBarOpen && 'hidden opacity-0 translate-x-28 overflow-hidden')}  ${!isSideBarOpen && ' '}`}>
             <BlogifyLogo />
@@ -153,21 +152,21 @@ const SideBar = () => {
           />
         </div>
 
-        <Link to={'/profile'}>
+        <Link to={`/profile/${authenticatedUser?.slug}`}>
           <div className={`grid grid-cols-12 bg-gray-200/80 rounded-lg dark:bg-neutral-800 mt-3 ${isSideBarOpen ? 'p-1 mx-3' : 'mx-4 py-1'} `}>
             {!isModalOpen && isSideBarOpen ? (
               <>
-                <div className='col-span-3 overflow-hidden p-1'>
-                  <img src='.\src\assets\pp.jpg' className='object-cover h-11 w-11 rounded-full'></img>
+                <div className='col-span-3 p-1 overflow-hidden'>
+                  <img src='.\src\assets\pp.jpg' className='object-cover rounded-full h-11 w-11'></img>
                 </div>
                 <div className='col-span-9 p-1'>
                   <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>Roman Humagain</p>
-                  <p className='text-sm text-gray-500 dark:text-gray-400 truncate'>romanhumagain@gmail.com</p>
+                  <p className='text-sm text-gray-500 truncate dark:text-gray-400'>romanhumagain@gmail.com</p>
                 </div>
               </>
             ) : (
               <div className='col-span-12 mx-auto'>
-                <img src='.\src\assets\pp.jpg' className='object-cover h-8 w-8 rounded-full'></img>
+                <img src='.\src\assets\pp.jpg' className='object-cover w-8 h-8 rounded-full'></img>
               </div>
             )}
 
@@ -249,15 +248,15 @@ const SideBar = () => {
             </div>
           </div>
 
-          <div className='mx-7 p-1 mt-3 overflow-hidden '>
+          <div className='p-1 mt-3 overflow-hidden mx-7 '>
             {!isModalOpen && isSideBarOpen ? (
-              <label className="inline-flex items-center me-3 cursor-pointer">
+              <label className="inline-flex items-center cursor-pointer me-3">
                 <input type="checkbox" className="sr-only peer" onChange={handleMode} />
                 <div className="relative w-11 h-6 bg-neutral-700 rounded-full peer dark:bg-gray-300 peer-focus:ring-2 peer-focus:ring-teal-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-300 dark:bg-gray"></div>
-                <span className="ms-1 text-sm font-medium text-gray-800 dark:text-gray-200">{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className=' text-2xl' />}</span>
+                <span className="text-sm font-medium text-gray-800 ms-1 dark:text-gray-200">{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className='text-2xl ' />}</span>
               </label>
             ) : (
-              <p className=" text-sm font-medium text-neutral-800 dark:text-gray-200 cursor-pointer" onClick={toggleMode}>{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className=' text-2xl' />}</p>
+              <p className="text-sm font-medium cursor-pointer text-neutral-800 dark:text-gray-200" onClick={toggleMode}>{mode === 'dark' ? <MdSunny className='text-2xl' /> : <MdDarkMode className='text-2xl ' />}</p>
             )}
           </div>
 

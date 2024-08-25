@@ -52,7 +52,7 @@ function AppRoutes() {
                   <Route path="/blog-post" element={<BlogPost />} />
                   <Route path="/message" element={<Message />} />
                   <Route path="/search" element={<Search />} />
-                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile/:slug" element={<Profile />} />
                   <Route path="/blog-details/:slug" element={<BlogDetails />} />
                   <Route path="/update-post/:slug" element={<UpdatePost />} />
                   <Route path="/archive-post-details" element={<ArchivePost />} />

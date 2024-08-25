@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100, verbose_name=_("Last Name"))
     password = models.CharField(max_length=100, verbose_name=_("Password"))
     
-    profile_pic = models.ImageField(upload_to=profile_pic_upload_to, default='profile/default_profile_pic.jpg')
+    profile_pic = models.ImageField(upload_to=profile_pic_upload_to, default='profile/default_profile_pic.webp')
     bio = models.TextField(null=True)
     
     is_verified = models.BooleanField(default=False)
