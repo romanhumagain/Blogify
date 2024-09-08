@@ -27,6 +27,7 @@ const BlogContextProvider = ({ children }) => {
   const [profileBlogPosts, setProfileBlogPosts] = useState(null)
   const [progress, setProgress] = useState(0)
   const { axiosInstance, logoutUser } = useAuth();
+  const [userProfileSlug, setUserProfileSlug] = useState("")
 
   // Fetch blog categories
   const fetchBlogCategory = async () => {
@@ -104,10 +105,10 @@ const BlogContextProvider = ({ children }) => {
         setArchiveBlogData(response.data);
         setProgress(100)
         fetchArchivedPostCount()
-
       }
     } catch (error) {
       handleApiError(error);
+      console.log(error)
     } finally {
       setLoading(false);
     }
@@ -231,15 +232,17 @@ const BlogContextProvider = ({ children }) => {
   // ======== FOR PROFILE ========
 
   // to fetch the blog post for user profile
-  const fetchProfileBlogPosts = async () => {
+  const fetchProfileBlogPosts = async (slug) => {
+    
     try {
-      const response = await axiosInstance.get(`user-blog/?is_archived=false`);
+      const response = await axiosInstance.get(`user-blogposts/${slug}/?is_archived=false`);
       if (response.status === 200) {
         setProgress(90)
         setProfileBlogPosts(response.data);
         setProgress(100)
       }
     } catch (error) {
+      console.log(error)
     }
   };
 
@@ -254,13 +257,17 @@ const BlogContextProvider = ({ children }) => {
     } else {
       console.log(error);
     }
+    console.log(error);
   };
 
   const refetchData = () => {
     fetchBlogPost();
     fetchSavedPost();
     fetchArchivedPost();
-    fetchProfileBlogPosts();
+
+    if(userProfileSlug){
+      fetchProfileBlogPosts(userProfileSlug)
+    }
   };
 
   // Fetch data when the component mounts
@@ -280,10 +287,6 @@ const BlogContextProvider = ({ children }) => {
   useEffect(() => {
     fetchArchivedPost();
   }, [archivePostCategory]);
-
-  useEffect(() => {
-    fetchProfileBlogPosts()
-  }, [])
 
   // Debounce search input to optimize API calls
   const debounceFetch = (fetchFunction, delay = 800) => {
@@ -329,6 +332,7 @@ const BlogContextProvider = ({ children }) => {
     archivePost,
     unarchivePost,
 
+    setIsSaved,
     isSaved,
     isArchived,
     fetchSavedPostCount,
@@ -341,7 +345,9 @@ const BlogContextProvider = ({ children }) => {
     fetchProfileBlogPosts,
     profileBlogPosts,
     fetchSavedPost,
-    fetchArchivedPost
+    fetchArchivedPost,
+    setUserProfileSlug,
+    userProfileSlug
     
   };
 

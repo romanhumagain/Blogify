@@ -157,11 +157,11 @@ const SideBar = () => {
             {!isModalOpen && isSideBarOpen ? (
               <>
                 <div className='col-span-3 p-1 overflow-hidden'>
-                  <img src='.\src\assets\pp.jpg' className='object-cover rounded-full h-11 w-11'></img>
+                  <img src={`http://127.0.0.1:8000/${authenticatedUser?.profile_pic}`} className='object-cover rounded-full h-11 w-11'></img>
                 </div>
                 <div className='col-span-9 p-1'>
-                  <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>Roman Humagain</p>
-                  <p className='text-sm text-gray-500 truncate dark:text-gray-400'>romanhumagain@gmail.com</p>
+                  <p className='text-sm font-semibold text-gray-900 dark:text-gray-300 '>{authenticatedUser?.full_name}</p>
+                  <p className='text-sm text-gray-500 truncate dark:text-gray-400'>{authenticatedUser?.email}</p>
                 </div>
               </>
             ) : (

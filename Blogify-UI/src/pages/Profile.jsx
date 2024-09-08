@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import ProfileItem from '../components/profile/ProfileItem';
-import { useAuth } from '../context/AuthContext';
 import ProfilePostItem from '../components/profile/ProfilePostItem';
 import { useParams } from 'react-router-dom';
 import { useProfile } from '../context/ProfileContext';
+import { Toaster } from 'react-hot-toast';
+import { useBlog } from '../context/BlogContext';
+
 
 
 const Profile = () => {
-  const { fetchProfileDetails, setUserSlug, authenticatedUserDetails } = useProfile();
+  const [profileSlug, setProfileSlug] = useState(null)
+  const { fetchProfileDetails, setUserSlug, authenticatedUserDetails } = useProfile();  
+  const {setUserProfileSlug} = useBlog();
   const params = useParams();
   const slug = params.slug;
+
+  useEffect(()=>{
+    setProfileSlug(slug)
+    setUserProfileSlug(slug)
+  }, [slug])
+
 
   useEffect(() => {
     if (slug) {
@@ -29,10 +39,12 @@ const Profile = () => {
 
 
         </div>
-        <div className=''>
-          <ProfilePostItem />
+        <div className='w-full max-w-2xl '>
+          <ProfilePostItem user={authenticatedUserDetails} slug={slug} />
         </div>
       </div>
+      <Toaster />
+
     </>
   )
 }

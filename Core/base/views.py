@@ -45,7 +45,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         
         token["slug"] = user.slug
-        token["name"] = user.get_full_name
+        token["name"] = user.full_name
         token["username"] = user.username
         token["is_verified"] = user.is_verified
         token["email"] = user.email
@@ -90,7 +90,7 @@ class UserRegisterAPIView(APIView):
                 profileLinks = ProfileLinks.objects.create(user=user)
                 profileLinks.save()
                 
-                send_email_afer_registration(user.get_full_name, user.email)
+                send_email_afer_registration(user.full_name, user.email)
                 return Response(
                     {
                         "message": "Successfully registered your account.",
@@ -125,7 +125,7 @@ def send_email_for_otp(user):
 
     if otp_code is not None:
         message = f"""
-                    <p>Hi {user.get_full_name},</p>
+                    <p>Hi {user.full_name},</p>
                     <p> Thank you for registering. Please use the following OTP to complete your verification: </p>
                     <h2>{otp_code}</h2>
                     
@@ -238,6 +238,18 @@ class UserDetailsViewSets(viewsets.ModelViewSet):
     lookup_field = 'slug'
     lookup_url_kwarg='slug'
     
+    # def partial_update(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     data = request.data
+    #     serializer = self.serializer_class(instance, data = data, partial = True)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    
     
     
 def send_password_reset_token_email(user):
@@ -248,7 +260,7 @@ def send_password_reset_token_email(user):
     if token is not None:
         subject = "Password Reset Request"
         message = (
-            f"<p>Hello {user.get_full_name},</p>"
+            f"<p>Hello {user.full_name},</p>"
             "<p>You have requested a password reset. Please click on the link below to reset your password:</p>"
             f"<p>{reset_link}</p>"
             "<p>This link will expire in 5 minutes.</p>"

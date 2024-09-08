@@ -15,12 +15,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     slug = models.SlugField(unique=True)
     email = models.EmailField(unique=True, verbose_name=_("Email Address"))
     username = models.CharField(max_length=100, unique=True, verbose_name=_("Username"))
-    first_name = models.CharField(max_length=100, verbose_name=_("First Name"))
-    last_name = models.CharField(max_length=100, verbose_name=_("Last Name"))
+    full_name = models.CharField(max_length=100, verbose_name=_("Full Name"))
     password = models.CharField(max_length=100, verbose_name=_("Password"))
     
     profile_pic = models.ImageField(upload_to=profile_pic_upload_to, default='profile/default_profile_pic.webp')
-    bio = models.TextField(null=True)
+    bio = models.TextField(null=True, blank=True)
     
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -31,22 +30,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_login = models.DateTimeField(auto_now=True)
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['username', 'full_name']
 
     objects = UserManager()
     
     def save(self, *args, **kwargs):
-        self.slug = generate_slug(User, self.username)
+        if not self.pk:
+            self.slug = generate_slug(User, self.username)
         return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.email
-
-    @property
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
     
- 
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='otp')
     otp = models.CharField(max_length=6, unique=True)

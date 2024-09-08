@@ -27,17 +27,17 @@ const Home = () => {
 
   return (
     <>
-      <div className='h-auto flex flex-col justify-center items-center' style={{ fontFamily: "Nunito Sans" }}>
+      <div className='flex flex-col items-center justify-center h-auto' style={{ fontFamily: "Nunito Sans" }}>
         <TopSearchBar />
-        <div className='flex flex-col justify-center gap-12 max-w-2xl w-full bg-gray-50 text-gray-800 dark:bg-neutral-950 dark:text-gray-200 rounded-lg px-10 py-5'>
+        <div className='flex flex-col items-center w-full max-w-2xl gap-12 py-5 text-gray-800 rounded-lg bg-gray-50 dark:bg-neutral-950 dark:text-gray-200'>
           {blogData?.length <= 0 && (
             <div className='mt-10 text-center'>
-              <p className="text-4xl font-semibold mb-5 text-neutral-700/85 dark:text-gray-400">No blog posts found</p>
+              <p className="mb-5 text-4xl font-semibold text-neutral-700/85 dark:text-gray-400">No blog posts found</p>
             </div>
           )}
 
           {blogData?.map((blog) => (
-            <div key={blog.id}>
+            <div key={blog.id}  className='w-4/5'>
               <Blog blog={blog} />
             </div>
           ))}

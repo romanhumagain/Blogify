@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { useBlog } from '../context/BlogContext';
 
 const Blog = ({ blog }) => {
+  console.log(blog)
   const { savePost, unsavePost } = useBlog()
 
   const truncateContent = (content, max_length) => {
@@ -22,9 +23,18 @@ const Blog = ({ blog }) => {
       <div className='w-full max-w-xl p-5 ml-5 bg-gray-100 shadow-lg dark:bg-neutral-900 rounded-xl'>
         <div className='flex items-center justify-between p-3 px-3'>
           <div className='flex items-center gap-2'>
-            <img src='.\src\assets\pp.jpg' className='transition-all duration-500 rounded-full cursor-pointer h-9 w-9 hover:scale-110' alt={`${blog.author.full_name}'s profile`} />
+            <div className="relative overflow-hidden rounded-full w-9 h-9">
+              <img
+                src={blog?.author.profile_pic}
+                className="object-cover w-full h-full"
+                alt="Profile"
+              />
+            </div>
             <div>
-              <p className='font-semibold text-gray-700 cursor-pointer dark:text-gray-300 text-md'>{blog.author.full_name}</p>
+              <Link to={`/profile/${blog?.author.slug}`}>
+                <p className='font-semibold text-gray-700 cursor-pointer dark:text-gray-300 text-md'>{blog.author.full_name}</p>
+              </Link>
+
               <div className=''>
                 <p className='text-xs text-gray-600 dark:text-neutral-500 text-start'>
                   {new Date(blog.created_at).toLocaleString('en-US', {
@@ -51,7 +61,7 @@ const Blog = ({ blog }) => {
           </div>
         )}
 
-        <div className='m-4 mt-7'>
+        <div className='m-4 mt-4'>
           <Link to={`/blog-details/${blog.slug}`}>
             <p className='text-[24px] text-gray-800 dark:text-gray-200 font-bold my-2 cursor-pointer transition-opacity hover:opacity-80 duration-300 text-start'>
               {blog.title}

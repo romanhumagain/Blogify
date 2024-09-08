@@ -11,7 +11,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from .pagination import BlogPostPagination
-
+from base.models import User
+from rest_framework.exceptions import NotFound
+from rest_framework import generics
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -49,6 +51,7 @@ class BlogPostViewSet(viewsets.ModelViewSet):
     
 # ==== to get the authenticated user post list of a certain user
 class UserBlogPostViewSet(viewsets.ModelViewSet):
+  
   serializer_class = BlogPostSerializer
   permission_classes = [IsAuthenticated]
   lookup_field = 'slug'
@@ -57,17 +60,39 @@ class UserBlogPostViewSet(viewsets.ModelViewSet):
   filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
   filterset_class = BlogPostFilter
   search_fields = ['title', 'content']
-  OrderingFilter = ['created_at']
-  
+  ordering_fields  = ['-created_at']
+  ordering = ['-created_at']
   
   def get_queryset(self):
     user = self.request.user
-    blogPost = BlogPost.objects.filter(author = user)
-    return blogPost
+    queryset = BlogPost.objects.filter(author = user)
+    
+    return queryset
+
+
+# To get the user post list for the profile
+class UserBlogPostDetails(generics.ListAPIView):
+  serializer_class = BlogPostSerializer
+  permission_classes = [IsAuthenticated]
+  lookup_field = 'slug'
+  lookup_url_kwarg = 'slug'
   
-  def get_serializer_context(self):
-     return {'request':self.request}
+  filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+  filterset_class = BlogPostFilter
+  search_fields = ['title', 'content']
+  ordering_fields  = ['-created_at']
+  ordering = ['-created_at']
   
+  
+  def get_queryset(self):
+    slug = self.kwargs.get('slug')
+    
+    user = User.objects.get(slug = slug)
+
+    queryset = BlogPost.objects.filter(author = user)
+    print(queryset)
+    return queryset
+    
   
 # ==== to get the saved post list ====
 class SavedPostViewSet(viewsets.ModelViewSet):

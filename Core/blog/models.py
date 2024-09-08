@@ -66,3 +66,14 @@ class SavedPost(models.Model):
   class Meta:
     unique_together = ('user', 'post')
     ordering = ['-saved_at']
+
+class LikedPost(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_posts')
+  post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='likes')
+  timestamp = models.DateTimeField(auto_now_add=True)  
+
+  class Meta:
+    unique_together = ('user', 'post')
+     
+  def __str__(self) -> str:
+    return f"Liked by {self.user.full_name} on {self.post.title}"

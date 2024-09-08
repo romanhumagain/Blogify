@@ -26,8 +26,7 @@ const Register = () => {
 
   const form = useForm({
     defaultValues: {
-      first_name: "",
-      last_name: "",
+      full_name: "",
       username: "",
       email: "",
       password: ""
@@ -76,52 +75,36 @@ const Register = () => {
       {loading && (
         <LoadingModal isOpen={true} onClose={() => setIsOtpModalOpen(false)} />
       )}
-      <div className=' h-auto w-full flex items-center justify-center dark:bg-neutral-100'>
-        <div className='bg-slate-100 p-8 m-4 mx-auto rounded-lg shadow-2xl max-w-md w-full dark:bg-neutral-800 dark:text-gray-100 duration-300'>
-          <div className="text-center text-3xl">
+      <div className='flex items-center justify-center w-full h-auto dark:bg-neutral-100'>
+        <div className='w-full max-w-md p-8 m-4 mx-auto duration-300 rounded-lg shadow-2xl bg-slate-100 dark:bg-neutral-800 dark:text-gray-100'>
+          <div className="text-3xl text-center">
             <BlogifyLogo />
           </div>
-          <div className="text-center font-mono text-md text-gray-500 mt-2 mb-6 dark:text-gray-300 duration-150  ">
+          <div className="mt-2 mb-6 font-mono text-center text-gray-500 duration-150 text-md dark:text-gray-300 ">
             Sign Up To Blogify
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
 
-            <div className="mb-4 m-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="fname" >
-                First Name
+            <div className="m-3 mb-4">
+              <label className="block mb-2 text-sm font-bold text-gray-700 duration-150 dark:text-gray-100" htmlFor="fname" >
+                Full Name
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="fname" name='first_name' type="text" placeholder='First Name'
-                {...register("first_name", {
+              <input className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border shadow appearance-none rounded-xl focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="fname" name='full_name' type="text" placeholder='Full Name'
+                {...register("full_name", {
                   required: {
                     value: true,
-                    message: "First name is required!"
+                    message: "Full name is required!"
                   }
                 })} />
-              <p className='text-red-500 text-left text-[15px] px-1 font-semibold'>{errors.first_name?.message}</p>
+              <p className='text-red-500 text-left text-[15px] px-1 font-semibold'>{errors.full_name?.message}</p>
 
             </div>
 
-            <div className="mb-4 m-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="lname">
-                Last Name
-              </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="lname" name='last_name' type="text"  placeholder='Last Name'
-                {...register("last_name", {
-                  required: {
-                    value: true,
-                    message: "Last name is required !"
-                  }
-                })} />
-
-              <p className='text-red-500 text-left text-[15px] px-1 font-semibold'>{errors.last_name?.message}</p>
-
-            </div>
-
-            <div className="mb-4 m-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="username">
+            <div className="m-3 mb-4">
+              <label className="block mb-2 text-sm font-bold text-gray-700 duration-150 dark:text-gray-100" htmlFor="username">
                 Username
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="username" name='username' type="text"  placeholder='Username'
+              <input className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border shadow appearance-none rounded-xl focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="username" name='username' type="text"  placeholder='Username'
                 {...register("username", {
                   required: {
                     value: true,
@@ -132,11 +115,11 @@ const Register = () => {
 
             </div>
 
-            <div className="mb-4 m-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="email">
+            <div className="m-3 mb-4">
+              <label className="block mb-2 text-sm font-bold text-gray-700 duration-150 dark:text-gray-100" htmlFor="email">
                 Email
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 " id="email" name='email' type="email"  placeholder='example@gmail.com'
+              <input className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border shadow appearance-none rounded-xl focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400 " id="email" name='email' type="email"  placeholder='example@gmail.com'
                 {...register("email", {
                   required: {
                     value: true,
@@ -158,11 +141,11 @@ const Register = () => {
 
             </div>
 
-            <div className="mb-4 m-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-100 duration-150" htmlFor="password">
+            <div className="m-3 mb-4">
+              <label className="block mb-2 text-sm font-bold text-gray-700 duration-150 dark:text-gray-100" htmlFor="password">
                 Password
               </label>
-              <input className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="password" name='password' type="password"  placeholder='Password'
+              <input className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border shadow appearance-none rounded-xl focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-slate-400" id="password" name='password' type="password"  placeholder='Password'
                 {...register("password", {
                   required: {
                     value: true,
@@ -179,20 +162,20 @@ const Register = () => {
 
             </div>
 
-            <div className='className="mb-4 m-3'>
-              <button className="bg-rose-500 hover:bg-rose-600  text-white font-semibold text-sm p-1 rounded-2xl w-full dark:bg-rose-600 dark:text-white dark:hover:bg-rose-700 transition-colors duration-300">
+            <div className='className="m-3 mb-4'>
+              <button className="w-full p-1 text-sm font-semibold text-white transition-colors duration-300 bg-rose-500 hover:bg-rose-600 rounded-2xl dark:bg-rose-600 dark:text-white dark:hover:bg-rose-700">
                 <GoFileSubmodule className="inline text-[26px] mx-1" /> Sign Up
               </button>
             </div>
           </form>
-          <div className='text-center mt-4 px-4'>
+          <div className='px-4 mt-4 text-center'>
             <div className='flex items-center my-2'>
               <hr className='flex-grow border-gray-400' />
-              <p className='text-sm font-bold mx-2'>Already Have Account ?</p>
+              <p className='mx-2 text-sm font-bold'>Already Have Account ?</p>
               <hr className='flex-grow border-gray-400' />
             </div>
             <div>
-              <button className="border-2 border-gray-400 bg-gray-200 hover:bg-gray-300  text-black font-semibold text-sm p-2 rounded-2xl w-full duration-300"
+              <button className="w-full p-2 text-sm font-semibold text-black duration-300 bg-gray-200 border-2 border-gray-400 hover:bg-gray-300 rounded-2xl"
                 onClick={() => {
                   navigate('/login');
                 }}>
