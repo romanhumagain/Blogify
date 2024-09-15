@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BlogCategory, BlogPost, Image, SavedPost
+from .models import BlogCategory, BlogPost, Image, SavedPost, LikedPost
 from base.serializers import UserSerializer
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -87,3 +87,8 @@ class SavedBlogPostSerializer(serializers.ModelSerializer):
     }
   }
     
+
+class LikedPostSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = LikedPost
+    fields = ['user', 'post']
