@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .serializers import BlogPostSerializer, BlogCategorySerializer, SavedBlogPostSerializer, LikedPostSerializer
-from .models import BlogPost, BlogCategory, SavedPost
+from .models import BlogPost, BlogCategory, SavedPost, LikedPost
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .filters import BlogPostFilter, SavedPostFilter
@@ -68,6 +68,9 @@ class UserBlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.filter(author = user)
     
     return queryset
+  
+  # def get_serializer_context(self):
+  #    return {'request':self.request}
 
 
 # To get the user post list for the profile
@@ -92,6 +95,9 @@ class UserBlogPostDetails(generics.ListAPIView):
     queryset = BlogPost.objects.filter(author = user)
     print(queryset)
     return queryset
+  
+  # def get_serializer_context(self):
+  #    return {'request':self.request}
     
   
 # ==== to get the saved post list ====
@@ -136,12 +142,12 @@ class SavedPostViewSet(viewsets.ModelViewSet):
 class LikePostAPIView(generics.ListCreateAPIView):
   permission_classes = [IsAuthenticated]
   serializer_class = LikedPostSerializer
-  lookup_field = 'slug'
-  lookup_url_kwarg = 'slug'
+  lookup_field = 'blog_post_slug'
+  lookup_url_kwarg = 'blog_post_slug'
   
   def create(self, request, *args, **kwargs):
     user = request.user
-    slug = kwargs.get('slug')
+    slug = kwargs.get('blog_post_slug')
     
     try:
       post = BlogPost.objects.get(slug = slug)
@@ -149,14 +155,38 @@ class LikePostAPIView(generics.ListCreateAPIView):
         return Response({"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
     
     data = {
-            'user':user,
-            'post':post
+            'user':user.id,
+            'post':post.id
             }
     
-    serializer = self.get_serializer_class(data = data)
+    serializer = self.get_serializer(data = data)
     if serializer.is_valid():
       serializer.save()
       return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  
+class UnlinePostAPIView(generics.DestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  serializer_class = LikedPostSerializer
+  lookup_field = 'blog_post_slug'
+  lookup_url_kwarg = 'blog_post_slug'
+  
+  def destroy(self, request, *args, **kwargs):
+    slug = kwargs.get('blog_post_slug')
+    try:
+      post = BlogPost.objects.get(slug = slug)
+    except BlogPost.DoesNotExist:
+      return Response({"error":'Post not found'}, status= status.HTTP_404_NOT_FOUND)
+    
+    try:
+      likedPost = LikedPost.objects.get(post = post, user = request.user)
+    except LikedPost.DoesNotExist:
+      return Response({"error":'You have not liked this post'}, status= status.HTTP_404_NOT_FOUND)
+      
+    likedPost.delete()
+    return Response({'message': 'Successfully unliked the post'}, status=status.HTTP_200_OK)
+    
+   
+  
     
      

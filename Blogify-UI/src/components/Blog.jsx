@@ -2,6 +2,8 @@ import React, { memo } from 'react'
 import { IoArrowForward } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
 import { FcLike } from "react-icons/fc";
+import { IoMdHeart } from "react-icons/io";
+import { IoMdHeartEmpty } from "react-icons/io";
 import { FaRegComment } from "react-icons/fa";
 import { TbLocationShare } from "react-icons/tb";
 import ImageCarousel from './ImageCarousel';
@@ -12,7 +14,7 @@ import { useBlog } from '../context/BlogContext';
 
 const Blog = ({ blog }) => {
   console.log(blog)
-  const { savePost, unsavePost } = useBlog()
+  const { savePost, unsavePost, likePost, unLikePost } = useBlog()
 
   const truncateContent = (content, max_length) => {
     return content.length <= max_length ? content : `${content.slice(0, max_length)}.....`
@@ -101,10 +103,29 @@ const Blog = ({ blog }) => {
             </div>
           </div>
         </div>
-        <div className='flex items-center justify-center gap-8 mt-4 text-2xl text-gray-700 dark:text-gray-400'>
-          <FcLike className='transition-transform duration-500 cursor-pointer hover:scale-125' />
-          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-125' />
-          <TbLocationShare className='transition-transform duration-500 cursor-pointer hover:scale-125' />
+        <div className='flex items-start justify-center gap-12 mt-4 text-2xl text-gray-700 dark:text-gray-400'>
+          <div className='flex flex-col items-center gap-1'>
+            <div>
+              {blog?.is_liked ?
+                <IoMdHeart className='text-[28px] text-red-600 transition-transform duration-500 cursor-pointer hover:scale-110'
+                  onClick={() => {
+                    unLikePost(blog?.slug)
+                  }}
+                />
+                :
+                <IoMdHeartEmpty className='text-[28px] transition-transform duration-500 cursor-pointer hover:scale-110'
+                  onClick={() => {
+                    likePost(blog?.slug)
+                  }} />
+              }
+            </div>
+            <div>
+              <p className='text-sm text-neutral-500'>{blog?.liked_count ? `${blog?.liked_count} likes`:'' }</p>
+            </div>
+          </div>
+
+          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110' />
+          <TbLocationShare className='transition-transform duration-500 cursor-pointer hover:scale-110' />
         </div>
       </div>
       <Toaster />

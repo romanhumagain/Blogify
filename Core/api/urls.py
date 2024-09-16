@@ -19,7 +19,9 @@ from blog.views import (
     CategoryViewSet,
     UserBlogPostViewSet,
     SavedPostViewSet,
-    UserBlogPostDetails
+    UserBlogPostDetails,
+    LikePostAPIView, 
+    UnlinePostAPIView
 )
 
 # from rest_framework.routers import DefaultRouter
@@ -54,5 +56,7 @@ urlpatterns = [
     path("verify-password-reset-token/<str:token>/", VerifyPasswordResetTokenAPIView.as_view(), name="verify-password-reset-token",),
     path("confirm-password-reset/", ConfirmPasswordResetAPIView.as_view(), name="confirm-password-reset",),
     path("verify-registered-user-otp/", VerifyRegisteredUserOTP.as_view(), name="verify-registered-user-otp",),
-    path('user-blogposts/<str:slug>/', UserBlogPostDetails.as_view(),name='user_blogposts')
+    path('user-blogposts/<str:slug>/', UserBlogPostDetails.as_view(),name='user_blogposts'),
+    path('like-post/<str:blog_post_slug>/', LikePostAPIView.as_view(), name='like-post'),
+    path('unlike-post/<str:blog_post_slug>/', UnlinePostAPIView.as_view(), name='unlike-post'),
 ]

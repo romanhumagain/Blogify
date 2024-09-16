@@ -77,3 +77,15 @@ class LikedPost(models.Model):
      
   def __str__(self) -> str:
     return f"Liked by {self.user.full_name} on {self.post.title}"
+  
+  
+class PostComment(models.Model):
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commented_posts')
+    comment = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Commented by {self.user.username} on {self.post.title}"
+
+  

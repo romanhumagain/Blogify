@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import toast from 'react-hot-toast';
 
-
 const BlogContext = createContext();
 
 export const useBlog = () => useContext(BlogContext);
@@ -29,6 +28,9 @@ const BlogContextProvider = ({ children }) => {
   const { axiosInstance, logoutUser } = useAuth();
   const [userProfileSlug, setUserProfileSlug] = useState("")
 
+  const [isLiked, setIsLiked] = useState(false);
+  const [isUnliked, setIsUnliked] = useState(false)
+
   // Fetch blog categories
   const fetchBlogCategory = async () => {
     try {
@@ -47,14 +49,10 @@ const BlogContextProvider = ({ children }) => {
   // Fetch blog posts based on filters
   const fetchBlogPost = async () => {
     try {
-      setProgress(40)
       setLoading(true);
       const response = await axiosInstance.get(`blog/?category=${filterByCategory}&search=${searchedData}`);
       if (response.status === 200) {
-        setProgress(90)
-        setBlogData(response.data);
-        setProgress(100)
-
+        setBlogData(response.data); 
       }
     } catch (error) {
       handleApiError(error);
@@ -65,14 +63,11 @@ const BlogContextProvider = ({ children }) => {
 
   // Fetch saved posts based on filters
   const fetchSavedPost = async () => {
-    try {
-      setProgress(40)
+    try {     
       setLoading(true);
       const response = await axiosInstance.get(`saved-post/?category=${savedPostCategory}&search=${savedSearchedData}`);
-      if (response.status === 200) {
-        setProgress(90)
-        setSavedBlogData(response.data);
-        setProgress(100)
+      if (response.status === 200) {       
+        setSavedBlogData(response.data);       
         fetchSavedPostCount()
       }
     } catch (error) {
@@ -96,14 +91,11 @@ const BlogContextProvider = ({ children }) => {
   };
 
   const fetchArchivedPost = async () => {
-    try {
-      setProgress(40)
+    try {     
       setLoading(true);
       const response = await axiosInstance.get(`user-blog/?is_archived=true&category=${archivePostCategory}&search=${archivedSearchedData}`);
-      if (response.status === 200) {
-        setProgress(90)
-        setArchiveBlogData(response.data);
-        setProgress(100)
+      if (response.status === 200) {        
+        setArchiveBlogData(response.data);        
         fetchArchivedPostCount()
       }
     } catch (error) {
@@ -228,6 +220,34 @@ const BlogContextProvider = ({ children }) => {
     }
   }
 
+  const likePost = async(slug)=>{
+    // here the slug indicates the post slug
+    console.log(slug)
+    try {
+      const response = await axiosInstance.post(`like-post/${slug}/`);
+      if (response.status === 200){
+      setIsLiked(true);
+      refetchData()
+      }
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
+
+  const unLikePost = async(slug)=>{
+    console.log("at unlike post", slug)
+    // here the slug indicates the post slug
+    try {
+      const response = await axiosInstance.delete(`unlike-post/${slug}/`);
+      if (response.status === 200){
+      setIsUnliked(true);
+      refetchData()
+      }
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
+
 
   // ======== FOR PROFILE ========
 
@@ -236,10 +256,8 @@ const BlogContextProvider = ({ children }) => {
     
     try {
       const response = await axiosInstance.get(`user-blogposts/${slug}/?is_archived=false`);
-      if (response.status === 200) {
-        setProgress(90)
-        setProfileBlogPosts(response.data);
-        setProgress(100)
+      if (response.status === 200) {       
+        setProfileBlogPosts(response.data);        
       }
     } catch (error) {
       console.log(error)
@@ -347,7 +365,11 @@ const BlogContextProvider = ({ children }) => {
     fetchSavedPost,
     fetchArchivedPost,
     setUserProfileSlug,
-    userProfileSlug
+    userProfileSlug,
+
+    // for like/unlike post
+    likePost,
+    unLikePost
     
   };
 

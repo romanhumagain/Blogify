@@ -22,6 +22,9 @@ class BlogPostSerializer(serializers.ModelSerializer):
   is_saved = serializers.SerializerMethodField(read_only=True)
   saved_post_slug = serializers.SerializerMethodField(read_only = True)
   
+  is_liked = serializers.SerializerMethodField(read_only = True)
+  liked_count = serializers.SerializerMethodField(read_only = True)
+  
   uploaded_images = serializers.ListField(
       child=serializers.ImageField(allow_empty_file=True, use_url=False),
       write_only=True,
@@ -33,7 +36,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = BlogPost
-    fields = ['id', 'author', 'slug', 'title', 'content', 'created_at', 'updated_at', 'is_archived', 'images', 'category', 'uploaded_images', 'category_slug', 'is_saved', 'saved_post_slug']
+    fields = ['id', 'author', 'slug', 'title', 'content', 'created_at', 'updated_at', 'is_archived', 'images', 'category', 'uploaded_images', 'category_slug', 'is_saved','is_liked', 'saved_post_slug', 'liked_count']
     extra_kwargs = {
                     'slug':{'read_only': True},
                     'created_at':{'read_only' : True},
@@ -64,16 +67,26 @@ class BlogPostSerializer(serializers.ModelSerializer):
             return saved_post_exists
         return False
       
+  def get_is_liked(self, obj):
+    request = self.context.get('request')
+    if request and request.user.is_authenticated:
+      liked_post_exists = LikedPost.objects.filter(user = request.user, post = obj).exists()
+      return liked_post_exists
+    return False
+    
+      
   def get_saved_post_slug(self, obj):
     request = self.context.get('request')
     if request and request.user.is_authenticated:
       saved_post = SavedPost.objects.filter(user = request.user, post = obj).first()
       if saved_post:
         return saved_post.slug
+      
+  def get_liked_count(self,obj):
+     return LikedPost.objects.filter(post=obj).count()
     
     
     
-  
 class SavedBlogPostSerializer(serializers.ModelSerializer):
   blog_post = BlogPostSerializer(source = 'post', read_only = True)
   
@@ -87,7 +100,6 @@ class SavedBlogPostSerializer(serializers.ModelSerializer):
     }
   }
     
-
 class LikedPostSerializer(serializers.ModelSerializer):
   class Meta:
     model = LikedPost
