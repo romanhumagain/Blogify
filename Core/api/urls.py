@@ -21,7 +21,10 @@ from blog.views import (
     SavedPostViewSet,
     UserBlogPostDetails,
     LikePostAPIView, 
-    UnlinePostAPIView
+    UnlinePostAPIView, 
+    ListCreateCommentAPIView,
+    UpdateDeleteCommentAPIView
+    
 )
 
 # from rest_framework.routers import DefaultRouter
@@ -59,4 +62,7 @@ urlpatterns = [
     path('user-blogposts/<str:slug>/', UserBlogPostDetails.as_view(),name='user_blogposts'),
     path('like-post/<str:blog_post_slug>/', LikePostAPIView.as_view(), name='like-post'),
     path('unlike-post/<str:blog_post_slug>/', UnlinePostAPIView.as_view(), name='unlike-post'),
+    path('comments/post/<str:slug>/', ListCreateCommentAPIView.as_view(), name='list-create-comment'),
+    path('comments/<int:id>/', UpdateDeleteCommentAPIView.as_view(), name='update-delete-comment'),
+    
 ]

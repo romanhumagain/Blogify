@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BlogCategory, BlogPost, Image, SavedPost, LikedPost
+from .models import BlogCategory, BlogPost, Image, SavedPost, LikedPost, PostComment
 from base.serializers import UserSerializer
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -104,3 +104,10 @@ class LikedPostSerializer(serializers.ModelSerializer):
   class Meta:
     model = LikedPost
     fields = ['user', 'post']
+    
+class PostCommentSerializer(serializers.ModelSerializer):
+  user_details = UserSerializer(source = 'user', read_only = True)
+  
+  class Meta:
+    model = PostComment
+    fields = ['id', 'user', 'post', 'comment','timestamp', 'user_details' ]

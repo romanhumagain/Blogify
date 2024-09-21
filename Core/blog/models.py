@@ -84,8 +84,15 @@ class PostComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commented_posts')
     comment = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+      ordering  = ['-timestamp']
+      verbose_name = 'Post Comment'
+      verbose_name_plural = 'Post Comments'
 
     def __str__(self) -> str:
         return f"Commented by {self.user.username} on {self.post.title}"
+      
+    
 
   
