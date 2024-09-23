@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { IoArrowForward } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
 import { FcLike } from "react-icons/fc";
@@ -11,10 +11,12 @@ import { Link } from 'react-router-dom';
 import { FaBookmark } from "react-icons/fa6";
 import { Toaster } from 'react-hot-toast';
 import { useBlog } from '../context/BlogContext';
+import { IoMdSend } from "react-icons/io";
 
 const Blog = ({ blog }) => {
   console.log(blog)
   const { savePost, unsavePost, likePost, unLikePost } = useBlog()
+  const [isCommentTextFieldOpen, setIsCommentTextFieldOpen] = useState(false)
 
   const truncateContent = (content, max_length) => {
     return content.length <= max_length ? content : `${content.slice(0, max_length)}.....`
@@ -120,13 +122,40 @@ const Blog = ({ blog }) => {
               }
             </div>
             <div>
-              <p className='text-sm text-neutral-500'>{blog?.liked_count ? `${blog?.liked_count} likes`:'' }</p>
+              <p className='text-sm text-neutral-500'>{blog?.liked_count ? `${blog?.liked_count} likes` : ''}</p>
             </div>
           </div>
 
-          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110' />
+          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110' onClick={() => { setIsCommentTextFieldOpen(!isCommentTextFieldOpen) }} />
           <TbLocationShare className='transition-transform duration-500 cursor-pointer hover:scale-110' />
         </div>
+        <div className={`${isCommentTextFieldOpen ? '' : 'hidden'} grid items-center grid-cols-12 mt-2 `}>
+          <div className='flex col-span-1 gap-4'>
+            <div className='flex items-center justify-center gap-5 '>
+              <img
+                className='object-cover w-10 h-10 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110'
+                src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9'
+                alt='User avatar'
+              />
+            </div>
+          </div>
+          <div className='relative col-span-11 mx-3 '>
+            <input
+              className='text-[15px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 pr-10 leading-tight focus:outline-none dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-neutral-500 placeholder:text-[16px]'
+              id='title'
+              type='text'
+              name='title'
+              placeholder='Write Comment ....'
+            />
+            <p className='absolute -translate-y-1/2 top-1/2 right-2'>
+            <IoMdSend className='text-2xl cursor-pointer text-neutral-500' />
+            </p>
+          </div>
+          {/* <div className='col-span-1 px-6'>
+            
+          </div> */}
+        </div>
+
       </div>
       <Toaster />
     </>

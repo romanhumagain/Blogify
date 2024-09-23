@@ -53,7 +53,7 @@ const ProfilePostItem = ({ user, slug }) => {
       </div>
 
       {/* Render the filtered posts */}
-      <div className="flex flex-col items-center justify-center gap-10 mt-5 mb-10 text-center rounded-lg bg-slate-50 dark:bg-neutral-950">
+      <div className="flex flex-col items-center justify-center gap-10 mt-5 mb-10 text-center rounded-lg pr-14 bg-slate-50 dark:bg-neutral-950">
         {
           postOption === "all" ? (
             <ProfileBlogPosts profileBlogPosts={profileBlogPosts} />

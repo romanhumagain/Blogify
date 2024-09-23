@@ -9,6 +9,9 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineArchive } from "react-icons/md";
 import { RiInboxUnarchiveFill } from "react-icons/ri";
+import { IoMdHeart } from "react-icons/io";
+import { IoMdHeartEmpty } from "react-icons/io";
+
 
 import { FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -16,6 +19,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaCopy } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
+import { FaComment } from "react-icons/fa";
 
 import { useBlog } from '../context/BlogContext'
 import Swal from 'sweetalert2'
@@ -171,8 +175,8 @@ const BlogDetails = () => {
   }
   return (
     <>
-      <div className='h-auto p-10 ' style={{ fontFamily: "Nunito Sans" }}>
-        <div className='relative w-full max-w-2xl p-10 mx-auto rounded-lg shadow-lg bg-gray-50 dark:bg-neutral-900 '>
+      <div className='grid h-auto grid-cols-12 gap-5 p-10' style={{ fontFamily: "Nunito Sans" }}>
+        <div className='relative w-full max-w-3xl col-span-7 p-10 rounded-lg shadow-lg bg-gray-50 dark:bg-neutral-900 '>
           <div>
             {/* fot title */}
             <div className='flex justify-between gap-1'>
@@ -273,7 +277,7 @@ const BlogDetails = () => {
                   Last updated: {
                     new Date(blogDetails?.updated_at).toLocaleString('en-US', {
                       year: 'numeric',
-                      month: 'long',
+                      month: 'short',
                       day: 'numeric',
                     })
                   }
@@ -322,12 +326,38 @@ const BlogDetails = () => {
                 <input value={window.location.href} type="text" id="input-group-1" className="block w-full p-2 px-2 pr-8 text-sm text-gray-900 border border-gray-400 bg-gray-50 focus:outline-none rounded-2xl ps-2 dark:bg-neutral-800/90 dark:border-neutral-600 dark:placeholder-neutral-500 dark:text-white placeholder:font-semibold" placeholder="URL"
                 />
               </div>
-
               <div>
-
               </div>
             </div>
+          </div>
+        </div>
 
+        <div className='h-screen col-span-5 p-10 rounded-lg shadow-xs bg-gray-50 dark:bg-neutral-950 '>
+          <div className='text-gray-900 dark:text-gray-200'>
+            <p className='flex items-center gap-2 text-2xl font-bold'><FaComment />Comments</p>
+          </div>
+          <div>
+            <div className='grid items-start grid-cols-12 mt-8'>
+              <div className='col-span-2 '>
+                <img className='object-cover w-12 h-12 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110' src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9' ></img>
+              </div>
+
+              <div className='col-span-9 text-gray-900 dark:text-gray-200'>
+                <p className='font-bold'>
+                  Roman Humagain
+                </p>
+                <p className='font-light text-gray-700 text-md dark:text-gray-300'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere, quia.</p>
+                <div className='flex gap-5 mt-1'>
+                  <p>2d</p>
+                  <p>4 likes</p>
+
+                </div>
+
+              </div>
+              <div className='col-span-1'>
+                <IoMdHeart className='text-[20px] text-red-600' />
+              </div>
+            </div>
           </div>
         </div>
 

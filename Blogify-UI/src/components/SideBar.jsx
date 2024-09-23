@@ -133,7 +133,7 @@ const SideBar = () => {
 
   return (
     <>
-      <div className={`bg-slate-50 dark:bg-neutral-950 h-full ${isModalOpen ? 'w-[85px]' : (isSideBarOpen ? 'w-52 md:w-60 ' : 'w-[85px]')} duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-neutral-600`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
+      <div className={`bg-slate-50 dark:bg-neutral-950 h-full ${isModalOpen ? 'w-[90px]' : (isSideBarOpen ? 'w-52 md:w-64 ' : 'w-[90px]')} duration-500 fixed border-r border-opacity-50 border-gray-400 dark:border-neutral-600`} style={{ fontFamily: "Nunito Sans", fontWeight: '600' }}>
 
         <div className='flex items-center justify-between py-3 mx-6 text-gray-800 dark:text-gray-200'>
 

@@ -29,14 +29,14 @@ const Profile = () => {
 
   return (
     <>
-      <div className='flex flex-col items-center justify-center w-full dark:bg-neutral-950'>
+      <div className='flex flex-col items-center justify-center w-full dark:bg-neutral-950 md:pr-12'>
         <div className='w-full max-w-2xl '>
           {/* for top profile info */}
           <ProfileItem user={authenticatedUserDetails} />
           
-          <hr className='mx-5 mt-5 border-gray-400 border-1 dark:border-neutral-600'></hr>
+          <hr className='mx-5 mt-5 mr-10 border-gray-400 border-1 dark:border-neutral-600'></hr>
         </div>
-        <div className='w-full max-w-2xl '>
+        <div className='w-full max-w-3xl min-h-screen '>
           <ProfilePostItem user={authenticatedUserDetails} slug={slug} />
         </div>
       </div>

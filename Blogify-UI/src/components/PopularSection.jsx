@@ -107,7 +107,7 @@ const PopularSection = () => {
 
            <div className='grid grid-cols-12 gap-4 mt-3 ' >
             <div className='col-span-2 overflow-hidden '>
-              <img className='object-cover w-full  h-9' src='https://imgs.search.brave.com/kWh_6AQWS9PTr_gkaZJlxXZP8RWHRDZQcUqNzXigZqU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dzNzY2hvb2xzLmNv/bS93aGF0aXMvaW1n/X3JlYWN0LmpwZw' alt='img'></img>
+              <img className='object-cover w-full h-9' src='https://imgs.search.brave.com/kWh_6AQWS9PTr_gkaZJlxXZP8RWHRDZQcUqNzXigZqU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dzNzY2hvb2xzLmNv/bS93aGF0aXMvaW1n/X3JlYWN0LmpwZw' alt='img'></img>
             </div>
             <div className='col-span-10'>
               <p className='text-sm font-semibold text-gray-700 dark:text-gray-300 '>React - Popular Frontend Framework</p>

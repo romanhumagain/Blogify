@@ -20,7 +20,7 @@ const ProfileItem = ({ user }) => {
     return (
         <>
             <div className='flex flex-col justify-center mt-10'>
-                <div className='grid items-center justify-center grid-cols-10 gap-6 '>
+                <div className='grid items-center justify-center grid-cols-10 gap-10 '>
                     <div className="flex flex-col items-end justify-end col-span-3 px-5 ">
                         <div className="relative overflow-hidden rounded-full w-28 h-28">
                             <img

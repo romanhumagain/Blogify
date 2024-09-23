@@ -43,7 +43,7 @@ function AppRoutes() {
             <div className="col-span-2">
               <SideBar />
             </div>
-            <div className="col-span-7 ml-5 dark:bg-neutral-950">
+            <div className="min-h-screen col-span-10 ml-5 dark:bg-neutral-950">
               <main>
                 <Routes>
                   <Route path="/" element={<Home setProgress={setProgress} />} />
@@ -60,9 +60,7 @@ function AppRoutes() {
                 </Routes>
               </main>
             </div>
-            <div className="hidden col-span-3 md:block dark:bg-neutral-950">
-              <PopularSection />
-            </div>
+            
           </div>
         </>
       ) : (
