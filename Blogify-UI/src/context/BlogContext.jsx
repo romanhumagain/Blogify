@@ -21,15 +21,17 @@ const BlogContextProvider = ({ children }) => {
   const [archiveBlogData, setArchiveBlogData] = useState(null);
   const [hasArchivedPost, setHasArchivedPost] = useState(false);
   const [hasSavedPosts, setHasSavedPosts] = useState(false);
-  const [isSaved, setIsSaved] = useState(false)
-  const [isArchived, setIsArchived] = useState(false)
-  const [profileBlogPosts, setProfileBlogPosts] = useState(null)
-  const [progress, setProgress] = useState(0)
+  const [isSaved, setIsSaved] = useState(false);
+  const [isArchived, setIsArchived] = useState(false);
+  const [profileBlogPosts, setProfileBlogPosts] = useState(null);
+  const [progress, setProgress] = useState(0);
   const { axiosInstance, logoutUser } = useAuth();
-  const [userProfileSlug, setUserProfileSlug] = useState("")
+  const [userProfileSlug, setUserProfileSlug] = useState("");
+  const [isCommentAdded, setIsCommentAdded] = useState(false);
+  const [commentsDetails, setCommentsDetails] = useState(null);
 
   const [isLiked, setIsLiked] = useState(false);
-  const [isUnliked, setIsUnliked] = useState(false)
+  const [isUnliked, setIsUnliked] = useState(false);
 
   // Fetch blog categories
   const fetchBlogCategory = async () => {
@@ -120,6 +122,7 @@ const BlogContextProvider = ({ children }) => {
     }
   };
 
+  // ====== for save, unsave, archive and unarchive post  ======== 
   const savePost = async (slug) => {
     const body = { post: slug };
     try {
@@ -220,6 +223,7 @@ const BlogContextProvider = ({ children }) => {
     }
   }
 
+  // ====== for liking and unliking post =========
   const likePost = async(slug)=>{
     // here the slug indicates the post slug
     console.log(slug)
@@ -263,6 +267,32 @@ const BlogContextProvider = ({ children }) => {
       console.log(error)
     }
   };
+
+  // function to add the comment to the post
+  const postComment = async (slug, data)=>{
+
+    // here slug is the slug field for the post
+    try {
+      const response = await axiosInstance.post(`comments/post/${slug}/`, data)
+      if(response.status === 201){
+        toast.success("Successfully added comment !")
+      } 
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
+
+  // function to fetch the comments of that posts
+  const fetchCommentsLists = async (slug)=>{
+    try {
+      const response = await axiosInstance.get(`comments/post/${slug}/`)
+      if(response.status === 200){
+        setCommentsDetails(response.data);
+      }
+    } catch (error) {
+      handleApiError(error)
+    }
+  }
 
   // Handle API errors
   const handleApiError = (error, message = "An error occurred") => {
@@ -367,9 +397,14 @@ const BlogContextProvider = ({ children }) => {
     setUserProfileSlug,
     userProfileSlug,
 
-    // for like/unlike post
+    // for like/unlike p---ost
     likePost,
-    unLikePost
+    unLikePost,
+
+    // to for comment 
+    postComment,
+    fetchCommentsLists,
+    commentsDetails
     
   };
 

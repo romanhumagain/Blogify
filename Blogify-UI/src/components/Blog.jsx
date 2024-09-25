@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react'
 import { IoArrowForward } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
-import { FcLike } from "react-icons/fc";
 import { IoMdHeart } from "react-icons/io";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FaRegComment } from "react-icons/fa";
@@ -12,14 +11,36 @@ import { FaBookmark } from "react-icons/fa6";
 import { Toaster } from 'react-hot-toast';
 import { useBlog } from '../context/BlogContext';
 import { IoMdSend } from "react-icons/io";
+import { useAuth } from '../context/AuthContext';
+import { useForm } from 'react-hook-form';
 
 const Blog = ({ blog }) => {
   console.log(blog)
-  const { savePost, unsavePost, likePost, unLikePost } = useBlog()
-  const [isCommentTextFieldOpen, setIsCommentTextFieldOpen] = useState(false)
+  const { savePost, unsavePost, likePost, unLikePost, postComment } = useBlog();
+  const [isCommentTextFieldOpen, setIsCommentTextFieldOpen] = useState(true);
+  const {authenticatedUser } = useAuth();
+
+  // to handle the react hook form
+  const form = useForm({
+    defaultValues:{
+      comment:''
+    }
+  });
+
+  const {register,handleSubmit, formState, reset} = form;
+  const {error} = formState;
 
   const truncateContent = (content, max_length) => {
     return content.length <= max_length ? content : `${content.slice(0, max_length)}.....`
+  }
+
+
+  // function to handle the comment 
+  const handlePostComment = async (data)=>{
+    if(blog?.slug){
+      postComment(blog?.slug, data);
+      reset();
+    }
   }
 
   return (
@@ -126,7 +147,9 @@ const Blog = ({ blog }) => {
             </div>
           </div>
 
-          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110' onClick={() => { setIsCommentTextFieldOpen(!isCommentTextFieldOpen) }} />
+          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110'
+          //  onClick={() => { setIsCommentTextFieldOpen(true) }} 
+           />
           <TbLocationShare className='transition-transform duration-500 cursor-pointer hover:scale-110' />
         </div>
         <div className={`${isCommentTextFieldOpen ? '' : 'hidden'} grid items-center grid-cols-12 mt-2 `}>
@@ -134,22 +157,27 @@ const Blog = ({ blog }) => {
             <div className='flex items-center justify-center gap-5 '>
               <img
                 className='object-cover w-10 h-10 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110'
-                src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9'
+                src={`http://127.0.0.1:8000/${authenticatedUser?.profile_pic}`}
                 alt='User avatar'
               />
             </div>
           </div>
           <div className='relative col-span-11 mx-3 '>
+          <form onSubmit={handleSubmit(handlePostComment)} autoComplete='off'>
             <input
               className='text-[15px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 pr-10 leading-tight focus:outline-none dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-neutral-500 placeholder:text-[16px]'
               id='title'
               type='text'
               name='title'
               placeholder='Write Comment ....'
+              {...register("comment")}
+              
             />
-            <p className='absolute -translate-y-1/2 top-1/2 right-2'>
+            <button type='submit' className='absolute -translate-y-1/2 top-1/2 right-2'>
             <IoMdSend className='text-2xl cursor-pointer text-neutral-500' />
-            </p>
+            </button>
+          </form>
+            
           </div>
           {/* <div className='col-span-1 px-6'>
             

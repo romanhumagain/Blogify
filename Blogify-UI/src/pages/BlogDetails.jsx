@@ -9,21 +9,18 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineArchive } from "react-icons/md";
 import { RiInboxUnarchiveFill } from "react-icons/ri";
-import { IoMdHeart } from "react-icons/io";
-import { IoMdHeartEmpty } from "react-icons/io";
-
-
+import { IoMdSend } from "react-icons/io";
 import { FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaCopy } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
-import { FaComment } from "react-icons/fa";
 
 import { useBlog } from '../context/BlogContext'
 import Swal from 'sweetalert2'
 import toast, { Toaster } from 'react-hot-toast';
+import CommentSection from '../components/comments/CommentSection'
 
 const BlogDetails = () => {
   const params = useParams()
@@ -175,8 +172,8 @@ const BlogDetails = () => {
   }
   return (
     <>
-      <div className='grid h-auto grid-cols-12 gap-5 p-10' style={{ fontFamily: "Nunito Sans" }}>
-        <div className='relative w-full max-w-3xl col-span-7 p-10 rounded-lg shadow-lg bg-gray-50 dark:bg-neutral-900 '>
+      <div className='grid h-auto grid-cols-12 p-10' style={{ fontFamily: "Nunito Sans" }}>
+        <div className='relative w-full h-screen max-w-3xl col-span-7 p-10 overflow-y-scroll rounded-lg shadow-lg hide-scrollbar bg-gray-50 dark:bg-neutral-900 '>
           <div>
             {/* fot title */}
             <div className='flex justify-between gap-1'>
@@ -332,34 +329,32 @@ const BlogDetails = () => {
           </div>
         </div>
 
-        <div className='h-screen col-span-5 p-10 rounded-lg shadow-xs bg-gray-50 dark:bg-neutral-950 '>
-          <div className='text-gray-900 dark:text-gray-200'>
-            <p className='flex items-center gap-2 text-2xl font-bold'><FaComment />Comments</p>
-          </div>
-          <div>
-            <div className='grid items-start grid-cols-12 mt-8'>
-              <div className='col-span-2 '>
-                <img className='object-cover w-12 h-12 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110' src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9' ></img>
-              </div>
-
-              <div className='col-span-9 text-gray-900 dark:text-gray-200'>
-                <p className='font-bold'>
-                  Roman Humagain
-                </p>
-                <p className='font-light text-gray-700 text-md dark:text-gray-300'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere, quia.</p>
-                <div className='flex gap-5 mt-1'>
-                  <p>2d</p>
-                  <p>4 likes</p>
-
-                </div>
-
-              </div>
-              <div className='col-span-1'>
-                <IoMdHeart className='text-[20px] text-red-600' />
-              </div>
+        <div className='fixed right-0 col-span-5 p-10 pb-4 rounded-lg shadow-xs top-5 bg-gray-50 dark:bg-neutral-950 h-[90vh]'>
+          {/* Scrollable comment section */}
+          <div className='overflow-y-scroll h-[calc(100%-50px)]'>
+            <div className='h-[500px]'>
+              <CommentSection slug={slug} />
             </div>
           </div>
+
+          {/* Input form positioned at the bottom, fixed within this container */}
+          <div className='absolute left-0 w-full px-3 -bottom-8'>
+            <form autoComplete='off'>
+              <input
+                className='text-[15px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 pr-10 leading-tight focus:outline-none dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-neutral-500 placeholder:text-[16px]'
+                id='title'
+                type='text'
+                name='title'
+                placeholder='Write Comment ....'
+              />
+              <button type='submit' className='absolute -translate-y-1/2 top-1/2 right-2'>
+                <IoMdSend className='text-2xl cursor-pointer text-neutral-500' />
+              </button>
+            </form>
+          </div>
         </div>
+
+
 
       </div>
 

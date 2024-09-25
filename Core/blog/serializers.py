@@ -25,6 +25,8 @@ class BlogPostSerializer(serializers.ModelSerializer):
   is_liked = serializers.SerializerMethodField(read_only = True)
   liked_count = serializers.SerializerMethodField(read_only = True)
   
+  comment_count = serializers.SerializerMethodField(read_only = True)
+  
   uploaded_images = serializers.ListField(
       child=serializers.ImageField(allow_empty_file=True, use_url=False),
       write_only=True,
@@ -36,7 +38,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = BlogPost
-    fields = ['id', 'author', 'slug', 'title', 'content', 'created_at', 'updated_at', 'is_archived', 'images', 'category', 'uploaded_images', 'category_slug', 'is_saved','is_liked', 'saved_post_slug', 'liked_count']
+    fields = ['id', 'author', 'slug', 'title', 'content', 'created_at', 'updated_at', 'is_archived', 'images', 'category', 'uploaded_images', 'category_slug', 'is_saved','is_liked', 'saved_post_slug', 'liked_count', 'comment_count']
     extra_kwargs = {
                     'slug':{'read_only': True},
                     'created_at':{'read_only' : True},
@@ -84,6 +86,10 @@ class BlogPostSerializer(serializers.ModelSerializer):
       
   def get_liked_count(self,obj):
      return LikedPost.objects.filter(post=obj).count()
+   
+  def get_comment_count(self, obj):
+    comment = PostComment.objects.filter(post = obj)
+    return comment.count()
     
     
     
