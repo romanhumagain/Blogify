@@ -94,5 +94,15 @@ class PostComment(models.Model):
         return f"Commented by {self.user.username} on {self.post.title}"
       
     
+class LikedComment(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_comments')
+  comment = models.ForeignKey(PostComment, on_delete=models.CASCADE, related_name='likes')
+  timestamp = models.DateTimeField(auto_now_add=True)  
+  
+  class Meta:
+    unique_together = ('user', 'comment')
+     
+  def __str__(self) -> str:
+    return f"Liked by {self.user.full_name} on comment of id - {self.comment.id}"
 
   

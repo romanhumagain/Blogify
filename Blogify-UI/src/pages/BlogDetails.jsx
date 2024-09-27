@@ -16,7 +16,6 @@ import { FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaCopy } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
-
 import { useBlog } from '../context/BlogContext'
 import Swal from 'sweetalert2'
 import toast, { Toaster } from 'react-hot-toast';
@@ -32,9 +31,8 @@ const BlogDetails = () => {
   const [isPageNotFound, setIsPageNotFound] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-
   const { user, axiosInstance, logoutUser } = useAuth()
-  const { archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived, setProgress } = useBlog()
+  const { archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived } = useBlog()
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -42,13 +40,10 @@ const BlogDetails = () => {
 
   const fetchBlogDetails = async () => {
     try {
-      setProgress(40)
       setLoading(true)
       const response = await axiosInstance.get(`blog/${slug}`)
       if (response.status === 200) {
-        setProgress(90)
         setBlogDetails(response.data)
-        setProgress(100)
       }
 
     } catch (error) {
@@ -172,7 +167,7 @@ const BlogDetails = () => {
   }
   return (
     <>
-      <div className='grid h-auto grid-cols-12 p-10' style={{ fontFamily: "Nunito Sans" }}>
+      <div className='grid h-auto grid-cols-12 gap-5 p-10' style={{ fontFamily: "Nunito Sans" }}>
         <div className='relative w-full h-screen max-w-3xl col-span-7 p-10 overflow-y-scroll rounded-lg shadow-lg hide-scrollbar bg-gray-50 dark:bg-neutral-900 '>
           <div>
             {/* fot title */}
@@ -328,34 +323,7 @@ const BlogDetails = () => {
             </div>
           </div>
         </div>
-
-        <div className='fixed right-0 col-span-5 p-10 pb-4 rounded-lg shadow-xs top-5 bg-gray-50 dark:bg-neutral-950 h-[90vh]'>
-          {/* Scrollable comment section */}
-          <div className='overflow-y-scroll h-[calc(100%-50px)]'>
-            <div className='h-[500px]'>
-              <CommentSection slug={slug} />
-            </div>
-          </div>
-
-          {/* Input form positioned at the bottom, fixed within this container */}
-          <div className='absolute left-0 w-full px-3 -bottom-8'>
-            <form autoComplete='off'>
-              <input
-                className='text-[15px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 pr-10 leading-tight focus:outline-none dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-neutral-500 placeholder:text-[16px]'
-                id='title'
-                type='text'
-                name='title'
-                placeholder='Write Comment ....'
-              />
-              <button type='submit' className='absolute -translate-y-1/2 top-1/2 right-2'>
-                <IoMdSend className='text-2xl cursor-pointer text-neutral-500' />
-              </button>
-            </form>
-          </div>
-        </div>
-
-
-
+        <CommentSection slug={slug} />
       </div>
 
       <Toaster />

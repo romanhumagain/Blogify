@@ -4,7 +4,8 @@ from .models import (BlogCategory,
                      Image, 
                      SavedPost, 
                      LikedPost, 
-                     PostComment
+                     PostComment,
+                     LikedComment
                      )
 
 admin.site.register(BlogCategory)
@@ -13,3 +14,5 @@ admin.site.register(Image)
 admin.site.register(SavedPost)
 admin.site.register(LikedPost)
 admin.site.register(PostComment)
+admin.site.register(LikedComment)
+

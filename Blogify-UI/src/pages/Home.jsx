@@ -11,7 +11,7 @@ import PopularSection from '../components/PopularSection';
 const Home = () => {
   const { user, authenticatedUser, fetchAuthenticatedUser } = useAuth();
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
-  const { blogData, fetchBlogPost } = useBlog();
+  const { blogData, fetchBlogPost, setIsCommentAdded, isCommentAdded } = useBlog();
 
 
   useEffect(() => {
@@ -25,6 +25,14 @@ const Home = () => {
   useEffect(() => {
     fetchBlogPost()
   }, []);
+
+
+  useEffect(()=>{
+    if(isCommentAdded){
+      fetchBlogPost()
+      setIsCommentAdded(false)
+    }
+  }, [isCommentAdded])
 
   return (
     <>

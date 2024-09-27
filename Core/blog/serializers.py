@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import BlogCategory, BlogPost, Image, SavedPost, LikedPost, PostComment
+from .models import (BlogCategory, 
+                     BlogPost, 
+                     Image, 
+                     SavedPost, 
+                     LikedPost, 
+                     PostComment, 
+                     LikedComment)
 from base.serializers import UserSerializer
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -90,8 +96,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
   def get_comment_count(self, obj):
     comment = PostComment.objects.filter(post = obj)
     return comment.count()
-    
-    
+       
     
 class SavedBlogPostSerializer(serializers.ModelSerializer):
   blog_post = BlogPostSerializer(source = 'post', read_only = True)
@@ -113,7 +118,26 @@ class LikedPostSerializer(serializers.ModelSerializer):
     
 class PostCommentSerializer(serializers.ModelSerializer):
   user_details = UserSerializer(source = 'user', read_only = True)
+  is_liked= serializers.SerializerMethodField(read_only = True)
+  liked_count = serializers.SerializerMethodField(read_only = True)
+  
   
   class Meta:
     model = PostComment
-    fields = ['id', 'user', 'post', 'comment','timestamp', 'user_details' ]
+    fields = ['id', 'user', 'post', 'comment','timestamp', 'user_details', 'is_liked','liked_count' ]
+    
+  def get_is_liked(self, obj):
+     request = self.context.get('request')
+     if request and request.user.is_authenticated:
+      return LikedComment.objects.filter(user = request.user, comment = obj).exists() 
+     return False
+   
+  def get_liked_count(self, obj):
+    return LikedComment.objects.filter(comment = obj).count()
+     
+
+class LikedCommentSerializer(serializers.ModelSerializer):
+  
+  class Meta:
+    model = LikedComment
+    fields = ['user', 'comment']

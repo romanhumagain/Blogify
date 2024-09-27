@@ -8,6 +8,18 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.hide-scrollbar': {
+          'scrollbar-width': 'none', /* Firefox */
+          '-ms-overflow-style': 'none',  /* IE and Edge */
+          '&::-webkit-scrollbar': {
+            display: 'none', /* Chrome, Safari, Opera */
+          },
+        },
+      });
+    },
+  ],
 }
 

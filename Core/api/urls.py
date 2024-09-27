@@ -21,9 +21,11 @@ from blog.views import (
     SavedPostViewSet,
     UserBlogPostDetails,
     LikePostAPIView, 
-    UnlinePostAPIView, 
+    UnlikePostAPIView, 
     ListCreateCommentAPIView,
-    UpdateDeleteCommentAPIView
+    UpdateDeleteCommentAPIView,
+    LikeCommentAPIView,
+    UnlikeCommentAPIView
     
 )
 
@@ -59,10 +61,14 @@ urlpatterns = [
     path("verify-password-reset-token/<str:token>/", VerifyPasswordResetTokenAPIView.as_view(), name="verify-password-reset-token",),
     path("confirm-password-reset/", ConfirmPasswordResetAPIView.as_view(), name="confirm-password-reset",),
     path("verify-registered-user-otp/", VerifyRegisteredUserOTP.as_view(), name="verify-registered-user-otp",),
+    
     path('user-blogposts/<str:slug>/', UserBlogPostDetails.as_view(),name='user_blogposts'),
     path('like-post/<str:blog_post_slug>/', LikePostAPIView.as_view(), name='like-post'),
-    path('unlike-post/<str:blog_post_slug>/', UnlinePostAPIView.as_view(), name='unlike-post'),
+    path('unlike-post/<str:blog_post_slug>/', UnlikePostAPIView.as_view(), name='unlike-post'),
+    
     path('comments/post/<str:slug>/', ListCreateCommentAPIView.as_view(), name='list-create-comment'),
     path('comments/<int:id>/', UpdateDeleteCommentAPIView.as_view(), name='update-delete-comment'),
+    path('like-comment/<int:comment_id>/', LikeCommentAPIView.as_view(), name='like-comment'),
+    path('unlike-comment/<int:comment_id>/', UnlikeCommentAPIView.as_view(), name='unlike-comment'),
     
 ]

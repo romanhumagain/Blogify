@@ -3,6 +3,7 @@ import AuthContextProvider from "./context/AuthContext"
 import AppRoutes from './AppRoutes'
 import BlogContextProvider from "./context/BlogContext"
 import ProfileContextProvider from './context/ProfileContext'
+import CommentContextProvider from "./context/CommentContext"
 
 function App() {
   return (
@@ -11,7 +12,9 @@ function App() {
         <AuthContextProvider>
           <BlogContextProvider>
             <ProfileContextProvider>
-              <AppRoutes />
+              <CommentContextProvider>
+                <AppRoutes />
+              </CommentContextProvider>
             </ProfileContextProvider>
           </BlogContextProvider>
         </AuthContextProvider>

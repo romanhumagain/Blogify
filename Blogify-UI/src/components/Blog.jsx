@@ -18,17 +18,17 @@ const Blog = ({ blog }) => {
   console.log(blog)
   const { savePost, unsavePost, likePost, unLikePost, postComment } = useBlog();
   const [isCommentTextFieldOpen, setIsCommentTextFieldOpen] = useState(true);
-  const {authenticatedUser } = useAuth();
+  const { authenticatedUser } = useAuth();
 
   // to handle the react hook form
   const form = useForm({
-    defaultValues:{
-      comment:''
+    defaultValues: {
+      comment: ''
     }
   });
 
-  const {register,handleSubmit, formState, reset} = form;
-  const {error} = formState;
+  const { register, handleSubmit, formState, reset } = form;
+  const { error } = formState;
 
   const truncateContent = (content, max_length) => {
     return content.length <= max_length ? content : `${content.slice(0, max_length)}.....`
@@ -36,8 +36,8 @@ const Blog = ({ blog }) => {
 
 
   // function to handle the comment 
-  const handlePostComment = async (data)=>{
-    if(blog?.slug){
+  const handlePostComment = async (data) => {
+    if (blog?.slug) {
       postComment(blog?.slug, data);
       reset();
     }
@@ -147,9 +147,18 @@ const Blog = ({ blog }) => {
             </div>
           </div>
 
-          <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110'
-          //  onClick={() => { setIsCommentTextFieldOpen(true) }} 
-           />
+          <div className='flex flex-col items-center gap-1'>
+            <div>
+              <FaRegComment className='transition-transform duration-500 cursor-pointer hover:scale-110' />
+            </div>
+            <div>
+              <p className='text-sm text-neutral-500'>{blog?.comment_count ? `${blog?.comment_count} Comments` : ''}</p>
+            </div>
+
+
+          </div>
+
+
           <TbLocationShare className='transition-transform duration-500 cursor-pointer hover:scale-110' />
         </div>
         <div className={`${isCommentTextFieldOpen ? '' : 'hidden'} grid items-center grid-cols-12 mt-2 `}>
@@ -163,21 +172,21 @@ const Blog = ({ blog }) => {
             </div>
           </div>
           <div className='relative col-span-11 mx-3 '>
-          <form onSubmit={handleSubmit(handlePostComment)} autoComplete='off'>
-            <input
-              className='text-[15px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 pr-10 leading-tight focus:outline-none dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-neutral-500 placeholder:text-[16px]'
-              id='title'
-              type='text'
-              name='title'
-              placeholder='Write Comment ....'
-              {...register("comment")}
-              
-            />
-            <button type='submit' className='absolute -translate-y-1/2 top-1/2 right-2'>
-            <IoMdSend className='text-2xl cursor-pointer text-neutral-500' />
-            </button>
-          </form>
-            
+            <form onSubmit={handleSubmit(handlePostComment)} autoComplete='off'>
+              <input
+                className='text-[15px] shadow-md appearance-none border rounded-xl w-full py-3 px-3 pr-10 leading-tight focus:outline-none dark:border-neutral-700 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 placeholder:text-neutral-500 placeholder:text-[16px]'
+                id='title'
+                type='text'
+                name='title'
+                placeholder='Write Comment ....'
+                {...register("comment")}
+
+              />
+              <button type='submit' className='absolute -translate-y-1/2 top-1/2 right-2'>
+                <IoMdSend className='text-2xl cursor-pointer text-neutral-500' />
+              </button>
+            </form>
+
           </div>
           {/* <div className='col-span-1 px-6'>
             

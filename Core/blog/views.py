@@ -6,12 +6,16 @@ from .serializers import (BlogPostSerializer,
                           BlogCategorySerializer, 
                           SavedBlogPostSerializer, 
                           LikedPostSerializer, 
-                          PostCommentSerializer)
+                          PostCommentSerializer, 
+                          LikedCommentSerializer)
+
 from .models import (BlogPost, 
                      BlogCategory, 
                      SavedPost, 
                      LikedPost, 
-                     PostComment)
+                     PostComment,
+                     LikedComment)
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .filters import BlogPostFilter, SavedPostFilter
@@ -173,7 +177,7 @@ class LikePostAPIView(generics.ListCreateAPIView):
       return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
-class UnlinePostAPIView(generics.DestroyAPIView):
+class UnlikePostAPIView(generics.DestroyAPIView):
   permission_classes = [IsAuthenticated]
   serializer_class = LikedPostSerializer
   lookup_field = 'blog_post_slug'
@@ -229,6 +233,8 @@ class ListCreateCommentAPIView(generics.ListCreateAPIView):
       return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+  def get_serializer_context(self):
+     return {'request':self.request}
          
 # ====== API view to handle the fetching comment, updating comment and deleting comment =========
 class UpdateDeleteCommentAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -269,4 +275,51 @@ class UpdateDeleteCommentAPIView(generics.RetrieveUpdateDestroyAPIView):
     return Response({'message': 'Successfully deleted comment'}, status=status.HTTP_200_OK)
     
     
-     
+# ===== for liking and unliking the comments
+class LikeCommentAPIView(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  serializer_class = LikedCommentSerializer
+  lookup_field = 'comment_id'
+  lookup_url_kwarg = 'comment_id'
+  
+  def create(self, request, *args, **kwargs):
+    user = request.user
+    id = kwargs.get('comment_id')
+    
+    try:
+      comment =PostComment.objects.get(id = id)
+    except PostComment.DoesNotExist:
+        return Response({"error": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    data = {
+            'user':user.id,
+            'comment':comment.id
+            }
+    
+    serializer = self.get_serializer(data = data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  
+class UnlikeCommentAPIView(generics.DestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  serializer_class = LikedCommentSerializer
+  lookup_field = 'comment_id'
+  lookup_url_kwarg = 'comment_id'
+  
+  def destroy(self, request, *args, **kwargs):
+    id = kwargs.get('comment_id')
+    try:
+       comment =PostComment.objects.get(id = id)
+    except PostComment.DoesNotExist:
+      return Response({"error":'Comment not found'}, status= status.HTTP_404_NOT_FOUND)
+    
+    try:
+      likedComment = LikedComment.objects.get(comment = comment, user = request.user)
+    except LikedComment.DoesNotExist:
+      return Response({"error":'You have not liked this comment'}, status= status.HTTP_404_NOT_FOUND)
+      
+    likedComment.delete()
+    return Response({'message': 'Successfully unliked comment'}, status=status.HTTP_200_OK)
+    
