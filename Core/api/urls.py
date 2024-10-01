@@ -26,7 +26,12 @@ from blog.views import (
     UpdateDeleteCommentAPIView,
     LikeCommentAPIView,
     UnlikeCommentAPIView
-    
+   
+)
+
+from user_profile.views import  (
+    FollowUserAPIView, 
+    UnfollowUserAPIView
 )
 
 # from rest_framework.routers import DefaultRouter
@@ -71,4 +76,8 @@ urlpatterns = [
     path('like-comment/<int:comment_id>/', LikeCommentAPIView.as_view(), name='like-comment'),
     path('unlike-comment/<int:comment_id>/', UnlikeCommentAPIView.as_view(), name='unlike-comment'),
     
+    
+    path('follow-user/', FollowUserAPIView.as_view(), name='follow-user'),
+    path('unfollow-user/', UnfollowUserAPIView.as_view(), name='unfollow-user'),
+
 ]

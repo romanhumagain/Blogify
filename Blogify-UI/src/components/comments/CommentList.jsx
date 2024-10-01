@@ -37,6 +37,7 @@ const CommentList = ({ comment, slug, setEditableComment }) => {
       console.log(error);
     }
   }
+  
   // Convert the timestamp into a date and calculate the time ago
   const timeAgo = formatDistanceToNow(new Date(comment?.timestamp), { addSuffix: true });
 

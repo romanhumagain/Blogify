@@ -247,10 +247,7 @@ class UserDetailsViewSets(viewsets.ModelViewSet):
     #         return Response(serializer.data, status=status.HTTP_200_OK)
         
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
-    
-    
+   
     
 def send_password_reset_token_email(user):
     token = generate_password_reset_token(user)

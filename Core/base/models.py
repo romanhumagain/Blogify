@@ -63,7 +63,6 @@ class OTP(models.Model):
     def __str__(self):
         return f"OTP for {self.user.username} - {self.otp}"
     
-    
 class PasswordResetToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='token')
     token = models.CharField(max_length=100, unique=True)
