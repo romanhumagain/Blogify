@@ -11,6 +11,20 @@ class ProfileLinks(models.Model):
     def __str__(self) -> str:
          return f"{self.user.first_name , self.user.last_name}"
 
+
+class RecentSearch(models.Model):
+    searched_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='searcher')
+    searched_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='searched_user')
+    searched_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Recent Search'
+        verbose_name_plural = 'Recent Searches'
+        ordering = ['-searched_at']
+    
+    def __str__(self) -> str:
+        return f"{self.searched_by.full_name} searched {self.searched_to.full_name} profile!"
+
 class Follow(models.Model):
     
     follower = models.ForeignKey(

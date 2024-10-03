@@ -33,8 +33,10 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db import transaction
 from user_profile.models import ProfileLinks
-
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from .filter import UserFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 User = get_user_model()
 
@@ -106,19 +108,12 @@ class UserRegisterAPIView(APIView):
 
 
 class UserList(ListAPIView):
-
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
-
-    def get_queryset(self):
-        queryset = User.objects.all()
-        email = self.request.query_params.get("email")
-
-        if email is not None:
-            queryset = queryset.filter(email=email)
-
-        return queryset
-
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = UserFilter
+    search_fields = ['^username', '^full_name']
 
 def send_email_for_otp(user):
     otp_code = generate_otp(user)
