@@ -108,7 +108,7 @@ class UserRegisterAPIView(APIView):
 
 
 class UserList(ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_superuser=False)
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend, SearchFilter]

@@ -264,7 +264,7 @@ const SideBar = () => {
       </div>
 
       {isSearchModalOpen &&
-        <SearchModal isOpen={isSearchModalOpen} />
+        <SearchModal isOpen={isSearchModalOpen} closeModal={closeModal} />
       }
 
       {isNotificationModal &&

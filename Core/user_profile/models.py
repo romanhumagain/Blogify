@@ -21,6 +21,7 @@ class RecentSearch(models.Model):
         verbose_name = 'Recent Search'
         verbose_name_plural = 'Recent Searches'
         ordering = ['-searched_at']
+        unique_together = ('searched_by', 'searched_to')
     
     def __str__(self) -> str:
         return f"{self.searched_by.full_name} searched {self.searched_to.full_name} profile!"

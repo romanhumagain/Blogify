@@ -33,7 +33,8 @@ from user_profile.views import  (
     FollowUserAPIView, 
     UnfollowUserAPIView,
     RecentSearchAPIView,
-    RemoveFromRecentSearchAPIView
+    RemoveFromRecentSearchAPIView,
+    ClearAllSearchAPIView
 )
 
 # from rest_framework.routers import DefaultRouter
@@ -82,7 +83,9 @@ urlpatterns = [
     path('follow-user/', FollowUserAPIView.as_view(), name='follow-user'),
     path('unfollow-user/', UnfollowUserAPIView.as_view(), name='unfollow-user'),
     
-    path('recent-search/', RecentSearchAPIView.as_view(), name='add-recent-search'),
-    path('remove-recent-search/', RemoveFromRecentSearchAPIView.as_view(), name='remove-recent-search'),
+    path('recent-search/', RecentSearchAPIView.as_view(), name='recent-search'),
+    path('remove-recent-search/<slug:slug>/', RemoveFromRecentSearchAPIView.as_view(), name='remove-recent-search'),
+    path('clear-all-search/', ClearAllSearchAPIView.as_view(), name='clearall-search'),
+    
 
 ]

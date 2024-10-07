@@ -81,8 +81,8 @@ class RecentSearchAPIView(generics.ListCreateAPIView):
             'searched_to': user.id
         }
 
-        serializer = self.get_serializer(data=data)  # Pass `data` to the serializer
-        if serializer.is_valid():  # Use parentheses
+        serializer = self.get_serializer(data=data) 
+        if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Successfully added to recent searches'}, status=status.HTTP_201_CREATED)
         
@@ -90,27 +90,42 @@ class RecentSearchAPIView(generics.ListCreateAPIView):
 
 class RemoveFromRecentSearchAPIView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
+    lookup_field = "slug"
+    lookup_url_kwarg = "slug"
 
     def delete(self, request, *args, **kwargs):
-        data = request.data
         
         # Get the slug of the user to remove from recent search
-        user_slug = data.get('slug')
-        
+        slug = self.kwargs.get('slug')
         try:
-            user = User.objects.get(slug=user_slug)
+            user = User.objects.get(slug = slug)
         except User.DoesNotExist:
-            return Response({'message': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
         
         # Check if the recent search exists
-        recentSearchedUser = RecentSearch.objects.filter(searched_by=request.user, searched_to=user).first()
+        recentSearchedUser = RecentSearch.objects.get(searched_by = request.user, searched_to = user )
         
         if recentSearchedUser:
             recentSearchedUser.delete()
-            return Response({"message": "Successfully removed from recent search."}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"message": "Successfully removed from recent search."}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "No such search entry found."}, status=status.HTTP_404_NOT_FOUND)
     
+    
+class ClearAllSearchAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    
+    def destroy(self, request, *args, **kwargs):
+        # Get all recent searches for the authenticated user
+        recentAllSearchedUser = RecentSearch.objects.filter(searched_by=request.user)
         
+        if not recentAllSearchedUser.exists():
+            return Response({"message": "No recent searches found to delete."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Delete the recent searches
+        recentAllSearchedUser.delete()
+        
+        return Response({"message": "Successfully removed all from recent search."}, status=status.HTTP_200_OK)
+
         
         
