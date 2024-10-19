@@ -7,10 +7,11 @@ export const useProfile = () => useContext(ProfileContext);
 
 const ProfileContextProvider = ({ children }) => {
     const { axiosInstance, logoutUser, fetchAuthenticatedUser } = useAuth();
-    const [authenticatedUserDetails, setAuthenticatedUserDetails] = useState(null)
-    const [isUpdated, setIsUpdated] = useState(false)
-    const [userSlug, setUserSlug] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const [authenticatedUserDetails, setAuthenticatedUserDetails] = useState(null);
+    const [isUpdated, setIsUpdated] = useState(false);
+    const [userSlug, setUserSlug] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [isUserFollowed, setIsUserFollowed] = useState(false);
 
     const handleApiError = (error, message = "An error occurred") => {
         setLoading(false);
@@ -18,7 +19,6 @@ const ProfileContextProvider = ({ children }) => {
             if (error.response.status === 401) {
                 logoutUser();
             }
-            toast.error(message);
         } else {
             console.log(error);
         }
@@ -48,16 +48,49 @@ const ProfileContextProvider = ({ children }) => {
         }
     }
 
+
+    // function to handle the follow
+    const followUser = async (slug)=>{
+        try {
+            const response = await axiosInstance.post(`follow-user/${slug}/` )
+            if(response.status === 201){
+                setIsUserFollowed(true)
+            }
+
+        } catch (error) {
+            handleApiError(error)
+        }
+    }
+
+    // function to handle  the unfollow user
+    const unfollowUser = async (slug)=>{
+        try {
+            const response = await axiosInstance.delete(`unfollow-user/${slug}/` )
+            if(response.status === 204){
+                setIsUserFollowed(false)
+            }
+
+        } catch (error) {
+            handleApiError(error)
+        }
+    }
+
+
     useEffect(() => {
         if (userSlug) {
             fetchProfileDetails(userSlug)
         }
-        if(userSlug && isUpdated){
+         if(userSlug && isUpdated){
             fetchProfileDetails(userSlug)
             fetchAuthenticatedUser()
             setIsUpdated(false)
         }
-    }, [userSlug, isUpdated])
+         if(isUserFollowed){
+            fetchProfileDetails(userSlug)
+        }
+
+    }, [userSlug, isUpdated, isUserFollowed])
+
 
 
     const context = {
@@ -65,7 +98,11 @@ const ProfileContextProvider = ({ children }) => {
         fetchProfileDetails,
         authenticatedUserDetails,
         loading,
-        setIsUpdated
+        setIsUpdated,
+
+
+        followUser,
+        unfollowUser,
     }
 
     return (

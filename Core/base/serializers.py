@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import User, OTP, PasswordResetToken
 from user_profile.serializers import ProfileLinkSerializer
-from user_profile.models import ProfileLinks
+from user_profile.models import ProfileLinks, Follow
 
 class UserRegisterSerializer(serializers.ModelSerializer):
   class Meta:
@@ -27,13 +27,23 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    is_following = serializers.SerializerMethodField(read_only = True)
+    
     class Meta:
         model = User
-        fields = ['slug','full_name', 'username', 'email', 'password', 'bio', 'profile_pic', 'is_verified']
+        fields = ['slug','full_name', 'username', 'email', 'password', 'bio', 'profile_pic', 'is_verified', 'is_following']
         extra_kwargs = {
                         'password': {'write_only': True}, 
                         'slug' : {'read_only':True}
                         }
+        
+    def get_is_following(self, obj):
+      request = self.context.get('request')
+      
+      if request and request.user.is_authenticated:
+        return Follow.objects.filter(follower = request.user, following = obj).exists()
+      
+      return False
         
 class UserDetailsSerializer(serializers.ModelSerializer):
     profile_links = ProfileLinkSerializer(source='links', read_only=True)
@@ -41,10 +51,14 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     github_link = serializers.CharField(required=False, allow_blank=True)
     linkedin_link = serializers.CharField(required=False, allow_blank=True)
     personal_website_link = serializers.CharField(required=False, allow_blank=True)
+    
+    is_following = serializers.SerializerMethodField(read_only = True)
+    following_count = serializers.SerializerMethodField(read_only = True)
+    follower_count = serializers.SerializerMethodField(read_only = True)
 
     class Meta:
         model = User
-        fields = ['slug', 'full_name', 'username', 'email', 'password', 'bio', 'is_verified', 'profile_pic', 'github_link', 'linkedin_link', 'personal_website_link', 'profile_links']
+        fields = ['slug', 'full_name', 'username', 'email', 'password', 'bio', 'is_verified', 'profile_pic', 'github_link', 'linkedin_link', 'personal_website_link', 'profile_links','is_following', 'following_count', 'follower_count']
         extra_kwargs = {
             'password': {'write_only': True}, 
             'slug': {'read_only': True}
@@ -75,6 +89,21 @@ class UserDetailsSerializer(serializers.ModelSerializer):
       
       return instance
 
+    def get_is_following(self, obj):
+      request = self.context.get('request')
+      
+      if request and request.user.is_authenticated:
+          return Follow.objects.filter(follower=request.user, following=obj).exists()
+      
+      return False
+
+    
+    def get_following_count(self, obj):
+      return obj.following.count()
+    
+    def get_follower_count(self, obj):
+      return obj.followers.count()
+    
   
 
 class OTPSerializer(serializers.ModelSerializer):

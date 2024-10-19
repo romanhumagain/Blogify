@@ -80,8 +80,8 @@ urlpatterns = [
     path('unlike-comment/<int:comment_id>/', UnlikeCommentAPIView.as_view(), name='unlike-comment'),
     
     
-    path('follow-user/', FollowUserAPIView.as_view(), name='follow-user'),
-    path('unfollow-user/', UnfollowUserAPIView.as_view(), name='unfollow-user'),
+    path('follow-user/<str:slug>/', FollowUserAPIView.as_view(), name='follow-user'),
+    path('unfollow-user/<str:slug>/', UnfollowUserAPIView.as_view(), name='unfollow-user'),
     
     path('recent-search/', RecentSearchAPIView.as_view(), name='recent-search'),
     path('remove-recent-search/<slug:slug>/', RemoveFromRecentSearchAPIView.as_view(), name='remove-recent-search'),

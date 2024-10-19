@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'social',
     'blog',
     'user_profile',
+    'account',
     
     # Third-party apps
     'rest_framework',

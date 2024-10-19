@@ -8,15 +8,28 @@ import { FaXTwitter } from "react-icons/fa6";
 import { useBlog } from '../../context/BlogContext';
 import EditProfileModal from './EditProfileModal';
 import { useAuth } from '../../context/AuthContext';
+import { useProfile } from '../../context/ProfileContext';
 
 const ProfileItem = ({ user }) => {
     const { profileBlogPosts } = useBlog();
-    const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false)
-    const {authenticatedUser} = useAuth();
+    const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+    const { followUser, unfollowUser } = useProfile();
+
+    const { authenticatedUser } = useAuth();
+    console.log("visited user details", user)
 
     const handleCloseModal = () => {
         setIsEditProfileModalOpen(false)
     }
+
+    // function to handle the user follow
+    const handleUserFollow = async () => {
+        followUser(user?.slug)
+    }
+    const handleUserUnfollow = async () => {
+        unfollowUser(user?.slug)
+    }
+
     return (
         <>
             <div className='flex flex-col justify-center mt-10'>
@@ -35,10 +48,27 @@ const ProfileItem = ({ user }) => {
                         <div className='flex flex-col gap-2'>
                             <div className='flex gap-5'>
                                 <p className='text-xl text-gray-900 dark:text-neutral-200'>{user?.username}</p>
-                                
+
                                 <div className={`${authenticatedUser?.slug !== user?.slug && 'hidden'} flex items-center gap-3 `}>
                                     <button className='p-1 px-2 bg-gray-300 border border-gray-400 rounded-xl text-black/95 dark:bg-neutral-800 dark:text-white/95 dark:border-neutral-700' onClick={() => setIsEditProfileModalOpen(!isEditProfileModalOpen)}>Edit Profile</button>
                                     <IoMdSettings className='text-2xl text-neutral-800 dark:text-gray-200' />
+                                </div>
+                                <div className={`${authenticatedUser?.slug === user?.slug && 'hidden'} flex items-center gap-3 `}>
+
+                                    {user?.is_following ? (
+                                        <div className='flex items-center col-span-3'>
+                                            <button className={`bg-neutral-900/90 dark:bg-gray-200/95 text-gray-100 text-sm border-2 border-gray-400 dark:text-neutral-900  px-2 py-[4px] rounded-full font-semibold transition-transform hover:scale-105 duration-700 hover:bg-neutral-900/85 dark:hover:bg-gray-200/90 `}
+                                                onClick={handleUserUnfollow}
+                                            >Unfollow</button>
+                                        </div>
+                                    ) : (
+                                        <div className='flex items-center col-span-3'>
+                                            <button className={`bg-neutral-900/90 dark:bg-gray-200/95 text-gray-100 text-sm border-2 border-gray-400 dark:text-neutral-900  px-2 py-[4px] rounded-full font-semibold transition-transform hover:scale-105 duration-700 hover:bg-neutral-900/85 dark:hover:bg-gray-200/90 `}
+                                                onClick={handleUserFollow}
+                                            >Follow</button>
+                                        </div>
+                                    )}
+
                                 </div>
 
                             </div>
@@ -47,8 +77,8 @@ const ProfileItem = ({ user }) => {
                             </div>
                             <div className='flex gap-8'>
                                 <p className='text-[17px] font-semibold text-gray-800 dark:text-gray-200'>{profileBlogPosts?.length} Posts</p>
-                                <p className='text-[17px] font-semibold text-gray-800 dark:text-gray-200'>700 Follower</p>
-                                <p className='text-[17px] font-semibold text-gray-800 dark:text-gray-200'>69 Following</p>
+                                <p className='text-[17px] font-semibold text-gray-800 dark:text-gray-200'>{user?.follower_count} Follower</p>
+                                <p className='text-[17px] font-semibold text-gray-800 dark:text-gray-200'>{user?.following_count} Following</p>
 
                             </div>
                         </div>
@@ -63,7 +93,6 @@ const ProfileItem = ({ user }) => {
                                 rel="noopener noreferrer" className='text-sm text-sky-500 dark:text-sky-100'>{user?.profile_links.personal_website_link}</a>
                         </p>
                     }
-
 
                     <p className='px-1'>{user?.bio}</p>
                 </div>

@@ -30,8 +30,10 @@ const BlogDetails = () => {
   const [blogDetails, setBlogDetails] = useState(null)
   const [isPageNotFound, setIsPageNotFound] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isUserFollowed, setIsUserFollowed] = useState(false);
+  const [isUserUnfollowed, setIsUserUnfollowed] = useState(false);
 
-  const { user, axiosInstance, logoutUser } = useAuth()
+  const { user, axiosInstance, logoutUser, authenticatedUser } = useAuth()
   const { archivePost, unarchivePost, savePost, unsavePost, isSaved, isArchived } = useBlog()
 
   const toggleDropdown = () => {
@@ -156,9 +158,59 @@ const BlogDetails = () => {
     }
   };
 
+  // function to handle the follow
+  const followUser = async (slug) => {
+    try {
+      const response = await axiosInstance.post(`follow-user/${slug}/`)
+      if (response.status === 201) {
+        setIsUserFollowed(true)
+      }
+
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          logoutUser();
+        }
+      } else {
+        console.log(error);
+      }
+    }
+  }
+
+  // function to handle  the unfollow user
+  const unfollowUser = async (slug) => {
+    try {
+      const response = await axiosInstance.delete(`unfollow-user/${slug}/`)
+      if (response.status === 204) {
+        setIsUserUnfollowed(true)
+      }
+
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          logoutUser();
+        }
+      } else {
+        console.log(error);
+      }
+    }
+  }
+
   useEffect(() => {
     fetchBlogDetails()
   }, [isArchived, isSaved])
+
+  useEffect(() => {
+    if (isUserFollowed) {
+      fetchBlogDetails()
+      setIsUserFollowed(false);
+    }
+    else if (isUserUnfollowed) {
+      fetchBlogDetails()
+      setIsUserUnfollowed(false);
+    }
+
+  }, [isUserFollowed, isUserUnfollowed])
 
   if (isPageNotFound) {
     return (
@@ -250,7 +302,7 @@ const BlogDetails = () => {
             {/* for author */}
             <div className='grid grid-cols-12 max-w-[350px] w-full mt-5 items-center'>
               <div className='col-span-2 '>
-                <img className='object-cover w-12 h-12 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110' src='https://imgs.search.brave.com/YUCUWmF76faLRWFberHYGWJI4j2IOvIq7dwBSsBkekA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/NDE1OTEwMy9waG90/by90aG91Z2h0ZnVs/LXdvbWFuLXdpdGgt/aGFuZC1vbi1jaGlu/LWxvb2tpbmctdXAu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTlDeEpZb3F2M0dU/S2hEeTA2UXd4NXBG/YVM1ZmFhQTJKSlNV/QUIxbTNTNTg9' ></img>
+                <img className='object-cover w-12 h-12 transition-transform duration-700 rounded-full cursor-pointer hover:scale-110' src={blogDetails?.author.profile_pic} ></img>
               </div>
               <div className='col-span-6'>
                 <p className='font-semibold text-gray-700 cursor-pointer dark:text-gray-300 text-md'>
@@ -275,9 +327,24 @@ const BlogDetails = () => {
                   }
                 </p>
               </div>
-              <div className='flex items-center col-span-3'>
-                <button className={`bg-neutral-900/90 dark:bg-gray-200/95 text-gray-100 text-sm border-2 border-gray-400 dark:text-neutral-900  px-2 py-[4px] rounded-full font-semibold transition-transform hover:scale-105 duration-700 hover:bg-neutral-900/85 dark:hover:bg-gray-200/90 `}>Following</button>
-              </div>
+
+              {
+                authenticatedUser?.slug !== blogDetails?.author.slug && (
+                  blogDetails?.author.is_following ? (
+                    <div className='flex items-center col-span-3'>
+                      <button className={`bg-neutral-900/90 dark:bg-gray-200/95 text-gray-100 text-sm border-2 border-gray-400 dark:text-neutral-900  px-2 py-[4px] rounded-full font-semibold transition-transform hover:scale-105 duration-700 hover:bg-neutral-900/85 dark:hover:bg-gray-200/90 `}
+                        onClick={() => unfollowUser(blogDetails?.author.slug)}
+                      >Following</button>
+                    </div>
+                  ) : (
+                    <div className='flex items-center col-span-3'>
+                      <button className={`bg-neutral-900/90 dark:bg-gray-200/95 text-gray-100 text-sm border-2 border-gray-400 dark:text-neutral-900  px-2 py-[4px] rounded-full font-semibold transition-transform hover:scale-105 duration-700 hover:bg-neutral-900/85 dark:hover:bg-gray-200/90 `}
+                        onClick={() => followUser(blogDetails?.author.slug)}
+                      >Follow</button>
+                    </div>
+                  )
+                )
+              }
             </div>
 
 

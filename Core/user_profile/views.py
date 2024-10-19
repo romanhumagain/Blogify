@@ -14,10 +14,8 @@ class FollowUserAPIView(generics.CreateAPIView):
     serializer_class = FollowSerializer
     
     def post(self, request, *args, **kwargs):
-        data = request.data
-        
         # to get the unique slug of the user to whom you are following
-        following_user_slug = data.slug
+        following_user_slug = kwargs.get('slug')
         
         # to check whether the user with that slug exists or not
         try:
@@ -25,19 +23,32 @@ class FollowUserAPIView(generics.CreateAPIView):
         except User.DoesNotExist:
             return Response({'message':'User Doesn\'t exists'}, status=status.HTTP_404_NOT_FOUND)
         
-        if Follow.objects.filter(follower = request.user, following = user).exists:
+        if Follow.objects.filter(follower = request.user, following = user).exists():
             return Response({'message':'Already following this user!'}, status=status.HTTP_400_BAD_REQUEST)
             
-        Follow.objects.create(follower = request.user, following = user)
-        return Response({"message": "Successfully followed the user."}, status=status.HTTP_201_CREATED)
+        data = {
+            'follower':request.user.id,
+            'following':user.id
+        }
         
+        serializer = self.get_serializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Successfully followed the user."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+        
+
 # ===== to handle the unfollow =======
 class UnfollowUserAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'slug'
+    
     def delete(self, request, *args, **kwargs):
         follower = request.user
-        following_id = kwargs.get('id')
+        following_user_slug = kwargs.get('slug')
         try:
-            following = User.objects.get(id=following_id)
+            following = User.objects.get(slug=following_user_slug)
         except User.DoesNotExist:
             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 

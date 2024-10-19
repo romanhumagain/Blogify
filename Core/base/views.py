@@ -233,6 +233,10 @@ class UserDetailsViewSets(viewsets.ModelViewSet):
     lookup_field = 'slug'
     lookup_url_kwarg='slug'
     
+    
+    def get_serializer_context(self):
+        return {'request':self.request}
+    
     # def partial_update(self, request, *args, **kwargs):
     #     instance = self.get_object()
     #     data = request.data
