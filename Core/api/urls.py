@@ -37,6 +37,10 @@ from user_profile.views import  (
     ClearAllSearchAPIView
 )
 
+from account.views import (
+    NotificationListAPIView
+)
+
 # from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
 
@@ -87,5 +91,6 @@ urlpatterns = [
     path('remove-recent-search/<slug:slug>/', RemoveFromRecentSearchAPIView.as_view(), name='remove-recent-search'),
     path('clear-all-search/', ClearAllSearchAPIView.as_view(), name='clearall-search'),
     
+    path('notification/', NotificationListAPIView.as_view(), name='get-notification'),
 
 ]
