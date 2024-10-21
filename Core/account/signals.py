@@ -2,14 +2,14 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from user_profile.models import Follow
 from blog.models import LikedPost
-from blog.models import LikedComment
+from blog.models import LikedComment, PostComment
 from .models import Notification
 
 
 @receiver(post_save, sender=Follow)
 def send_follow_notification(sender, instance, created, **kwargs):
     if created:
-        message = f"{instance.follower.full_name} started following you.";
+        message = f"{instance.follower.username} started following you.";
         Notification.objects.create(actor = instance.follower, receiver = instance.following, category = 'follow',  message= message ) 
         
         
@@ -21,11 +21,26 @@ def handle_unfollow_notification(sender, instance, **kwargs):
         if notification.exists():
             notification.update(is_deleted = True)
 
+@receiver(post_save, sender=PostComment)
+def send_comment_notification(sender, instance, created, **kwargs):
+    if created:
+        message = f"{instance.user.username} commented on your post.";
+        Notification.objects.create(actor = instance.user, receiver = instance.post.author, category = 'comment',  message= message ) 
+        
+        
+@receiver(post_delete, sender=PostComment)
+def handle_comment_delete_notification(sender, instance, **kwargs):
+
+        notification = Notification.objects.filter(actor = instance.user, receiver = instance.post.author, category = 'comment', message__contains = "commented on your post.")
+        
+        if notification.exists():
+            notification.update(is_deleted = True)
+            
             
 @receiver(post_save, sender = LikedPost)
 def send_like_post_notification(sender, instance, created, **kwargs):
     if created:
-        message = f"{instance.user.full_name} liked your post."        
+        message = f"{instance.user.username} liked your post."        
         Notification.objects.create(actor = instance.user, receiver = instance.post.author, post = instance.post, category = 'like', message = message)
     
 
@@ -40,7 +55,7 @@ def handle_unlike_post_notification(sender, instance, **kwargs):
 @receiver(post_save, sender = LikedComment)
 def send_like_comment_notification(sender, instance, created, **kwargs):
     if created:
-        message = f"{instance.user.full_name} liked your comment."        
+        message = f"{instance.user.username} liked your comment."        
         Notification.objects.create(actor = instance.user, receiver = instance.comment.post.author, post = instance.comment.post,  comment = instance.comment, category = 'like_comment', message = message)
     
 
