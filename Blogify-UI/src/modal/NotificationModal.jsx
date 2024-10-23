@@ -3,7 +3,7 @@ import image from '../assets/pp.jpg'
 import { useAuth } from '../context/AuthContext'
 import Notification from '../components/Notification';
 
-const NotificationModal = ({ isOpen }) => {
+const NotificationModal = ({ isOpen, closeModal }) => {
     const [isModalOpen, setIsModalOpen] = useState(isOpen);
     const { axiosInstance } = useAuth();
 
@@ -42,12 +42,15 @@ const NotificationModal = ({ isOpen }) => {
                 aria-modal="true">
                 <div className='p-8'>
                     <p className='mb-5 text-xl font-semibold text-gray-800 dark:text-gray-300'>Notification</p>
-                    <div className='mt-5'>
+                    
 
+                    <div className='mt-5'>
                         {notifications && notifications?.map((notification, index) => (
-                        <Notification key={index} notification={notification}/>
+                        <Notification key={index} notification={notification} closeModal={closeModal}/>
                         ))}
                     </div>
+
+
                 </div>
 
             </div>

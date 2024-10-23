@@ -268,7 +268,7 @@ const SideBar = () => {
       }
 
       {isNotificationModal &&
-        <NotificationModal isOpen={isNotificationModal} />
+        <NotificationModal isOpen={isNotificationModal} closeModal={closeModal} />
       }
     </>
   );
