@@ -11,4 +11,4 @@ class NotificationListAPIView(ListAPIView):
     queryset = Notification.objects.all()
         
     def get_queryset(self):
-        return self.queryset.filter(receiver = self.request.user)
+        return self.queryset.filter(receiver = self.request.user, is_deleted = False ).exclude(actor = self.request.user)
