@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'account',
     
     # Third-party apps
+    
+]
+
+THIRD_PARTY_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
@@ -53,6 +57,8 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'django_filters',
 ]
+
+INSTALLED_APPS += THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

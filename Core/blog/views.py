@@ -269,10 +269,10 @@ class UpdateDeleteCommentAPIView(generics.RetrieveUpdateDestroyAPIView):
     try:
       comment = PostComment.objects.get(id = id)
     except PostComment.DoesNotExist:
-      return Response({'message':'No such comments found to delete !'}, status=status.HTTP_400_BAD_REQUEST)
+      return Response({'detail':'No such comments found to delete !'}, status=status.HTTP_400_BAD_REQUEST)
     
     comment.delete()
-    return Response({'message': 'Successfully deleted comment'}, status=status.HTTP_200_OK)
+    return Response({'detail': 'Successfully deleted comment'}, status=status.HTTP_200_OK)
     
     
 # ===== for liking and unliking the comments
@@ -321,5 +321,5 @@ class UnlikeCommentAPIView(generics.DestroyAPIView):
       return Response({"error":'You have not liked this comment'}, status= status.HTTP_404_NOT_FOUND)
       
     likedComment.delete()
-    return Response({'message': 'Successfully unliked comment'}, status=status.HTTP_200_OK)
+    return Response({'detail': 'Successfully unliked comment'}, status=status.HTTP_200_OK)
     
