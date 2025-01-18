@@ -43,6 +43,7 @@ const SideBar = () => {
     navigate(link)
   };
 
+
   const navigateModal = (modal) => {
     setIsModalOpen(true)
     if (modal === "/search") {
@@ -143,7 +144,7 @@ const SideBar = () => {
 
           <HiMenuAlt3
             className={`text-3xl cursor-pointer ${!isSideBarOpen && 'rotate-180'} ${isModalOpen ? 'pointer-events-none opacity-50' : ''}`}
-            aria-disabled={isModalOpen}
+            aria-disabled={isModalOpen }
             onClick={() => {
               if (!isModalOpen) {
                 setIsSideBarOpen(!isSideBarOpen);
