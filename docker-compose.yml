@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./Core
+    container_name: blogify_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Core:/app
+
+  frontend:
+    build: ./Blogify-UI
+    container_name: blogify_frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true

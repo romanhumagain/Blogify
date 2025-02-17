@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { TbListDetails } from "react-icons/tb";
 import Chat from './Chat';
 
-const MessageList = () => {
+const MessageList = ({setIsMessageDetailsClicked, setChatID }) => {
     const chatData = [
         {
             name: "Roman Humagain",
@@ -33,6 +33,11 @@ const MessageList = () => {
             sent_at: "2d"
         },
     ]
+
+    const handleChatSelection = (chatId)=>{
+        setIsMessageDetailsClicked(true)
+        setChatID(chatId)
+    }
     return (
         <div className='h-screen bg-gray-100 border-r border-gray-200 dark:border-neutral-800 dark:bg-neutral-900 '>
 
@@ -51,7 +56,7 @@ const MessageList = () => {
                 </p>
                 {
                     chatData.map((chat, ind) => {
-                        return <div key={ind}>
+                        return <div key={ind} onClick={()=>handleChatSelection(3)} className='cursor-pointer'>
                             <Chat chat={chat} />
                         </div>
                     }

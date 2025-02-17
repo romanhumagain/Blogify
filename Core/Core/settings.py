@@ -44,9 +44,7 @@ INSTALLED_APPS = [
     'blog',
     'user_profile',
     'account',
-    
-    # Third-party apps
-    
+    'chat'
 ]
 
 THIRD_PARTY_APPS = [

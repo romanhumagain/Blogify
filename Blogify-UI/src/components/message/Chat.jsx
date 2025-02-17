@@ -21,8 +21,6 @@ const Chat = ({chat}) => {
                       
                     <GoDotFill className={`${chat.is_read ?'hidden':''} text-[20px] text-blue-600`} />  
                     </div>
-                    
-                    
                 </div>
 
             </div>
